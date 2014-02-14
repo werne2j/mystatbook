@@ -1,0 +1,25 @@
+{% extends "registration/base.html" %}
+{% load bootstrap_tags %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block extrastyle %}
+<style>
+  #regform{
+    width: 300px;
+    margin: 0 auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div id="regform">
+    <h1>Register</h1>
+    <form method="post" action="" class="wide">
+  	{% csrf_token %}
+      {{ form | as_bootstrap }}
+      <button type="submit" class="btn btn-success btn-block" value="Register &rarr;">Submit</button>
+    </form>
+  </div>
+  
+{% endblock %}

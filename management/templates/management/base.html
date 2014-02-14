@@ -1,0 +1,80 @@
+{% load staticfiles %}
+{% load firstof from future %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Management</title>
+
+        <link rel="shortcut icon" href="{% static '441927.png'}" type="image/x-icon" />
+
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.css' %}" />
+
+        <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script> 
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    </head>
+    {% load i18n %}
+    <body style='margin-top:0; padding-top:0'>
+        <div id="wrap">
+            <!-- Navigation -->
+            <div class="navbar navbar-inverse navbar-static-top" id="header" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand">Sports</a>
+                    </div>
+                    <div class="navbar-collapse collapse" id="mainNavigation">
+                        <ul class="nav navbar-nav">
+                            <li><a href="{% url 'coach_portal' username=user.username %}">Home</a></li>
+                            <li><a href="#">Roster</a></li>
+                            <li><a href="#">Schedule</a></li>
+                            <li><a href="#">Statistics</a></li>
+                            <li><a href="#">Records</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-user"></i> {% filter force_escape %}{% firstof user.username %}{% endfilter %} <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    {% url 'logout_page' as logout_url %}
+                                    <li><a href="{{ logout_url }}">{% trans 'Log out' %}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+            <!-- Container -->
+            <div id='main-content' class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% block header %}
+                        {% endblock %}     
+                    </div>
+                </div>
+                <div class="row">
+                    {% block content %}
+
+                    {{ content }}
+
+                    {% endblock %}        
+                </div>
+            </div>
+        </div>
+        <script>
+        $('#mainNavigation a').each(function(){
+            if(window.location.pathname == $(this).attr('href')) {
+                $(this).parent().addClass("active");
+            }
+        });
+    </script>
+    </body>
+</html>

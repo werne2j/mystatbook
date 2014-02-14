@@ -36,6 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'django_forms_bootstrap',
+    'registration',
     'south',
     'management',
 )
@@ -53,6 +56,7 @@ ROOT_URLCONF = 'sportsbook.urls'
 
 WSGI_APPLICATION = 'sportsbook.wsgi.application'
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',) 
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -86,3 +90,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# # Registration
+# ACCOUNT_ACTIVATION_DAYS=7
+# EMAIL_HOST='localhost'
+# EMAIL_PORT= 1023
+# EMAIL_HOST_USER='username'
+# EMAIL_HOST_PASSWORD='password'

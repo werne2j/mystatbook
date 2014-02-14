@@ -27,6 +27,10 @@
   margin-bottom: 0em;
 }
 
+.container {
+  width: 915px;
+  margin: 0px auto;
+}
 /*******************************
           Content
 *******************************/
