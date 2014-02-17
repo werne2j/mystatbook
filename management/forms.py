@@ -20,3 +20,7 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = ('username', 'email', 'password1', 'password2')
 
+class AddTeamForm(forms.ModelForm):
+	class Meta:
+		model = Team
+

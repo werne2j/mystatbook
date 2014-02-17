@@ -2,15 +2,16 @@
 {% load i18n %}
 
 
-
+{% block links %}
+		{% for t in teams %}
+			<li><a href="{% url 'team_detail' username=t.coach name=t.name%}">{{t.name}}</a></li>
+		{% endfor %}
+{% endblock %}
 <!-- Content -->
 {% block header %}
     
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		hi
-	</div>
-    
+
 {% endblock %}

@@ -30,7 +30,7 @@ def login_page(request):
     else:
         if request.user.is_authenticated:
             if request.user.is_superuser:
-                return HttpResponseRedirect('/admin/')
+                return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': request.user.username }))
     return render_to_response('management/login.html', {}, context_instance=RequestContext(request))
 
 class Homepage(LoginRequiredMixin, TemplateView):
@@ -39,9 +39,39 @@ class Homepage(LoginRequiredMixin, TemplateView):
 
     login_url = '/login/'
 
+    def get_context_data(self, **kwargs):
+        context = super(Homepage, self).get_context_data(**kwargs)
+
+        context['teams'] = Team.objects.filter(coach=self.request.user)
+
+        return context
+
+
+class TeamDetail(LoginRequiredMixin, TemplateView):
+    
+    template_name = 'management/team_detail.html'
+
+    login_url = '/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super(TeamDetail, self).get_context_data(**kwargs)
+
+        context['teams'] = Team.objects.filter(coach=self.request.user).filter(name=self.kwargs.get("name"))
+        context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
+
+        return context
+
+class PlayerList(LoginRequiredMixin, View):
+
+    login_url = '/login/'
+
+    def get(self, request):
+        context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
+        return render_to_response('management/player_list.html', {"players": players })
+
 class UserRegistration(RegistrationView):
     def get_success_url(self, request, user):   
-        return "/management/"
+        return reverse('coach_portal', kwargs={'username': request.user.username })
 
 
 
