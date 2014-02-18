@@ -16,7 +16,8 @@
         <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script> 
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
-        {% block extrascript %}{% endblock %}
+        {% block extrascript %}
+        {% endblock %}
     </head>
     {% load i18n %}
     <body style='margin-top:0; padding-top:0'>
@@ -35,11 +36,6 @@
                     </div>
                     <div class="navbar-collapse collapse" id="mainNavigation">
                         <ul class="nav navbar-nav">
-                            <!-- <li><a href="{% url 'coach_portal' username=user.username %}">Home</a></li> -->
-<!--                             <li><a href="#">Roster</a></li>
-                            <li><a href="#">Schedule</a></li>
-                            <li><a href="#">Statistics</a></li>
-                            <li><a href="#">Records</a></li> -->
                             {% block links %}{% endblock %}
                             <li><a href="#">Add Team <span class="glyphicon glyphicon-plus"></span></a></li>
                         </ul>
@@ -56,6 +52,7 @@
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
+
             <!-- Container -->
             <div id='main-content' class="container">
                 <div class="row">
@@ -73,6 +70,7 @@
                 </div>
             </div>
         </div>
+
         <script>
         $('#mainNavigation a').each(function(){
             if(window.location.pathname == $(this).attr('href')) {

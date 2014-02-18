@@ -61,13 +61,18 @@ class TeamDetail(LoginRequiredMixin, TemplateView):
 
         return context
 
-class PlayerList(LoginRequiredMixin, View):
+class PlayerList(LoginRequiredMixin, TemplateView):
+
+    template_name = 'management/roster_list.html'
 
     login_url = '/login/'
 
-    def get(self, request):
+    def get_context_data(self, **kwargs):
+        context = super(PlayerList, self).get_context_data(**kwargs)
+
         context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
-        return render_to_response('management/player_list.html', {"players": players })
+
+        return context
 
 class UserRegistration(RegistrationView):
     def get_success_url(self, request, user):   

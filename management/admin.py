@@ -11,6 +11,10 @@ class PlayerAdmin(admin.ModelAdmin):
 class PositionAdmin(admin.ModelAdmin):
 	list_display = ('position',)
 
+class GameAdmin(admin.ModelAdmin):
+	list_display = ('team', 'opponent', 'date', 'location', 'time', 'doubleheader')
+
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Position, PositionAdmin)
+admin.site.register(Game, GameAdmin)

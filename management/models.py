@@ -32,3 +32,15 @@ class Player(models.Model):
 
 	def __unicode__(self):
 		return u'{first} {last}'.format(first=self.first_name, last=self.last_name)
+
+class Game(models.Model):
+	team = models.ForeignKey('Team')
+	date = models.DateField()
+	opponent = models.CharField(max_length=100)
+	location = models.CharField(max_length=100)
+	time = models.TimeField()
+	doubleheader = models.BooleanField(default=True)
+
+	def __unicode__(self):
+		return u'{opponent} {date}'.format(oppenent=self.oppenent, date=self.date)
+

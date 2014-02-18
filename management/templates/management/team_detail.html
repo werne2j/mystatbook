@@ -7,10 +7,6 @@
 {% endblock %}
 
 {% block extrascript %}
-<script>
-
-</script>
-
 <style>
 	table{
 		margin-top: 20px;
@@ -27,54 +23,49 @@
 
 {% block content %}
 <div class="container">
-<ul class="nav nav-tabs">
-	<li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-	<li class="dropdown">
-		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-		Players <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li><a href="#roster" data-toggle="tab">Roster</a></li>
-			<li><a href="#">Depth Chart</a></li>
-		</ul>
-	</li>
-</ul>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			Players <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a href="#roster" data-toggle="tab" id="player_roster">Roster</a></li>
+				<li><a href="#">Depth Chart</a></li>
+			</ul>
+		</li>
+		<li><a href="#schedule" data-toggle="tab">Schedule</a></li>
+	</ul>
 
     <div id='content' class="tab-content">
-      <div class="tab-pane active" id="home">
-        <ul>
 
-        </ul>
-      </div>
-      <div class="tab-pane" id="roster">
-      	<button type="button" class="btn btn-success">Add Player <span class="glyphicon glyphicon-plus"></span></button>
-        <ul>
-        	<table class="table table-bordered table-striped">
-  				<thead>	
-					<tr class="text-center">
-						<th class="text-center">First Name</th>
-						<th class="text-center">Last Name</th>
-						<th class="text-center">Position</th>
-						<th class="text-center">Class</th>
-						<th class="text-center">Throw/Hit</th>
-					</tr>
-				</thead>
-				<tbody data-link="row" class="rowlink" id="client_table">
-					{% for p in players %}
-					<tr>
-						<td class="text-center">{{p.first_name}}</td>
-						<td class="text-center">{{p.last_name}}</td>
-						<td class="text-center">{{p.position.all|join:" / " }}</td>
-						<td class="text-center">{{p.class_standing}}</td>
-						<td class="text-center">{{p.throws}}/{{p.hits}}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-        </ul>
-      </div>
-    </div>    
+		<div class="tab-pane active" id="home">
 
+		</div>
+
+		<div class="tab-pane" id="roster">
+			<button type="button" class="btn btn-success">Add Player <span class="glyphicon glyphicon-plus"></span></button>
+			<table class="table table-bordered table-striped" id="player_table"></table>
+		</div>
+
+		<div class="tab-pane" id="schedule">
+
+		</div>
+
+    </div>   
 </div>
+<script>
+$('#player_roster').click(function (e) {
+	e.preventDefault()
+	$(this).tab('show');
+    $.ajax({
+        url : "{% url 'player_list' username=user name=name %}",
+        success: function(data){
+            $('#player_table').html(data);
+        }
+    });
+    $('.dropdown-toggle').dropdown("toggle");
+})
+</script>
 
 {% endblock %}

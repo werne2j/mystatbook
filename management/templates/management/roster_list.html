@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<table class="table table-bordered table-striped" id="player_list">
+	<thead>	
+		<tr class="text-center">
+			<th class="text-center">First Name</th>
+			<th class="text-center">Last Name</th>
+			<th class="text-center">Position</th>
+			<th class="text-center">Class</th>
+			<th class="text-center">Throw/Hit</th>
+		</tr>
+	</thead>
+	<tbody data-link="row" class="rowlink">
+		{% for p in players %}
+		<tr>
+			<td class="text-center">{{p.first_name}}</td>
+			<td class="text-center">{{p.last_name}}</td>
+			<td class="text-center">{{p.position.all|join:" / " }}</td>
+			<td class="text-center">{{p.class_standing}}</td>
+			<td class="text-center">{{p.throws}}/{{p.hits}}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
