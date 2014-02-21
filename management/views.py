@@ -58,6 +58,7 @@ class TeamDetail(LoginRequiredMixin, TemplateView):
 
         context['teams'] = Team.objects.filter(coach=self.request.user).filter(name=self.kwargs.get("name"))
         context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
+        context['depth'] = DepthChart.objects.get(team__name=self.kwargs.get("name"))
 
         return context
 

@@ -73,6 +73,38 @@ class PlayerStats(models.Model):
 	def __unicode__(self):
 		return u'{p} stats'.format(p=self.player)
 
+class DepthChart(models.Model):
+	team = models.ForeignKey('Team')
+	catch1 = models.CharField(max_length=100, default="Catcher")
+	catch2 = models.CharField(max_length=100, default="Catcher")
+	first1 = models.CharField(max_length=100, default="First Base")
+	first2 = models.CharField(max_length=100, default="First Base")
+	second1 = models.CharField(max_length=100, default="Second Base")
+	second2 = models.CharField(max_length=100, default="Second Base")
+	short1 = models.CharField(max_length=100, default="Shortstop")
+	short2 = models.CharField(max_length=100, default="Shortstop")
+	third1 = models.CharField(max_length=100, default="Third Base")
+	third2 = models.CharField(max_length=100, default="Third Base")
+	left1 = models.CharField(max_length=100, default="Left Field")
+	left2 = models.CharField(max_length=100, default="Left Field")
+	center1 = models.CharField(max_length=100, default="Center Field")
+	center2 = models.CharField(max_length=100, default="Center Field")
+	right1 = models.CharField(max_length=100, default="Right Field")
+	right2 = models.CharField(max_length=100, default="Right Field")
+	starter1 = models.CharField(max_length=100, default="Starting Pitcher")
+	starter2 = models.CharField(max_length=100, default="Starting Pitcher")
+	starter3 = models.CharField(max_length=100, default="Starting Pitcher")
+	starter4 = models.CharField(max_length=100, default="Starting Pitcher")
+	relief1 = models.CharField(max_length=100, default="Relief Pitcher")
+	relief2 = models.CharField(max_length=100, default="Relief Pitcher")
+	relief3 = models.CharField(max_length=100, default="Relief Pitcher")
+	relief4 = models.CharField(max_length=100, default="Relief Pitcher")
+	dh = models.CharField(max_length=100, default="Designated Hitter")
+
+	def __unicode__(self):
+		return u'{t} depth chart'.format(t=self.team)
+
+
 # class IndivPitchStats(models.Model):
 
 # 	class Meta:

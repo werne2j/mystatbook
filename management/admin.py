@@ -17,6 +17,10 @@ class GameAdmin(admin.ModelAdmin):
 class PlayerStatsAdmin(admin.ModelAdmin):
 	list_display = ('player', 'game', 'at_bats','runs','hits','hr','rbi','walks','strikeouts','innings','hits_allowed','runs_allowed','earned_runs','walks_allowed','strikeout_amount', 'wild_pitches', 'hit_by_pitch')
 
+class DepthChartAdmin(admin.ModelAdmin):
+	pass
+
+
 # class IndivPitchStatsAdmin(admin.ModelAdmin):
 # 	list_display = ('player', 'innings','hits_allowed','runs_allowed','earned_runs','walks_allowed','strikeouts', 'wild_pitches', 'hit_by_pitch')
 
@@ -25,4 +29,5 @@ admin.site.register(Player, PlayerAdmin)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(PlayerStats, PlayerStatsAdmin)
+admin.site.register(DepthChart, DepthChartAdmin)
 # admin.site.register(IndivPitchStats, IndivPitchStatsAdmin)
