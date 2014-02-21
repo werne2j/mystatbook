@@ -42,5 +42,54 @@ class Game(models.Model):
 	doubleheader = models.BooleanField(default=True)
 
 	def __unicode__(self):
-		return u'{opponent} {date}'.format(oppenent=self.oppenent, date=self.date)
+		return u'{opp} {d}'.format(opp=self.opponent, d=self.date)
+
+class PlayerStats(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Player Stats'
+
+	game = models.ForeignKey('Game')	
+	player = models.ForeignKey('Player', related_name="playerstats")
+	at_bats = models.IntegerField(default=0)
+	runs = models.IntegerField(default=0)
+	hits = models.IntegerField(default=0)
+	hr = models.IntegerField(default=0)
+	rbi = models.IntegerField(default=0)
+	walks = models.IntegerField(default=0)
+	strikeouts = models.IntegerField(default=0)
+	innings = models.IntegerField(default=0)
+	hits_allowed = models.IntegerField(default=0)
+	runs_allowed = models.IntegerField(default=0)
+	earned_runs = models.IntegerField(default=0)
+	walks_allowed = models.IntegerField(default=0)
+	strikeout_amount = models.IntegerField(default=0)
+	wild_pitches = models.IntegerField(default=0)
+	hit_by_pitch = models.IntegerField(default=0)
+	win = models.IntegerField(default=0)
+	loss = models.IntegerField(default=0)
+	sv = models.IntegerField(default=0)
+
+	def __unicode__(self):
+		return u'{p} stats'.format(p=self.player)
+
+# class IndivPitchStats(models.Model):
+
+# 	class Meta:
+# 		verbose_name_plural = 'Individual Pitching Stats'
+
+# 	player = models.ForeignKey('Player')
+# 	innings = models.IntegerField(default=0)
+# 	hits_allowed = models.IntegerField(default=0)
+# 	runs_allowed = models.IntegerField(default=0)
+# 	earned_runs = models.IntegerField(default=0)
+# 	walks_allowed = models.IntegerField(default=0)
+# 	strikeouts = models.IntegerField(default=0)
+# 	wild_pitches = models.IntegerField(default=0)
+# 	hit_by_pitch = models.IntegerField(default=0)
+
+# 	def __unicode__(self):
+# 		return u'{p} pitching stats'.format(p=self.player)
+
+
 

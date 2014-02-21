@@ -74,6 +74,19 @@ class PlayerList(LoginRequiredMixin, TemplateView):
 
         return context
 
+class GameList(LoginRequiredMixin, TemplateView):
+
+    template_name = 'management/game_list.html'
+
+    login_url = '/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super(GameList, self).get_context_data(**kwargs)
+
+        context['games'] = Game.objects.filter(team__name=self.kwargs.get("name"))
+
+        return context
+
 class UserRegistration(RegistrationView):
     def get_success_url(self, request, user):   
         return reverse('coach_portal', kwargs={'username': request.user.username })

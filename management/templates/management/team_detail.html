@@ -15,9 +15,10 @@
 	ul{
 		padding-left: 0px;
 	}
-	button{
+	.btn-success{
 		margin-top: 20px;
 	}
+
 </style>
 {% endblock %}
 
@@ -34,7 +35,8 @@
 				<li><a href="#">Depth Chart</a></li>
 			</ul>
 		</li>
-		<li><a href="#schedule" data-toggle="tab">Schedule</a></li>
+		<li><a href="#schedule" data-toggle="tab" id="game_schedule">Schedule</a></li>
+		<li><a href="#stats" data-toggle="tab" id="player_stats">Statistics</a></li>
 	</ul>
 
     <div id='content' class="tab-content">
@@ -44,15 +46,127 @@
 		</div>
 
 		<div class="tab-pane" id="roster">
-			<button type="button" class="btn btn-success">Add Player <span class="glyphicon glyphicon-plus"></span></button>
+			<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Player</button>
 			<table class="table table-bordered table-striped" id="player_table"></table>
 		</div>
 
 		<div class="tab-pane" id="schedule">
+			<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Game</button>
+			<table class="table table-bordered table-striped" id="game_table"></table>
+		</div>
 
+		<div class="tab-pane" id="stats">
+			<table class="table table-bordered table-striped" id="hitting_table">
+				<thead>	
+					<tr class="text-center">
+						<th class="text-center">Player</th>
+						<th class="text-center">G</th>
+						<th class="text-center">PA</th>
+						<th class="text-center">AB</th>
+						<th class="text-center">R</th>
+						<th class="text-center">H</th>
+						<th class="text-center">2B</th>
+						<th class="text-center">3B</th>
+						<th class="text-center">HR</th>
+						<th class="text-center">RBI</th>
+						<th class="text-center">BB</th>
+						<th class="text-center">SO</th>
+						<th class="text-center">AVG</th>
+						<th class="text-center">OBP</th>
+						<th class="text-center">SLG</th>
+					</tr>
+				</thead>
+				<tbody data-link="row" class="rowlink">
+					{% for s in players %}
+						{% for p in s.playerstats.all %}
+						<tr>
+							<th class="text-center">{{p.player}}</th>
+							<th class="text-center">G</th>
+							<th class="text-center">PA</th>
+							<th class="text-center">{{p.at_bats}}</th>
+							<th class="text-center">{{p.runs}}</th>
+							<th class="text-center">{{p.hits}}</th>
+							<th class="text-center">2B</th>
+							<th class="text-center">3B</th>
+							<th class="text-center">{{p.hr}}</th>
+							<th class="text-center">{{p.rbi}}</th>
+							<th class="text-center">{{p.walks}}</th>
+							<th class="text-center">{{p.strikeouts}}</th>
+							<th class="text-center">AVG</th>
+							<th class="text-center">OBP</th>
+							<th class="text-center">SLG</th>
+						</tr>
+						{% endfor %}
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<table class="table table-bordered table-striped" id="pitching_table">
+				<thead>	
+					<tr class="text-center">
+						<th class="text-center">Player</th>
+						<th class="text-center">GP</th>
+						<th class="text-center">GS</th>
+						<th class="text-center">IP</th>
+						<th class="text-center">H</th>
+						<th class="text-center">R</th>
+						<th class="text-center">ER</th>
+						<th class="text-center">BB</th>
+						<th class="text-center">K</th>
+						<th class="text-center">WP</th>
+						<th class="text-center">HBP</th>
+						<th class="text-center">W</th>
+						<th class="text-center">L</th>
+						<th class="text-center">SV</th>
+						<th class="text-center">ERA</th>
+					</tr>
+				</thead>
+				<tbody data-link="row" class="rowlink">
+					{% for s in players %}
+						{% for p in s.playerstats.all %}
+						<tr>
+							<th class="text-center">{{p.player}}</th>
+							<th class="text-center">GP</th>
+							<th class="text-center">GS</th>
+							<th class="text-center">{{p.innings}}</th>
+							<th class="text-center">{{p.hits_allowed}}</th>
+							<th class="text-center">{{p.runs_allowed}}</th>
+							<th class="text-center">{{p.earned_runs}}</th>
+							<th class="text-center">{{p.walks_allowed}}</th>
+							<th class="text-center">{{p.strikeout_amount}}</th>
+							<th class="text-center">{{p.wild_pitches}}</th>
+							<th class="text-center">{{p.hit_by_pitch}}</th>
+							<th class="text-center">W</th>
+							<th class="text-center">L</th>
+							<th class="text-center">SV</th>
+							<th class="text-center">ERA</th>
+						</tr>
+						{% endfor %}
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 
     </div>   
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </div>
 <script>
 $('#player_roster').click(function (e) {
@@ -62,6 +176,18 @@ $('#player_roster').click(function (e) {
         url : "{% url 'player_list' username=user name=name %}",
         success: function(data){
             $('#player_table').html(data);
+        }
+    });
+    $('.dropdown-toggle').dropdown("toggle");
+})
+
+$('#game_schedule').click(function (e) {
+	e.preventDefault()
+	$(this).tab('show');
+    $.ajax({
+        url : "{% url 'game_list' username=user name=name %}",
+        success: function(data){
+            $('#game_table').html(data);
         }
     });
     $('.dropdown-toggle').dropdown("toggle");
