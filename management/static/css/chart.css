@@ -1,0 +1,138 @@
+.draggable { 
+	width: 150px; 
+	height: 30px; 
+	padding: 0.5em; 
+	border: 1px solid black;
+	background: white;
+	margin-left: 10px;
+}
+.droppable { 
+	width: 150px; 
+	height: 30px; 
+	padding: 0.5em;
+}
+#catch1{
+	position: absolute;
+	top: 88%;
+	left: 42.5%;
+}
+#catch2{
+	position: absolute;
+	top: 92%;
+	left: 42.5%;
+}
+#first1{
+	position: absolute;
+	top: 52%;
+	left: 63%;
+}
+#first2{
+	position: absolute;
+	top: 56%;
+	left: 63%;
+}
+#second1{
+	position: absolute;
+	top: 32%;
+	left: 55%;
+}
+#second2{
+	position: absolute;
+	top: 36%;
+	left: 55%;
+}
+#short1{
+	position: absolute;
+	top: 32%;
+	left: 30%;
+}
+#short2{
+	position: absolute;
+	top: 36%;
+	left: 30%;
+}
+#third1{
+	position: absolute;
+	top: 52%;
+	left: 22%;
+}
+#third2{
+	position: absolute;
+	top: 56%;
+	left: 22%;
+}
+#left1{
+	position: absolute;
+	top: 10%;
+	left: 10%;
+}
+#left2{
+	position: absolute;
+	top: 14%;
+	left: 10%;
+}
+#center1{
+	position: absolute;
+	top: 10%;
+	left: 42.5%;
+}
+#center2{
+	position: absolute;
+	top: 14%;
+	left: 42.5%;
+}
+#right1{
+	position: absolute;
+	top: 10%;
+	left: 75%;
+}
+#right2{
+	position: absolute;
+	top: 14%;
+	left: 75%;
+}
+#starter1{
+	position: absolute;
+	top: 56%;
+	left: 42.5%;
+}
+#starter2{
+	position: absolute;
+	top: 60%;
+	left: 42.5%;
+}
+#starter3{
+	position: absolute;
+	top: 64%;
+	left: 42.5%;
+}
+#starter4{
+	position: absolute;
+	top: 68%;
+	left: 42.5%;
+}
+#relief1{
+	position: absolute;
+	top: 80%;
+	left: 15%;
+}
+#relief2{
+	position: absolute;
+	top: 84%;
+	left: 15%;
+}
+#relief3{
+	position: absolute;
+	top: 88%;
+	left: 15%;
+}
+#relief4{
+	position: absolute;
+	top: 92%;
+	left: 15%;
+}
+#dh{
+	position: absolute;
+	top: 89.5%;
+	left: 70%;
+}
