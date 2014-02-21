@@ -1,4 +1,5 @@
 {% extends "management/index.html" %}
+{% load staticfiles %}
 {% load i18n %}
 
 <!-- Content -->
@@ -18,9 +19,50 @@
 	.btn-success{
 		margin-top: 20px;
 	}
-
+	.draggable { 
+		width: 150px; 
+		height: 30px; 
+		padding: 0.5em; 
+		border: 1px solid black;
+		background: white;
+		margin-left: 10px;
+	}
+	.droppable { 
+		width: 150px; 
+		height: 30px; 
+		padding: 0.5em;
+	}
+	#third1{
+		position: absolute;
+		top: 380px;
+		left: 210px;
+	}
+	#third2{
+		position: absolute;
+		top: 410px;
+		left: 210px;
+	}
+	.nav-tabs{
+		margin-bottom: 20px;
+	}
+	#field{
+		/*background-image: url("{% static 'field.png' %}");*/
+		height: 800px;
+	}
 </style>
-{% endblock %}
+
+<script>
+	$(function() {
+		$( ".draggable" ).draggable({ snap: ".ui-widget-header", helper: "clone" });
+		$( ".droppable" ).droppable({ 
+			drop: function( event, ui ) {
+        		$( this ).find( "p" ).remove();
+        		$( "<p></p>" ).text( ui.draggable.text() ).appendTo( this );
+            }
+        });
+	});
+</script>
+{% endblock %}bas
 
 {% block content %}
 <div class="container">
@@ -32,7 +74,7 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a href="#roster" data-toggle="tab" id="player_roster">Roster</a></li>
-				<li><a href="#">Depth Chart</a></li>
+				<li><a href="#depthchart" data-toggle="tab">Depth Chart</a></li>
 			</ul>
 		</li>
 		<li><a href="#schedule" data-toggle="tab" id="game_schedule">Schedule</a></li>
@@ -48,6 +90,21 @@
 		<div class="tab-pane" id="roster">
 			<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Player</button>
 			<table class="table table-bordered table-striped" id="player_table"></table>
+		</div>
+
+		<div class="tab-pane" id="depthchart">
+			<div id="field" class="col-md-10">
+				<div id="third1" class="ui-widget-header text-center droppable"><p>Third Base</p></div>
+				<div id="third2" class="ui-widget-header text-center droppable"><p>Third Base</p></div>
+				<img src="{% static 'diamond.png' %}">
+			</div>
+			<div class="col-md-2">
+				{% for p in players %}
+				<div class="draggable">
+				  <p>{{p.first_name}} {{p.last_name}}</p>
+				</div>
+				{% endfor %}
+			</div>
 		</div>
 
 		<div class="tab-pane" id="schedule">
