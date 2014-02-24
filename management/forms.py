@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.models import User
+from .models import *
 
 class UserForm(forms.ModelForm):
 	username = forms.RegexField(label=_("Username"), max_length=30,
@@ -24,3 +25,6 @@ class AddTeamForm(forms.ModelForm):
 	class Meta:
 		model = Team
 
+class PositionForm(forms.ModelForm):
+	class Meta:
+		model = DepthChart

@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from registration.backends.simple.views import RegistrationView
 from .models import *
 from .views import *
+from .forms import *
 
 # Create your views here.
 def logout_page(request):
@@ -53,12 +54,33 @@ class TeamDetail(LoginRequiredMixin, TemplateView):
 
     login_url = '/login/'
 
+    def post(self, request, **kwargs):
+        if 'update_modal' in request.POST:
+            object_pk = request.POST.get("pk", "")
+            position = DepthChart.objects.get(team__name=self.kwargs.get("name"))
+            this_form = PositionForm(self.request.POST, instance=position)
+            if this_form.is_valid():
+                this_form.save()
+                return HttpResponseRedirect(reverse('team_detail', kwargs={'username': username , 'name':name}))
+            else:
+                print "Form Not Valid"
+                print this_form.errors
+            return HttpResponseRedirect('/calendar/')
+
     def get_context_data(self, **kwargs):
         context = super(TeamDetail, self).get_context_data(**kwargs)
 
+        try:
+            depthchart = DepthChart.objects.get(team__name=self.kwargs.get("name"))
+        except:
+            depthchart = DepthChart.objects.create(team__name=self.kwargs.get("name"))
+
+        this_form = PositionForm(instance=depthchart)
+
+        context['form'] = this_form
         context['teams'] = Team.objects.filter(coach=self.request.user).filter(name=self.kwargs.get("name"))
         context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
-        context['depth'] = DepthChart.objects.get(team__name=self.kwargs.get("name"))
+        context['depth'] = depthchart
 
         return context
 
