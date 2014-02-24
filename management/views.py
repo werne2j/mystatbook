@@ -43,7 +43,7 @@ class Homepage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)
 
-        context['teams'] = Team.objects.filter(coach=self.request.user)
+        context['teamlist'] = Team.objects.filter(coach=self.request.user)
 
         return context
 
@@ -61,11 +61,10 @@ class TeamDetail(LoginRequiredMixin, TemplateView):
             this_form = PositionForm(self.request.POST, instance=position)
             if this_form.is_valid():
                 this_form.save()
-                return HttpResponseRedirect(reverse('team_detail', kwargs={'username': username , 'name':name}))
+                return HttpResponseRedirect(reverse('team_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name")}))
             else:
                 print "Form Not Valid"
-                print this_form.errors
-            return HttpResponseRedirect('/calendar/')
+            return HttpResponseRedirect(reverse('team_detail', kwargs={'username': username , 'name':name}))
 
     def get_context_data(self, **kwargs):
         context = super(TeamDetail, self).get_context_data(**kwargs)
@@ -73,11 +72,13 @@ class TeamDetail(LoginRequiredMixin, TemplateView):
         try:
             depthchart = DepthChart.objects.get(team__name=self.kwargs.get("name"))
         except:
-            depthchart = DepthChart.objects.create(team__name=self.kwargs.get("name"))
+            team = Team.objects.get(name=self.kwargs.get("name"))
+            depthchart = DepthChart.objects.create(team=team)
 
         this_form = PositionForm(instance=depthchart)
 
         context['form'] = this_form
+        context['teamlist'] = Team.objects.filter(coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user).filter(name=self.kwargs.get("name"))
         context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
         context['depth'] = depthchart

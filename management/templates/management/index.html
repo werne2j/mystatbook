@@ -3,8 +3,8 @@
 
 
 {% block links %}
-		{% for t in teams %}
-			<li><a href="{% url 'team_detail' username=t.coach name=t.name%}">{{t.name}}</a></li>
+		{% for t in teamlist %}
+			<li><a href="{% url 'team_detail' username=t.coach name=t.name %}">{{t.name}}</a></li>
 		{% endfor %}
 {% endblock %}
 <!-- Content -->

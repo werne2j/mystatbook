@@ -8,7 +8,7 @@ HAND = (('L', 'Left'), ('R', 'Right'))
 
 # Create your models here.
 class Team(models.Model):
-	coach = models.OneToOneField(User)
+	coach = models.ForeignKey(User)
 	name = models.CharField(max_length=50)
 	year = models.IntegerField(max_length=4)
 
