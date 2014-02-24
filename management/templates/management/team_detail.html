@@ -32,6 +32,10 @@
 		height: 731px;
 		margin-bottom:20px;
 	}
+	.ui-widget-header.position-danger{
+		background: linear-gradient(#D10015, #FB6978);;
+		border: none;
+	}
 </style>
 
 <script>
@@ -40,16 +44,32 @@
     	$('#save_depth_chart').click(function() {
     		$('#submitButton').click();
     	});
+    	$('.dropElement').each(function() {
+    		if ($(this).text() == "Left Field" ||
+    			$(this).text() == "Center Field" ||
+    			$(this).text() == "Right Field" ||
+    			$(this).text() == "Shortstop" ||
+    			$(this).text() == "Second Base" ||
+    			$(this).text() == "Third Base" ||
+    			$(this).text() == "Starting Pitcher" ||
+    			$(this).text() == "First Base" ||
+    			$(this).text() == "Relief Pitcher" ||
+    			$(this).text() == "Catcher" ||
+    			$(this).text() == "Designated Hitter") {
+    				$(this).parent().addClass("position-danger");
+    		};
+    	});
 	});
 	$(function() {
 		$( ".draggable" ).draggable({ snap: ".ui-widget-header", helper: "clone" });
 		$( ".droppable" ).droppable({ 
 			drop: function( event, ui ) {
         		$( this ).find( "p" ).remove();
-        		$( "<p></p>" ).text( ui.draggable.text() ).appendTo( this );
+        		$( "<p id='dropElement'></p>" ).text( ui.draggable.text() ).appendTo( this );
         		var position_id = $(this).attr("id") ;
         		var player = ui.helper.context.innerText;
         		$('#editPlayerModal #id_' + position_id).val(player);
+        		$(this).removeClass("position-danger");
             }
         });
 	});
@@ -86,31 +106,31 @@
 
 		<div class="tab-pane" id="depthchart">
 			<div id="field" class="col-md-10">
-				<div id="catch1" class="ui-widget-header text-center droppable"><p>{{depth.catch1}}</p></div>
-				<div id="catch2" class="ui-widget-header text-center droppable"><p>{{depth.catch2}}</p></div>
-				<div id="first1" class="ui-widget-header text-center droppable"><p>{{depth.first1}}</p></div>
-				<div id="first2" class="ui-widget-header text-center droppable"><p>{{depth.first2}}</p></div>
-				<div id="second1" class="ui-widget-header text-center droppable"><p>{{depth.second1}}</p></div>
-				<div id="second2" class="ui-widget-header text-center droppable"><p>{{depth.second2}}</p></div>
-				<div id="short1" class="ui-widget-header text-center droppable"><p>{{depth.short1}}</p></div>
-				<div id="short2" class="ui-widget-header text-center droppable"><p>{{depth.short2}}</p></div>
-				<div id="third1" class="ui-widget-header text-center droppable"><p>{{depth.third1}}</p></div>
-				<div id="third2" class="ui-widget-header text-center droppable"><p>{{depth.third2}}</p></div>
-				<div id="left1" class="ui-widget-header text-center droppable"><p>{{depth.left1}}</p></div>
-				<div id="left2" class="ui-widget-header text-center droppable"><p>{{depth.left2}}</p></div>
-				<div id="center1" class="ui-widget-header text-center droppable"><p>{{depth.center1}}</p></div>
-				<div id="center2" class="ui-widget-header text-center droppable"><p>{{depth.center2}}</p></div>
-				<div id="right1" class="ui-widget-header text-center droppable"><p>{{depth.right1}}</p></div>
-				<div id="right2" class="ui-widget-header text-center droppable"><p>{{depth.right2}}</p></div>
-				<div id="starter1" class="ui-widget-header text-center droppable"><p>{{depth.starter1}}</p></div>
-				<div id="starter2" class="ui-widget-header text-center droppable"><p>{{depth.starter2}}</p></div>
-				<div id="starter3" class="ui-widget-header text-center droppable"><p>{{depth.starter3}}</p></div>
-				<div id="starter4" class="ui-widget-header text-center droppable"><p>{{depth.starter4}}</p></div>
-				<div id="relief1" class="ui-widget-header text-center droppable"><p>{{depth.relief1}}</p></div>
-				<div id="relief2" class="ui-widget-header text-center droppable"><p>{{depth.relief2}}</p></div>
-				<div id="relief3" class="ui-widget-header text-center droppable"><p>{{depth.relief3}}</p></div>
-				<div id="relief4" class="ui-widget-header text-center droppable"><p>{{depth.relief4}}</p></div>
-				<div id="dh" class="ui-widget-header text-center droppable"><p>{{depth.dh}}</p></div>
+				<div id="catch1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.catch1}}</p></div>
+				<div id="catch2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.catch2}}</p></div>
+				<div id="first1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.first1}}</p></div>
+				<div id="first2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.first2}}</p></div>
+				<div id="second1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.second1}}</p></div>
+				<div id="second2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.second2}}</p></div>
+				<div id="short1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.short1}}</p></div>
+				<div id="short2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.short2}}</p></div>
+				<div id="third1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.third1}}</p></div>
+				<div id="third2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.third2}}</p></div>
+				<div id="left1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.left1}}</p></div>
+				<div id="left2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.left2}}</p></div>
+				<div id="center1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.center1}}</p></div>
+				<div id="center2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.center2}}</p></div>
+				<div id="right1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.right1}}</p></div>
+				<div id="right2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.right2}}</p></div>
+				<div id="starter1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter1}}</p></div>
+				<div id="starter2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter2}}</p></div>
+				<div id="starter3" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter3}}</p></div>
+				<div id="starter4" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter4}}</p></div>
+				<div id="relief1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief1}}</p></div>
+				<div id="relief2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief2}}</p></div>
+				<div id="relief3" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief3}}</p></div>
+				<div id="relief4" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief4}}</p></div>
+				<div id="dh" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.dh}}</p></div>
 			</div>
 			<div class="col-md-2">
 				{% for p in players %}
