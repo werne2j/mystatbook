@@ -32,9 +32,6 @@
 		height: 731px;
 		margin-bottom:20px;
 	}
-	.ui-header-widget{
-		background-color: red;
-	}
 </style>
 
 <script>
@@ -131,7 +128,7 @@
 		</div>
 
 		<div class="tab-pane" id="stats">
-			<table class="table table-bordered table-striped" id="hitting_table">
+			<!-- <table class="table table-bordered table-striped" id="hitting_table">
 				<thead>	
 					<tr class="text-center">
 						<th class="text-center">Player</th>
@@ -218,8 +215,8 @@
 						</tr>
 						{% endfor %}
 					{% endfor %}
-				</tbody>
-			</table>
+				</tbody> -->
+			<!-- </table> -->
 		</div>
 
     </div>   
@@ -290,6 +287,18 @@ $('#game_schedule').click(function (e) {
         url : "{% url 'game_list' username=user name=name %}",
         success: function(data){
             $('#game_table').html(data);
+        }
+    });
+    $('.dropdown-toggle').dropdown("toggle");
+})
+
+$('#player_stats').click(function (e) {
+	e.preventDefault()
+	$(this).tab('show');
+    $.ajax({
+        url : "{% url 'player_stats' username=user name=name %}",
+        success: function(data){
+            $('#stats').html(data);
         }
     });
     $('.dropdown-toggle').dropdown("toggle");
