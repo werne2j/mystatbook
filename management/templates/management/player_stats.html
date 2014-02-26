@@ -14,33 +14,37 @@
 				<th class="text-center">HR</th>
 				<th class="text-center">RBI</th>
 				<th class="text-center">BB</th>
+				<th class="text-center">HBP</th>
 				<th class="text-center">SO</th>
+				<th class="text-center">SF</th>
 				<th class="text-center">AVG</th>
 				<th class="text-center">OBP</th>
 				<th class="text-center">SLG</th>
 			</tr>
 		</thead>
 		<tbody data-link="row" class="rowlink">
-			{% for s in players %}
-				{% for p in s.playerstats.all %}
+			{% for p in players %}
+
 				<tr>
-					<th class="text-center">{{p.player}}</th>
-					<th class="text-center">G</th>
-					<th class="text-center">PA</th>
-					<th class="text-center">{{p.at_bats}}</th>
-					<th class="text-center">{{p.runs}}</th>
-					<th class="text-center">{{p.hits}}</th>
-					<th class="text-center">2B</th>
-					<th class="text-center">3B</th>
-					<th class="text-center">{{p.hr}}</th>
-					<th class="text-center">{{p.rbi}}</th>
-					<th class="text-center">{{p.walks}}</th>
-					<th class="text-center">{{p.strikeouts}}</th>
-					<th class="text-center">AVG</th>
-					<th class="text-center">OBP</th>
-					<th class="text-center">SLG</th>
+					<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
+					<th class="text-center">{{p.totals.game__count}}</th>
+					<th class="text-center">{{p.plate_apperances}}</th>
+					<th class="text-center">{{p.totals.at_bats__sum}}</th>
+					<th class="text-center">{{p.totals.runs__sum}}</th>
+					<th class="text-center">{{p.totals.hits__sum}}</th>
+					<th class="text-center">{{p.totals.doubles__sum}}</th>
+					<th class="text-center">{{p.totals.triples__sum}}</th>
+					<th class="text-center">{{p.totals.hr__sum}}</th>
+					<th class="text-center">{{p.totals.rbi__sum}}</th>
+					<th class="text-center">{{p.totals.walks__sum}}</th>
+					<th class="text-center">{{p.totals.hbp__sum}}</th>
+					<th class="text-center">{{p.totals.strikeouts__sum}}</th>
+					<th class="text-center">{{p.totals.sacrafice__sum}}</th>
+					<th class="text-center">{{p.average}}</th>
+					<th class="text-center">{{p.on_base}}</th>
+					<th class="text-center">{{p.slug}}</th>
 				</tr>
-				{% endfor %}
+
 			{% endfor %}
 		</tbody>
 	</table>
@@ -80,9 +84,9 @@
 					<th class="text-center">{{p.strikeout_amount}}</th>
 					<th class="text-center">{{p.wild_pitches}}</th>
 					<th class="text-center">{{p.hit_by_pitch}}</th>
-					<th class="text-center">W</th>
-					<th class="text-center">L</th>
-					<th class="text-center">SV</th>
+					<th class="text-center">{{p.win}}</th>
+					<th class="text-center">{{p.loss}}</th>
+					<th class="text-center">{{p.sv}}</th>
 					<th class="text-center">ERA</th>
 				</tr>
 				{% endfor %}

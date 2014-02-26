@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum, Count
 
 CLASS_STANDINGS = (('Fr', 'Freshman'), ('So', 'Sophomore'), (
     'Jr', 'Junior'), ('Sr', 'Senior'), ('O', 'Other'))
@@ -33,6 +34,70 @@ class Player(models.Model):
 	def __unicode__(self):
 		return u'{first} {last}'.format(first=self.first_name, last=self.last_name)
 
+	def totals(self):
+		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Sum("at_bats"), 
+			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
+			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
+
+	def plate_apperances(self):
+		a = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		ab = a.values()[0]
+		w = PlayerStats.objects.filter(player=self).aggregate(Sum("walks"))
+		bb = w.values()[0]
+		h = PlayerStats.objects.filter(player=self).aggregate(Sum("hbp"))
+		hp = h.values()[0]
+		s = PlayerStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		sf = s.values()[0]
+		return ab + bb + hp + sf
+
+	def average(self):
+		b = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		a =  float(b.values()[0])
+		f = PlayerStats.objects.filter(player=self).aggregate(Sum("hits"))
+		h =  float(f.values()[0])
+		avg = h/a
+		average = ("%.3f" % avg)
+		return average
+
+	def on_base(self):
+		a = PlayerStats.objects.filter(player=self).aggregate(Sum("hits"))
+		h = float(a.values()[0])
+		b = PlayerStats.objects.filter(player=self).aggregate(Sum("walks"))
+		bb = float(b.values()[0])
+		c = PlayerStats.objects.filter(player=self).aggregate(Sum("hbp"))
+		hbp = float(c.values()[0])
+		d = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		ab = float(d.values()[0])
+		e = PlayerStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		sf = float(e.values()[0])
+
+		t = h+bb+hbp
+		b = ab+bb+hbp+sf
+		o = t/b
+		obp = ("%.3f" % o)
+
+		return obp
+
+	def slug(self):
+		ab = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		a = float(ab.values()[0])
+		hits = PlayerStats.objects.filter(player=self).aggregate(Sum("hits"))
+		h = float(hits.values()[0])
+		doub = PlayerStats.objects.filter(player=self).aggregate(Sum("doubles"))
+		d = float(doub.values()[0])
+		trip = PlayerStats.objects.filter(player=self).aggregate(Sum("triples"))
+		t = float(trip.values()[0])
+		homerun = PlayerStats.objects.filter(player=self).aggregate(Sum("hr"))
+		hr = float(homerun.values()[0])
+
+		s = h - (d+t+hr)
+		top = s + (2*d) + (3*t) + (4*hr)
+		slg = top/a
+		slgp = ("%.3f" % slg)
+
+		return slgp
+
+
 class Game(models.Model):
 	team = models.ForeignKey('Team')
 	date = models.DateField()
@@ -54,9 +119,13 @@ class PlayerStats(models.Model):
 	at_bats = models.IntegerField(default=0)
 	runs = models.IntegerField(default=0)
 	hits = models.IntegerField(default=0)
+	doubles = models.IntegerField(default=0)
+	triples = models.IntegerField(default=0)
 	hr = models.IntegerField(default=0)
 	rbi = models.IntegerField(default=0)
 	walks = models.IntegerField(default=0)
+	hbp = models.IntegerField(default=0)
+	sacrafice = models.IntegerField(default=0)
 	strikeouts = models.IntegerField(default=0)
 	innings = models.IntegerField(default=0)
 	hits_allowed = models.IntegerField(default=0)
@@ -72,6 +141,8 @@ class PlayerStats(models.Model):
 
 	def __unicode__(self):
 		return u'{p} stats'.format(p=self.player)
+
+
 
 class DepthChart(models.Model):
 	team = models.ForeignKey('Team')
