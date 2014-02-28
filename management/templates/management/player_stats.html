@@ -22,27 +22,27 @@
 				<th class="text-center">SLG</th>
 			</tr>
 		</thead>
-		<tbody data-link="row" class="rowlink">
+		<tbody>
 			{% for p in players %}
 
 				<tr>
 					<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
-					<th class="text-center">{{p.totals.game__count}}</th>
-					<th class="text-center">{{p.plate_apperances}}</th>
-					<th class="text-center">{{p.totals.at_bats__sum}}</th>
-					<th class="text-center">{{p.totals.runs__sum}}</th>
-					<th class="text-center">{{p.totals.hits__sum}}</th>
-					<th class="text-center">{{p.totals.doubles__sum}}</th>
-					<th class="text-center">{{p.totals.triples__sum}}</th>
-					<th class="text-center">{{p.totals.hr__sum}}</th>
-					<th class="text-center">{{p.totals.rbi__sum}}</th>
-					<th class="text-center">{{p.totals.walks__sum}}</th>
-					<th class="text-center">{{p.totals.hbp__sum}}</th>
-					<th class="text-center">{{p.totals.strikeouts__sum}}</th>
-					<th class="text-center">{{p.totals.sacrafice__sum}}</th>
-					<th class="text-center">{{p.average}}</th>
-					<th class="text-center">{{p.on_base}}</th>
-					<th class="text-center">{{p.slug}}</th>
+					<th class="text-center">{{p.hit_totals.game__count}}</th>
+					<th class="text-center">{{p.plate_apperances | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.at_bats__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.runs__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.hits__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.doubles__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.triples__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.hr__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.rbi__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.walks__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.hbp__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.strikeouts__sum | default:0 }}</th>
+					<th class="text-center">{{p.hit_totals.sacrafice__sum | default:0 }}</th>
+					<th class="text-center">{{p.average | default:0 }}</th>
+					<th class="text-center">{{p.on_base | default:0 }}</th>
+					<th class="text-center">{{p.slug | default:0 }}</th>
 				</tr>
 
 			{% endfor %}
@@ -69,7 +69,7 @@
 				<th class="text-center">ERA</th>
 			</tr>
 		</thead>
-		<tbody data-link="row" class="rowlink">
+		<tbody>
 			{% for s in players %}
 				{% for p in s.playerstats.all %}
 				<tr>

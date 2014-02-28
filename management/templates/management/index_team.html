@@ -3,7 +3,7 @@
 
 
 {% block links %}
-		{% for t in teamlist %}
+		{% for t in teams %}
 			<li><a href="{% url 'season_detail' username=t.coach name=t.name year=t.latest_year.year %}">{{t.name}}</a></li>
 		{% endfor %}
 {% endblock %}

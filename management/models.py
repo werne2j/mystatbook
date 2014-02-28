@@ -11,10 +11,20 @@ HAND = (('L', 'Left'), ('R', 'Right'))
 class Team(models.Model):
 	coach = models.ForeignKey(User)
 	name = models.CharField(max_length=50)
-	year = models.IntegerField(max_length=4)
 
 	def __unicode__(self):
 		return unicode(self.name)
+
+	def latest_year(self):
+		return self.season_set.all().order_by("-date_added")[0]
+
+class Season(models.Model):
+	team = models.ForeignKey('Team')
+	year = models.IntegerField(max_length=4) 
+	date_added = models.DateTimeField(auto_now_add=True)
+
+	def __unicode__(self):
+		return u'{n} {y}'.format(n=self.team.name, y=self.year)
 
 class Position(models.Model):
 	position = models.CharField(max_length=100)
@@ -23,7 +33,7 @@ class Position(models.Model):
 		return self.position
 
 class Player(models.Model):
-	team = models.ForeignKey('Team')
+	season = models.ForeignKey('Season', null=True)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
 	position = models.ManyToManyField('Position')
@@ -34,7 +44,7 @@ class Player(models.Model):
 	def __unicode__(self):
 		return u'{first} {last}'.format(first=self.first_name, last=self.last_name)
 
-	def totals(self):
+	def hit_totals(self):
 		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Sum("at_bats"), 
 			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
@@ -99,7 +109,7 @@ class Player(models.Model):
 
 
 class Game(models.Model):
-	team = models.ForeignKey('Team')
+	season = models.ForeignKey('Season', null=True)
 	date = models.DateField()
 	opponent = models.CharField(max_length=100)
 	location = models.CharField(max_length=100)
@@ -145,7 +155,7 @@ class PlayerStats(models.Model):
 
 
 class DepthChart(models.Model):
-	team = models.ForeignKey('Team')
+	season = models.ForeignKey('Season', null=True)
 	catch1 = models.CharField(max_length=100, default="Catcher")
 	catch2 = models.CharField(max_length=100, default="Catcher")
 	first1 = models.CharField(max_length=100, default="First Base")
@@ -173,7 +183,7 @@ class DepthChart(models.Model):
 	dh = models.CharField(max_length=100, default="Designated Hitter")
 
 	def __unicode__(self):
-		return u'{t} depth chart'.format(t=self.team)
+		return u'{t} depth chart'.format(t=self.season)
 
 
 # class IndivPitchStats(models.Model):

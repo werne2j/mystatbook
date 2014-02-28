@@ -1,4 +1,4 @@
-{% extends "management/index.html" %}
+{% extends "management/index_team.html" %}
 {% load staticfiles %}
 {% load i18n %}
 
@@ -36,6 +36,7 @@
 		background: linear-gradient(#D10015, #FB6978);;
 		border: none;
 	}
+
 </style>
 
 <script>
@@ -59,6 +60,7 @@
     				$(this).parent().addClass("position-danger");
     		};
     	});
+    	$('.selectpicker').selectpicker();
 	});
 	$(function() {
 		$( ".draggable" ).draggable({ snap: ".ui-widget-header", helper: "clone" });
@@ -73,6 +75,7 @@
             }
         });
 	});
+
 </script>
 {% endblock %}
 
@@ -91,8 +94,15 @@
 		</li>
 		<li><a href="#schedule" data-toggle="tab" id="game_schedule">Schedule</a></li>
 		<li><a href="#stats" data-toggle="tab" id="player_stats">Statistics</a></li>
+		<div class="btn-group pull-right">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{year}} <span class="caret"></span></button>
+		<ul class="dropdown-menu" role="menu">
+			{% for s in seasons %}
+				<li><a href="{% url 'season_detail' username=user name=name year=s.year %}">{{s.year}}</a></li>
+			{% endfor %}
+		</ul>
+		</div>
 	</ul>
-
     <div id='content' class="tab-content">
 
 		<div class="tab-pane active" id="home">
@@ -147,98 +157,8 @@
 			<table class="table table-bordered table-striped" id="game_table"></table>
 		</div>
 
-		<div class="tab-pane" id="stats">
-			<!-- <table class="table table-bordered table-striped" id="hitting_table">
-				<thead>	
-					<tr class="text-center">
-						<th class="text-center">Player</th>
-						<th class="text-center">G</th>
-						<th class="text-center">PA</th>
-						<th class="text-center">AB</th>
-						<th class="text-center">R</th>
-						<th class="text-center">H</th>
-						<th class="text-center">2B</th>
-						<th class="text-center">3B</th>
-						<th class="text-center">HR</th>
-						<th class="text-center">RBI</th>
-						<th class="text-center">BB</th>
-						<th class="text-center">SO</th>
-						<th class="text-center">AVG</th>
-						<th class="text-center">OBP</th>
-						<th class="text-center">SLG</th>
-					</tr>
-				</thead>
-				<tbody data-link="row" class="rowlink">
-					{% for s in players %}
-						{% for p in s.playerstats.all %}
-						<tr>
-							<th class="text-center">{{p.player}}</th>
-							<th class="text-center">G</th>
-							<th class="text-center">PA</th>
-							<th class="text-center">{{p.at_bats}}</th>
-							<th class="text-center">{{p.runs}}</th>
-							<th class="text-center">{{p.hits}}</th>
-							<th class="text-center">2B</th>
-							<th class="text-center">3B</th>
-							<th class="text-center">{{p.hr}}</th>
-							<th class="text-center">{{p.rbi}}</th>
-							<th class="text-center">{{p.walks}}</th>
-							<th class="text-center">{{p.strikeouts}}</th>
-							<th class="text-center">AVG</th>
-							<th class="text-center">OBP</th>
-							<th class="text-center">SLG</th>
-						</tr>
-						{% endfor %}
-					{% endfor %}
-				</tbody>
-			</table>
-
-			<table class="table table-bordered table-striped" id="pitching_table">
-				<thead>	
-					<tr class="text-center">
-						<th class="text-center">Player</th>
-						<th class="text-center">GP</th>
-						<th class="text-center">GS</th>
-						<th class="text-center">IP</th>
-						<th class="text-center">H</th>
-						<th class="text-center">R</th>
-						<th class="text-center">ER</th>
-						<th class="text-center">BB</th>
-						<th class="text-center">K</th>
-						<th class="text-center">WP</th>
-						<th class="text-center">HBP</th>
-						<th class="text-center">W</th>
-						<th class="text-center">L</th>
-						<th class="text-center">SV</th>
-						<th class="text-center">ERA</th>
-					</tr>
-				</thead>
-				<tbody data-link="row" class="rowlink">
-					{% for s in players %}
-						{% for p in s.playerstats.all %}
-						<tr>
-							<th class="text-center">{{p.player}}</th>
-							<th class="text-center">GP</th>
-							<th class="text-center">GS</th>
-							<th class="text-center">{{p.innings}}</th>
-							<th class="text-center">{{p.hits_allowed}}</th>
-							<th class="text-center">{{p.runs_allowed}}</th>
-							<th class="text-center">{{p.earned_runs}}</th>
-							<th class="text-center">{{p.walks_allowed}}</th>
-							<th class="text-center">{{p.strikeout_amount}}</th>
-							<th class="text-center">{{p.wild_pitches}}</th>
-							<th class="text-center">{{p.hit_by_pitch}}</th>
-							<th class="text-center">W</th>
-							<th class="text-center">L</th>
-							<th class="text-center">SV</th>
-							<th class="text-center">ERA</th>
-						</tr>
-						{% endfor %}
-					{% endfor %}
-				</tbody> -->
-			<!-- </table> -->
-		</div>
-
+		<div class="tab-pane" id="stats"></div>
+			
     </div>   
 
     <!-- Jake's Fake Model-->
@@ -250,7 +170,7 @@
                         <h3 id="myModalLabel1">Edit Position</h3>
                     </div>
                     <div class="modal-body">
-                        <form role="form" id="form" action="{% url 'team_detail' username=user name=name %}" method="post">
+                        <form role="form" id="form" action="{% url 'season_detail' username=user name=name year=year %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" class="form-group" id="id_pk" name="pk" value="change_this">
                             <div class="form-group">
@@ -292,7 +212,7 @@ $('#player_roster').click(function (e) {
 	e.preventDefault()
 	$(this).tab('show');
     $.ajax({
-        url : "{% url 'player_list' username=user name=name %}",
+        url : "{% url 'player_list' username=user name=name year=year %}",
         success: function(data){
             $('#player_table').html(data);
         }
@@ -304,7 +224,7 @@ $('#game_schedule').click(function (e) {
 	e.preventDefault()
 	$(this).tab('show');
     $.ajax({
-        url : "{% url 'game_list' username=user name=name %}",
+        url : "{% url 'game_list' username=user name=name year=year %}",
         success: function(data){
             $('#game_table').html(data);
         }
@@ -316,7 +236,7 @@ $('#player_stats').click(function (e) {
 	e.preventDefault()
 	$(this).tab('show');
     $.ajax({
-        url : "{% url 'player_stats' username=user name=name %}",
+        url : "{% url 'player_stats' username=user name=name year=year %}",
         success: function(data){
             $('#stats').html(data);
         }

@@ -48,40 +48,41 @@ class Homepage(LoginRequiredMixin, TemplateView):
         return context
 
 
-class TeamDetail(LoginRequiredMixin, TemplateView):
+class SeasonDetail(LoginRequiredMixin, TemplateView):
     
-    template_name = 'management/team_detail.html'
+    template_name = 'management/season_detail.html'
 
     login_url = '/login/'
 
     def post(self, request, **kwargs):
         if 'update_modal' in request.POST:
             object_pk = request.POST.get("pk", "")
-            position = DepthChart.objects.get(team__name=self.kwargs.get("name"))
+            position = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
             this_form = PositionForm(self.request.POST, instance=position)
             if this_form.is_valid():
                 this_form.save()
-                return HttpResponseRedirect(reverse('team_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name")}))
+                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
                 print "Form Not Valid"
-            return HttpResponseRedirect(reverse('team_detail', kwargs={'username': username , 'name':name}))
+            return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name':name}))
 
     def get_context_data(self, **kwargs):
-        context = super(TeamDetail, self).get_context_data(**kwargs)
+        context = super(SeasonDetail, self).get_context_data(**kwargs)
 
         try:
-            depthchart = DepthChart.objects.get(team__name=self.kwargs.get("name"))
+            depthchart = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
         except:
-            team = Team.objects.get(name=self.kwargs.get("name"))
-            depthchart = DepthChart.objects.create(team=team)
+            season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+            depthchart = DepthChart.objects.create(season=season)
 
         this_form = PositionForm(instance=depthchart)
 
         context['form'] = this_form
-        context['teamlist'] = Team.objects.filter(coach=self.request.user)
-        context['teams'] = Team.objects.filter(coach=self.request.user).filter(name=self.kwargs.get("name"))
-        context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
+        context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
+        context['teams'] = Team.objects.filter(coach=self.request.user)
+        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
         context['depth'] = depthchart
+        context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name"))
 
         return context
 
@@ -94,7 +95,7 @@ class PlayerList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerList, self).get_context_data(**kwargs)
 
-        context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
+        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
 
         return context
 
@@ -107,7 +108,7 @@ class GameList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(GameList, self).get_context_data(**kwargs)
 
-        context['games'] = Game.objects.filter(team__name=self.kwargs.get("name"))
+        context['games'] = Game.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
 
         return context
 
@@ -120,7 +121,7 @@ class PlayerStats(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerStats, self).get_context_data(**kwargs)
 
-        context['players'] = Player.objects.filter(team__name=self.kwargs.get("name"))
+        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
 
         return context
 
