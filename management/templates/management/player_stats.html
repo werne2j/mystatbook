@@ -23,28 +23,26 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for p in players %}
-
+			{% for b in batters %}
 				<tr>
-					<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
-					<th class="text-center">{{p.hit_totals.game__count}}</th>
-					<th class="text-center">{{p.plate_apperances | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.at_bats__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.runs__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.hits__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.doubles__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.triples__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.hr__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.rbi__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.walks__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.hbp__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.strikeouts__sum | default:0 }}</th>
-					<th class="text-center">{{p.hit_totals.sacrafice__sum | default:0 }}</th>
-					<th class="text-center">{{p.average | default:0 }}</th>
-					<th class="text-center">{{p.on_base | default:0 }}</th>
-					<th class="text-center">{{p.slug | default:0 }}</th>
+					<th class="text-center">{{b.first_name}} {{b.last_name}}</th>
+					<th class="text-center">{{b.hit_totals.game__count}}</th>
+					<th class="text-center">{{b.plate_apperances | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.at_bats__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.runs__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.hits__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.doubles__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.triples__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.hr__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.rbi__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.walks__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.hbp__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.strikeouts__sum | default:0 }}</th>
+					<th class="text-center">{{b.hit_totals.sacrafice__sum | default:0 }}</th>
+					<th class="text-center">{{b.average | default:0 }}</th>
+					<th class="text-center">{{b.on_base | default:0 }}</th>
+					<th class="text-center">{{b.slug | default:0 }}</th>
 				</tr>
-
 			{% endfor %}
 		</tbody>
 	</table>
@@ -70,26 +68,24 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for s in players %}
-				{% for p in s.playerstats.all %}
+			{% for p in pitchers %}
 				<tr>
-					<th class="text-center">{{p.player}}</th>
-					<th class="text-center">GP</th>
-					<th class="text-center">GS</th>
-					<th class="text-center">{{p.innings}}</th>
-					<th class="text-center">{{p.hits_allowed}}</th>
-					<th class="text-center">{{p.runs_allowed}}</th>
-					<th class="text-center">{{p.earned_runs}}</th>
-					<th class="text-center">{{p.walks_allowed}}</th>
-					<th class="text-center">{{p.strikeout_amount}}</th>
-					<th class="text-center">{{p.wild_pitches}}</th>
-					<th class="text-center">{{p.hit_by_pitch}}</th>
-					<th class="text-center">{{p.win}}</th>
-					<th class="text-center">{{p.loss}}</th>
-					<th class="text-center">{{p.sv}}</th>
-					<th class="text-center">ERA</th>
+					<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
+					<th class="text-center">{{p.pitch_totals.game__count}}</th>
+					<th class="text-center">{{p.pitch_totals.starting_pitcher__count}}</th>
+					<th class="text-center">{{p.pitch_totals.innings__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.hits_allowed__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.runs_allowed__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.earned_runs__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.walks_allowed__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.strikeout_amount__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.wild_pitches__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.hit_by_pitch__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.win__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.loss__sum}}</th>
+					<th class="text-center">{{p.pitch_totals.sv__sum}}</th>
+					<th class="text-center">{{p.era}}</th>
 				</tr>
-				{% endfor %}
 			{% endfor %}
 		</tbody>
 	</table>

@@ -18,7 +18,7 @@ class GameAdmin(admin.ModelAdmin):
 	list_display = ('season', 'opponent', 'date', 'location', 'time', 'doubleheader')
 
 class PlayerStatsAdmin(admin.ModelAdmin):
-	list_display = ('player', 'game', 'at_bats','runs','hits','hr','rbi','walks','strikeouts','innings','hits_allowed','runs_allowed','earned_runs','walks_allowed','strikeout_amount', 'wild_pitches', 'hit_by_pitch')
+	list_display = ('player', 'game', 'at_bats','runs','hits','hr','rbi','walks','strikeouts','starting_pitcher','innings','hits_allowed','runs_allowed','earned_runs','walks_allowed','strikeout_amount', 'wild_pitches', 'hit_by_pitch')
 
 class DepthChartAdmin(admin.ModelAdmin):
 	pass

@@ -49,16 +49,25 @@ class Player(models.Model):
 			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
 
+	def pitch_totals(self):
+		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("innings"), 
+			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
+			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
+
+
 	def plate_apperances(self):
 		a = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
-		ab = a.values()[0]
+		ab = a.values()[0] or 0 
 		w = PlayerStats.objects.filter(player=self).aggregate(Sum("walks"))
-		bb = w.values()[0]
+		bb = w.values()[0] or 0
 		h = PlayerStats.objects.filter(player=self).aggregate(Sum("hbp"))
-		hp = h.values()[0]
+		hp = h.values()[0] or 0
 		s = PlayerStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
-		sf = s.values()[0]
-		return ab + bb + hp + sf
+		sf = s.values()[0] or 0
+
+		pa = ab + bb + hp + sf
+
+		return pa
 
 	def average(self):
 		b = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
@@ -107,6 +116,17 @@ class Player(models.Model):
 
 		return slgp
 
+	def era(self):
+		i = PlayerStats.objects.filter(player=self).aggregate(Sum("innings"))
+		ip = float(i.values()[0]) or 0
+		print ip
+		r = PlayerStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
+		er = float(r.values()[0]) or 0
+		print er
+
+		era = (er / ip) * 9
+		return ("%.2f" % era)
+
 
 class Game(models.Model):
 	season = models.ForeignKey('Season', null=True)
@@ -137,6 +157,7 @@ class PlayerStats(models.Model):
 	hbp = models.IntegerField(default=0)
 	sacrafice = models.IntegerField(default=0)
 	strikeouts = models.IntegerField(default=0)
+	starting_pitcher = models.BooleanField()
 	innings = models.IntegerField(default=0)
 	hits_allowed = models.IntegerField(default=0)
 	runs_allowed = models.IntegerField(default=0)

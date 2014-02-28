@@ -120,7 +120,17 @@ class PlayerStats(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerStats, self).get_context_data(**kwargs)
 
-        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        players = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        batters = []
+        pitchers = []
+        for player in players:
+            if player.plate_apperances() > 0:
+                batters.append(player)
+            if player.pitch_totals().get('innings__sum') > 0:
+                pitchers.append(player)    
+
+        context['batters'] = batters
+        context['pitchers'] = pitchers
 
         return context
 
