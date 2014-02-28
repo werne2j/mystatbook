@@ -81,9 +81,8 @@ class SeasonDetail(LoginRequiredMixin, TemplateView):
         context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
-        context['depth'] = depthchart
-        context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name"))
-
+        context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
+        
         return context
 
 class PlayerList(LoginRequiredMixin, TemplateView):
@@ -121,6 +120,26 @@ class PlayerStats(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerStats, self).get_context_data(**kwargs)
 
+        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+
+        return context
+
+class Depth_Chart(LoginRequiredMixin, TemplateView):
+
+    template_name = 'management/depth_chart.html'
+
+    login_url = '/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super(Depth_Chart, self).get_context_data(**kwargs)
+
+        try:
+            depthchart = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
+        except:
+            season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+            depthchart = DepthChart.objects.create(season=season)
+
+        context['depth'] = depthchart
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
 
         return context
