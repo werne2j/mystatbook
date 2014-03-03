@@ -136,3 +136,25 @@
 	top: 89.5%;
 	left: 69.5%;
 }
+
+table{
+	margin-top: 20px;
+}
+
+ul{
+	padding-left: 0px;
+}
+.btn-success{
+	margin-top: 20px;
+}
+.nav-tabs{
+	margin-bottom: 20px;
+}
+#save_depth_chart {
+	float:right;
+	margin-top: 20px;
+}
+.ui-widget-header.position-danger{
+	background: linear-gradient(#D10015, #FB6978);;
+	border: none;
+}

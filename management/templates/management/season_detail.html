@@ -9,35 +9,44 @@
 
 {% block extrascript %}
 <link rel="stylesheet" href="{% static 'css/chart.css' %}" />
-<style>
-	table{
-		margin-top: 20px;
-	}
 
-	ul{
-		padding-left: 0px;
-	}
-	.btn-success{
-		margin-top: 20px;
-	}
-	.nav-tabs{
-		margin-bottom: 20px;
-	}
-	#save_depth_chart {
-		float:right;
-		margin-top: 20px;
-	}
+<style>
 	#field{
 		background-image: url("{% static 'diamond.png' %}");
 		height: 731px;
 		margin-bottom:20px;
 	}
-	.ui-widget-header.position-danger{
-		background: linear-gradient(#D10015, #FB6978);;
-		border: none;
+	table th.sort-up,table th.sort-down{
+		background-color: #B8B8B8 ;
 	}
-	#edit{
-		margin: 0px 2px 0px 0px;
+	th.sort-header {
+	  cursor:pointer;
+	}
+	th.sort-header::-moz-selection,
+	th.sort-header::selection {
+	  background:transparent;
+	}
+	table th.sort-header:after {
+	  content:'';
+	  float:right;
+	  margin-top:8px;
+	  border-width:0 4px 4px;
+	  border-style:solid;
+	  border-color:black transparent;
+	  visibility:hidden;
+	}
+	table th.sort-header:hover:after {
+	  visibility:visible;
+	}
+	table th.sort-up:after,
+	table th.sort-down:after,
+	table th.sort-down:hover:after {
+	  visibility:visible;
+	  opacity:1;
+	}
+	table th.sort-up:after {
+	  border-bottom:none;
+	  border-width:4px 4px 0;
 	}
 </style>
 
@@ -76,6 +85,11 @@
         		$(this).removeClass("position-danger");
             }
         });
+	});
+    $(document).ajaxComplete(function(){
+		$(function(){
+			new Tablesort(document.getElementById('player_table'));
+		});
 	});
 
 </script>
@@ -173,6 +187,7 @@
 	  </div>
 	</div>
 </div>
+<script type="text/javascript" src="{% static 'js/tablesort.min.js' %}"></script>
 <script>
 $('#player_roster').click(function (e) {
 	e.preventDefault()
