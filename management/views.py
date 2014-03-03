@@ -93,16 +93,27 @@ class SeasonDetail(LoginRequiredMixin, TemplateView):
         return context
 
 class PlayerList(LoginRequiredMixin, TemplateView):
-
     template_name = 'management/roster_list.html'
 
     login_url = '/login/'
+    def post(self, request, **kwargs):
+        if 'new_player_modal' in request.POST:
+            new_player_form = PlayerForm(self.request.POST)
+            if new_player_form.is_valid():
+                new_player_form.save()
+                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+            else:
+                print "Form Not Valid"
+            return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name': name}))
+
 
     def get_context_data(self, **kwargs):
         context = super(PlayerList, self).get_context_data(**kwargs)
+        new_player_form = PlayerForm()
 
+        context['team'] = Season.objects.get(team__name=self.kwargs.get("name"), year=self.kwargs.get("year"))
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
-
+        context['new_player_form'] = new_player_form
         return context
 
 class GameList(LoginRequiredMixin, TemplateView):
