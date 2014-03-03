@@ -1,0 +1,27 @@
+{% extends "management/index_team.html" %}
+{% load bootstrap_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block extrascript %}
+<style>
+  #teamform{
+    width: 300px;
+    margin: 0 auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+	<form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post">
+		<h1>Add Team</h1>
+		{% csrf_token %}
+		{% if next %}
+			<input type="hidden" name="next" value="{{ next }}" />
+		{% endif %}
+		{{ form | as_bootstrap }}
+		{{ form2 | as_bootstrap }}
+		<button type="submit" class="btn btn-success">Submit</button>
+	</form>
+{% endblock %}

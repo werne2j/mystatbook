@@ -25,6 +25,11 @@ class AddTeamForm(forms.ModelForm):
 	class Meta:
 		model = Team
 
+class SeasonForm(forms.ModelForm):
+	class Meta:
+		model = Season
+		fields = ('year',)
+
 class PositionForm(forms.ModelForm):
 	class Meta:
 		model = DepthChart

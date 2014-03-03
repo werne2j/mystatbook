@@ -1,4 +1,5 @@
 from django.db import models
+from fractions import Fraction
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 
@@ -6,6 +7,8 @@ CLASS_STANDINGS = (('Fr', 'Freshman'), ('So', 'Sophomore'), (
     'Jr', 'Junior'), ('Sr', 'Senior'), ('O', 'Other'))
 
 HAND = (('L', 'Left'), ('R', 'Right'))
+
+INNINGS = ((0, 0), (1, 1), (2, 2))
 
 # Create your models here.
 class Team(models.Model):
@@ -50,10 +53,21 @@ class Player(models.Model):
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
 
 	def pitch_totals(self):
-		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("innings"), 
+		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"), 
 			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
 			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
 
+
+	def innings(self):
+		i = PlayerStats.objects.filter(player=self).aggregate(Sum("full_innings"))
+		fi = float(i.values()[0])
+		p = PlayerStats.objects.filter(player=self).aggregate(Sum("part_innings"))
+		pi = float(p.values()[0])
+
+		ti = int(((fi*3) + pi) / 3)
+		ri = int(((fi*3) + pi) % 3)
+		
+		return str(ti) + "." + str(ri)
 
 	def plate_apperances(self):
 		a = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
@@ -117,12 +131,10 @@ class Player(models.Model):
 		return slgp
 
 	def era(self):
-		i = PlayerStats.objects.filter(player=self).aggregate(Sum("innings"))
+		i = PlayerStats.objects.filter(player=self).aggregate(Sum("full_innings"))
 		ip = float(i.values()[0]) or 0
-		print ip
 		r = PlayerStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
-		print er
 
 		era = (er / ip) * 9
 		return ("%.2f" % era)
@@ -158,7 +170,8 @@ class PlayerStats(models.Model):
 	sacrafice = models.IntegerField(default=0)
 	strikeouts = models.IntegerField(default=0)
 	starting_pitcher = models.BooleanField()
-	innings = models.IntegerField(default=0)
+	full_innings = models.IntegerField(default=0)
+	part_innings = models.IntegerField(choices=INNINGS)
 	hits_allowed = models.IntegerField(default=0)
 	runs_allowed = models.IntegerField(default=0)
 	earned_runs = models.IntegerField(default=0)
