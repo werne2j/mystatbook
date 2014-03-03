@@ -33,3 +33,8 @@ class SeasonForm(forms.ModelForm):
 class PositionForm(forms.ModelForm):
 	class Meta:
 		model = DepthChart
+
+class PlayerForm(forms.ModelForm):
+	class Meta:
+		model = Player
+		fields = ('season', 'first_name', 'last_name', 'position', 'class_standing', 'throws', 'hits')

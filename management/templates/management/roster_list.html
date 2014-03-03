@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles %}{% load bootstrap_tags %}
 <table class="table table-bordered table-striped" id="player_list">
 	<thead>	
 		<tr class="text-center">
@@ -23,3 +23,37 @@
 		{% endfor %}
 	</tbody>
 </table>
+
+<!-- New Player Modal -->
+<div id="PlayerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 id="myModalLabel1">New Player</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form" id="form" action="{% url 'player_list' username=user name=name year=year %}" method="post">
+					{% csrf_token %}
+					<input type="hidden" class="form-group" id="id_pk" name="pk" value="change_this">
+					<div class="form-group">
+						{{ new_player_form | as_bootstrap }}
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger pull-left" name="delete" id="deleteButton">Delete</button>
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+						<button type="submit" class="btn btn-primary" name="new_player_modal" id="submitButton">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$('#add_new_player').click(function() {
+		$('#PlayerModal #id_season').val({{team.pk}});
+		$('#PlayerModal #div_id_season').hide();
+		$('#PlayerModal').modal('show');
+	});
+</script>

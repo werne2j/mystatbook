@@ -112,7 +112,7 @@
 		</div>
 
 		<div class="tab-pane" id="roster">
-			<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Player</button>
+			<button type="button" class="btn btn-success" id="add_new_player"><span class="glyphicon glyphicon-plus"></span> Add Player</button>
 			<table class="table table-bordered table-striped" id="player_table"></table>
 		</div>
 
@@ -129,49 +129,30 @@
 
     <!-- Jake's Fake Model-->
     <div id="editPlayerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                        <h3 id="myModalLabel1">Edit Position</h3>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form" id="form" action="{% url 'season_detail' username=user name=name year=year %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" class="form-group" id="id_pk" name="pk" value="change_this">
-                            <div class="form-group">
-                                {{ form }}
-                            </div>
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    				<h3 id="myModalLabel1">Edit Position</h3>
+    			</div>
+    			<div class="modal-body">
+    				<form role="form" id="form" action="{% url 'season_detail' username=user name=name year=year %}" method="post">
+    					{% csrf_token %}
+    					<input type="hidden" class="form-group" id="id_pk" name="pk" value="change_this">
+    					<div class="form-group">
+    						{{ form }}
+    					</div>
 
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-danger pull-left" name="delete" id="deleteButton">Delete</button>
-                                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                                <button type="submit" class="btn btn-primary" name="update_modal" id="submitButton">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-	      </div>
-	      <div class="modal-body">
-	        ...
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+    					<div class="modal-footer">
+    						<button type="submit" class="btn btn-danger pull-left" name="delete" id="deleteButton">Delete</button>
+    						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    						<button type="submit" class="btn btn-primary" name="update_modal" id="submitButton">Save</button>
+    					</div>
+    				</form>
+    			</div>
+    		</div>
+    	</div>
+    </div>
 </div>
 <script>
 $('#player_roster').click(function (e) {
