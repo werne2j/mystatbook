@@ -88,7 +88,7 @@
 	});
     $(document).ajaxComplete(function(){
 		$(function(){
-			new Tablesort(document.getElementById('player_table'));
+			new Tablesort(document.getElementById('player_list'));
 		});
 	});
 
@@ -121,21 +121,13 @@
 	</ul>
     <div id='content' class="tab-content">
 
-		<div class="tab-pane active" id="home">
+		<div class="tab-pane active" id="home"></div>
 
-		</div>
-
-		<div class="tab-pane" id="roster">
-			<button type="button" class="btn btn-success" id="add_new_player"><span class="glyphicon glyphicon-plus"></span> Add Player</button>
-			<table class="table table-bordered table-striped" id="player_table"></table>
-		</div>
+		<div class="tab-pane" id="roster"></div>
 
 		<div class="tab-pane" id="depthchart"></div>
 
-		<div class="tab-pane" id="schedule">
-			<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Game</button>
-			<table class="table table-bordered table-striped" id="game_table"></table>
-		</div>
+		<div class="tab-pane" id="schedule"></div>
 
 		<div class="tab-pane" id="stats"></div>
 			
@@ -176,7 +168,7 @@ $('#player_roster').click(function (e) {
     $.ajax({
         url : "{% url 'player_list' username=user name=name year=year %}",
         success: function(data){
-            $('#player_table').html(data);
+            $('#roster').html(data);
         }
     });
     $('.dropdown-toggle').dropdown("toggle");
@@ -188,7 +180,7 @@ $('#game_schedule').click(function (e) {
     $.ajax({
         url : "{% url 'game_list' username=user name=name year=year %}",
         success: function(data){
-            $('#game_table').html(data);
+            $('#schedule').html(data);
         }
     });
     $('.dropdown-toggle').dropdown("toggle");
