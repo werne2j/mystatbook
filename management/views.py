@@ -7,6 +7,7 @@ from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from registration.backends.simple.views import RegistrationView
+from django.forms.formsets import formset_factory
 from .models import *
 from .views import *
 from .forms import *
@@ -64,7 +65,7 @@ class SeasonDetail(LoginRequiredMixin, TemplateView):
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
                 print "Form Not Valid"
-            return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name': name}))
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name': name}))
 
     def get_context_data(self, **kwargs):
         context = super(SeasonDetail, self).get_context_data(**kwargs)
@@ -104,7 +105,7 @@ class PlayerList(LoginRequiredMixin, TemplateView):
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
                 print "Form Not Valid"
-            return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name': name}))
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name': name}))
 
 
     def get_context_data(self, **kwargs):
@@ -190,7 +191,7 @@ class AddTeam(LoginRequiredMixin, TemplateView):
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username, 'name': request.POST['name'], 'year': request.POST['year']}))
             else: 
                 print "form not valid"
-            return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username,'name': request.POST['name'], 'year': request.POST['year']}))
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username,'name': request.POST['name'], 'year': request.POST['year']}))
 
     def get_context_data(self, **kwargs):
         context = super(AddTeam, self).get_context_data(**kwargs)
@@ -205,4 +206,27 @@ class AddTeam(LoginRequiredMixin, TemplateView):
         return context
 
 
+class GameStats(LoginRequiredMixin, TemplateView):
 
+    template_name = 'management/game_stats.html'
+
+    login = '/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super(GameStats, self).get_context_data(**kwargs)
+
+        HitStatsFormSet = formset_factory(HitStatsForm, extra=9)
+        hit_formset = HitStatsFormSet()
+
+        PitchStatsFormSet = formset_factory(PitchStatsForm)
+        pitch_formset = PitchStatsFormSet()
+
+
+        season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+
+        context['game'] = Game.objects.filter(season=season).get(pk=self.kwargs.get("pk"))
+        context['players'] = Player.objects.filter(season=season)
+        context['formset'] = hit_formset
+        context['formset2'] = pitch_formset
+
+        return context

@@ -38,3 +38,13 @@ class PlayerForm(forms.ModelForm):
 	class Meta:
 		model = Player
 		fields = ('season', 'first_name', 'last_name', 'position', 'class_standing', 'throws', 'hits')
+
+class HitStatsForm(forms.ModelForm):
+	class Meta:
+		model = PlayerStats
+		fields = ('player','at_bats', 'runs', 'hits', 'doubles', 'triples', 'hr', 'rbi', 'walks', 'hbp', 'sacrafice', 'strikeouts')
+
+class PitchStatsForm(forms.ModelForm):
+	class Meta:
+		model = PlayerStats
+		fields = ('player','starting_pitcher', 'full_innings', 'part_innings', 'hits_allowed', 'runs_allowed', 'earned_runs', 'walks_allowed', 'strikeout_amount', 'wild_pitches', 'hit_by_pitch', 'win', 'loss', 'sv')

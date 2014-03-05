@@ -19,8 +19,34 @@
 			<td class="text-center">{{g.location}}</td>
 			<td class="text-center">{{g.time}}</td>
 			<td class="text-center">{% if g.doubleheader %}<img src="{% static 'admin/img/icon_success.gif' %}">{% else %}<img src="{% static 'admin/img/icon_error.gif' %}">{% endif %}</td>
-			<td class="text-center"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span> Box Score</button></td>
+			<td class="text-center"><a class="game" href="#" data-form="{% url 'game_stats' username=user name=name year=year pk=g.pk %}"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Box Score</button></td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
+
+<div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-hidden="true">
+</div>
+
+<script>
+   $(".game").click(function(ev) { // for each edit contact url
+        ev.preventDefault(); // prevent navigation
+        var url = $(this).data("form"); // get the contact form url
+        $("#statsModal").load(url, function() { // load the url into the modal
+            $('#statsModal').modal('show'); // display the modal on url load
+        });
+        return false; // prevent the click propagation
+    });
+    $('.stats-form').on('submit', function() {
+        $.ajax({ 
+            type: $(this).attr('method'), 
+            url: this.action, 
+            data: $(this).serialize(),
+            context: this,
+            success: function(data, status) {
+                $('#statsModal').html(data);
+            }
+        });
+        return false;
+    });
+</script>

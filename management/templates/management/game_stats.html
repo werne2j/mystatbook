@@ -1,0 +1,96 @@
+{% load staticfiles %}
+{% load bootstrap_tags %}
+
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3>{{ game }}</h3>
+		</div>
+		<div class="modal-body">
+			<form class="stats-form form-inline" method="post" action="">
+				{% csrf_token %}
+				<h3>Hitting Stats</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="text-center">Player</th>
+							<th class="text-center">AB</th>
+							<th class="text-center">R</th>
+							<th class="text-center">H</th>
+							<th class="text-center">2B</th>
+							<th class="text-center">3B</th>
+							<th class="text-center">HR</th>
+							<th class="text-center">RBI</th>
+							<th class="text-center">BB</th>
+							<th class="text-center">HBP</th>
+							<th class="text-center">SF</th>
+							<th class="text-center">K</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for form in formset %}
+							<tr class="hit_stats text-center">
+								<td>{{form.player}}</td>
+								<td>{{form.at_bats}}</td>
+								<td>{{form.runs}}</td>
+								<td>{{form.hits}}</td>
+								<td>{{form.doubles}}</td>
+								<td>{{form.triples}}</td>
+								<td>{{form.hr}}</td>
+								<td>{{form.rbi}}</td>
+								<td>{{form.walks}}</td>
+								<td>{{form.hbp}}</td>
+								<td>{{form.sacrafice}}</td>
+								<td>{{form.strikeouts}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>	
+				<h3>Pitching Stats</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="text-center">Player</th>
+							<th class="text-center">SP</th>
+							<th class="text-center">Inn</th>
+							<th class="text-center">H</th>
+							<th class="text-center">R</th>
+							<th class="text-center">ER</th>
+							<th class="text-center">BB</th>
+							<th class="text-center">K</th>
+							<th class="text-center">WP</th>
+							<th class="text-center">HBP</th>
+							<th class="text-center">W</th>
+							<th class="text-center">L</th>
+							<th class="text-center">SV</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for form2 in formset2 %}
+							<tr class="hit_stats text-center" id="pitch_stats">
+								<td>{{form2.player}}</td>
+								<td>{{form2.starting_pitcher}}</td>
+								<td>{{form2.full_innings}}.<span id="partial">{{form2.part_innings}}</span></td>
+								<td>{{form2.hits_allowed}}</td>
+								<td>{{form2.runs_allowed}}</td>
+								<td>{{form2.earned_runs}}</td>
+								<td>{{form2.walks_allowed}}</td>
+								<td>{{form2.strikeout_amount}}</td>
+								<td>{{form2.wild_pitches}}</td>
+								<td>{{form2.hit_by_pitch}}</td>
+								<td>{{form2.win}}</td>
+								<td>{{form2.loss}}</td>
+								<td>{{form2.sv}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>	
+
+				<div class="modal-footer">
+				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				    <button type="submit" name="add_stats" class="btn btn-primary">Save changes</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

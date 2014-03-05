@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^(?P<username>\w+)/(?P<name>\w+)/(?P<year>\w+)/game_list/$', GameList.as_view(), name='game_list'),
     url(r'^(?P<username>\w+)/(?P<name>\w+)/(?P<year>\w+)/player_stats/$', PlayerStats.as_view(), name='player_stats'),
     url(r'^(?P<username>\w+)/(?P<name>\w+)/(?P<year>\w+)/depth_chart/$', Depth_Chart.as_view(), name='depth_chart'),
+    url(r'^(?P<username>\w+)/(?P<name>\w+)/(?P<year>\w+)/game/(?P<pk>\w+)/$', GameStats.as_view(), name='game_stats'),
 )

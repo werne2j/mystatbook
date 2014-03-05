@@ -53,6 +53,10 @@
 	</div>
 </div>
 <script>
+    $(document).ajaxComplete(function(){
+		new Tablesort(document.getElementById('player_list'));
+	});
+
 	$('#add_new_player').click(function() {
 		$('#PlayerModal #id_season').val({{team.pk}});
 		$('#PlayerModal #div_id_season').hide();

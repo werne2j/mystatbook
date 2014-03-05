@@ -48,6 +48,64 @@
 	  border-bottom:none;
 	  border-width:4px 4px 0;
 	}
+	.hit_stats input[type="number"] {
+	    width: 30px;
+	}
+	span select{
+		width: 38px;
+	}
+	input { 
+		text-align: center; 
+	} 
+	input[type="number"]{
+	  font-size: 1rem;
+	  border: 0;
+	  color: black;
+	  outline: none;
+	  width: 2rem;
+	  margin: auto .75rem;
+	  text-align: center;
+	}
+
+	.partialinning input{
+	  width: 1rem;
+	}
+
+	.partialinning::after{
+	  content:"/ 3";
+	  font-size: 1.2rem;
+	  margin: 0 .75rem 0 -.75rem;
+	  border-bottom: 2px solid black;
+	}
+
+/*	input[type='number']:invalid{
+	  border-bottom: 2px dashed red;
+	  color: red;
+	}*/
+
+	input[type='number']:valid{
+	  border-bottom: 2px dotted black;
+	  color: black;
+	}
+
+	input[type="number"]:focus{
+	  border-bottom: 2px solid black;
+	  color: black;
+	}
+
+	/* Remove the up/down arrows from input:number http://stackoverflow.com/a/4298216 */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+	}
+	#add-season{
+		margin-right: 8px;
+		margin-top: 7px;
+	}
+	#add-season a:hover{
+		text-decoration: none;
+	}
 </style>
 
 <script>
@@ -86,12 +144,6 @@
             }
         });
 	});
-    $(document).ajaxComplete(function(){
-		$(function(){
-			new Tablesort(document.getElementById('player_list'));
-		});
-	});
-
 </script>
 {% endblock %}
 
@@ -111,12 +163,13 @@
 		<li><a href="#schedule" data-toggle="tab" id="game_schedule">Schedule</a></li>
 		<li><a href="#stats" data-toggle="tab" id="player_stats">Statistics</a></li>
 		<div class="btn-group pull-right">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{year}} <span class="caret"></span></button>
-		<ul class="dropdown-menu" role="menu">
-			{% for s in seasons %}
-				<li><a href="{% url 'season_detail' username=user name=name year=s.year %}">{{s.year}}</a></li>
-			{% endfor %}
-		</ul>
+			<li class="pull-left" id="add-season"><a href="#"><span class="glyphicon glyphicon-plus"></span> Add Season</a></li>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{year}} <span class="caret"></span></button>
+			<ul class="dropdown-menu" role="menu">
+				{% for s in seasons %}
+					<li><a href="{% url 'season_detail' username=user name=name year=s.year %}">{{s.year}}</a></li>
+				{% endfor %}
+			</ul>
 		</div>
 	</ul>
     <div id='content' class="tab-content">
