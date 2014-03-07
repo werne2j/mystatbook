@@ -4,7 +4,7 @@
 
 <!-- Content -->
 {% block header %}
-    
+
 {% endblock %}
 
 {% block extrascript %}
@@ -54,9 +54,9 @@
 	span select{
 		width: 38px;
 	}
-	input { 
-		text-align: center; 
-	} 
+	input {
+		text-align: center;
+	}
 	input[type="number"]{
 	  font-size: 1rem;
 	  border: 0;
@@ -133,7 +133,7 @@
 	});
 	$( document ).ajaxComplete(function() {
 		$( ".draggable" ).draggable({ snap: ".ui-widget-header", helper: "clone" });
-		$( ".droppable" ).droppable({ 
+		$( ".droppable" ).droppable({
 			drop: function( event, ui ) {
         		$( this ).find( "p" ).remove();
         		$( "<p id='dropElement'></p>" ).text( ui.draggable.text() ).appendTo( this );
@@ -163,7 +163,7 @@
 		<li><a href="#schedule" data-toggle="tab" id="game_schedule">Schedule</a></li>
 		<li><a href="#stats" data-toggle="tab" id="player_stats">Statistics</a></li>
 		<div class="btn-group pull-right">
-			<li class="pull-left" id="add-season"><a href="#"><span class="glyphicon glyphicon-plus"></span> Add Season</a></li>
+			<li class="pull-left" id="add-season"><a href="{% url 'add_season' username=user name=name %}"><span class="glyphicon glyphicon-plus"></span> Add Season</a></li>
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{year}} <span class="caret"></span></button>
 			<ul class="dropdown-menu" role="menu">
 				{% for s in seasons %}
@@ -183,8 +183,8 @@
 		<div class="tab-pane" id="schedule"></div>
 
 		<div class="tab-pane" id="stats"></div>
-			
-    </div>   
+
+    </div>
 
     <!-- Jake's Fake Model-->
     <div id="editPlayerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

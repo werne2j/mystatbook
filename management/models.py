@@ -19,7 +19,7 @@ class Team(models.Model):
 		return unicode(self.name)
 
 	def latest_year(self):
-		return self.season_set.all().order_by("date_added")[0]
+		return self.season_set.all().order_by("-year")[0]
 
 class Season(models.Model):
 	team = models.ForeignKey('Team')

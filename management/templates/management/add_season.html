@@ -1,0 +1,26 @@
+{% extends "management/index_team.html" %}
+{% load bootstrap_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block extrascript %}
+<style>
+  #seasonform{
+    width: 300px;
+    margin: 0 auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <form id="seasonform" class="form-signin" action="{% url 'add_season' username=user.username name=name %}" role="form" method="post">
+        <h1>Add Season</h1>
+        {% csrf_token %}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+        {{ form | as_bootstrap }}
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+{% endblock %}

@@ -205,6 +205,31 @@ class AddTeam(LoginRequiredMixin, TemplateView):
 
         return context
 
+class AddSeason(LoginRequiredMixin, TemplateView):
+
+    template_name = 'management/add_season.html'
+
+    login = '/login/'
+
+    def post(self, request, **kwargs):
+        if request.POST:
+            form = AddSeasonForm(self.request.POST)
+            if form.is_valid:
+                form.save()
+                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username, 'name': self.kwargs.get("name"), 'year': request.POST['year']}))
+            else:
+                print "form not valid"
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username,'name': self.kwargs.get("name"), 'year': request.POST['year']}))
+
+    def get_context_data(self, **kwargs):
+        context = super(AddSeason, self).get_context_data(**kwargs)
+
+        form = AddSeasonForm()
+
+        context['teams'] = Team.objects.filter(coach=self.request.user)
+        context['form'] = form
+
+        return context
 
 class GameStats(LoginRequiredMixin, TemplateView):
 
