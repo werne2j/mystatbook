@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.models import formset_factory
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.models import User
 from .models import *
@@ -41,10 +42,10 @@ class PlayerForm(forms.ModelForm):
 
 class HitStatsForm(forms.ModelForm):
 	class Meta:
-		model = PlayerStats
-		fields = ('player','at_bats', 'runs', 'hits', 'doubles', 'triples', 'hr', 'rbi', 'walks', 'hbp', 'sacrafice', 'strikeouts')
+		model = HitterStats
+		fields = ('game','player','at_bats', 'runs', 'hits', 'doubles', 'triples', 'hr', 'rbi', 'walks', 'hbp', 'sacrafice', 'strikeouts')
 
 class PitchStatsForm(forms.ModelForm):
 	class Meta:
-		model = PlayerStats
-		fields = ('player','starting_pitcher', 'full_innings', 'part_innings', 'hits_allowed', 'runs_allowed', 'earned_runs', 'walks_allowed', 'strikeout_amount', 'wild_pitches', 'hit_by_pitch', 'win', 'loss', 'sv')
+		model = PitcherStats
+		fields = ('game','player','starting_pitcher', 'full_innings', 'part_innings', 'hits_allowed', 'runs_allowed', 'earned_runs', 'walks_allowed', 'strikeout_amount', 'wild_pitches', 'hit_by_pitch', 'win', 'loss', 'sv')

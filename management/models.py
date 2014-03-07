@@ -19,11 +19,11 @@ class Team(models.Model):
 		return unicode(self.name)
 
 	def latest_year(self):
-		return self.season_set.all().order_by("-date_added")[0]
+		return self.season_set.all().order_by("date_added")[0]
 
 class Season(models.Model):
 	team = models.ForeignKey('Team')
-	year = models.IntegerField(max_length=4) 
+	year = models.IntegerField(max_length=4)
 	date_added = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):
@@ -48,35 +48,35 @@ class Player(models.Model):
 		return u'{first} {last}'.format(first=self.first_name, last=self.last_name)
 
 	def hit_totals(self):
-		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Sum("at_bats"), 
+		return HitterStats.objects.filter(player=self).aggregate(Count("game"), Sum("at_bats"),
 			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
 
 	def pitch_totals(self):
-		return PlayerStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"), 
+		return PitcherStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
 			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
 			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
 
 
 	def innings(self):
-		i = PlayerStats.objects.filter(player=self).aggregate(Sum("full_innings"))
+		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0])
-		p = PlayerStats.objects.filter(player=self).aggregate(Sum("part_innings"))
+		p = PitcherStats.objects.filter(player=self).aggregate(Sum("part_innings"))
 		pi = float(p.values()[0])
 
 		ti = int(((fi*3) + pi) / 3)
 		ri = int(((fi*3) + pi) % 3)
-		
+
 		return str(ti) + "." + str(ri)
 
 	def plate_apperances(self):
-		a = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
-		ab = a.values()[0] or 0 
-		w = PlayerStats.objects.filter(player=self).aggregate(Sum("walks"))
+		a = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		ab = a.values()[0] or 0
+		w = HitterStats.objects.filter(player=self).aggregate(Sum("walks"))
 		bb = w.values()[0] or 0
-		h = PlayerStats.objects.filter(player=self).aggregate(Sum("hbp"))
+		h = HitterStats.objects.filter(player=self).aggregate(Sum("hbp"))
 		hp = h.values()[0] or 0
-		s = PlayerStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		s = HitterStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
 		sf = s.values()[0] or 0
 
 		pa = ab + bb + hp + sf
@@ -84,24 +84,24 @@ class Player(models.Model):
 		return pa
 
 	def average(self):
-		b = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		b = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
 		a =  float(b.values()[0])
-		f = PlayerStats.objects.filter(player=self).aggregate(Sum("hits"))
+		f = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
 		h =  float(f.values()[0])
 		avg = h/a
 		average = ("%.3f" % avg)
 		return average
 
 	def on_base(self):
-		a = PlayerStats.objects.filter(player=self).aggregate(Sum("hits"))
+		a = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
 		h = float(a.values()[0])
-		b = PlayerStats.objects.filter(player=self).aggregate(Sum("walks"))
+		b = HitterStats.objects.filter(player=self).aggregate(Sum("walks"))
 		bb = float(b.values()[0])
-		c = PlayerStats.objects.filter(player=self).aggregate(Sum("hbp"))
+		c = HitterStats.objects.filter(player=self).aggregate(Sum("hbp"))
 		hbp = float(c.values()[0])
-		d = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		d = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
 		ab = float(d.values()[0])
-		e = PlayerStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		e = HitterStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
 		sf = float(e.values()[0])
 
 		t = h+bb+hbp
@@ -112,15 +112,15 @@ class Player(models.Model):
 		return obp
 
 	def slug(self):
-		ab = PlayerStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		ab = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
 		a = float(ab.values()[0])
-		hits = PlayerStats.objects.filter(player=self).aggregate(Sum("hits"))
+		hits = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
 		h = float(hits.values()[0])
-		doub = PlayerStats.objects.filter(player=self).aggregate(Sum("doubles"))
+		doub = HitterStats.objects.filter(player=self).aggregate(Sum("doubles"))
 		d = float(doub.values()[0])
-		trip = PlayerStats.objects.filter(player=self).aggregate(Sum("triples"))
+		trip = HitterStats.objects.filter(player=self).aggregate(Sum("triples"))
 		t = float(trip.values()[0])
-		homerun = PlayerStats.objects.filter(player=self).aggregate(Sum("hr"))
+		homerun = HitterStats.objects.filter(player=self).aggregate(Sum("hr"))
 		hr = float(homerun.values()[0])
 
 		s = h - (d+t+hr)
@@ -131,9 +131,9 @@ class Player(models.Model):
 		return slgp
 
 	def era(self):
-		i = PlayerStats.objects.filter(player=self).aggregate(Sum("full_innings"))
+		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
 		ip = float(i.values()[0]) or 0
-		r = PlayerStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
+		r = PitcherStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
 		era = (er / ip) * 9
@@ -151,13 +151,13 @@ class Game(models.Model):
 	def __unicode__(self):
 		return u'{opp} {d}'.format(opp=self.opponent, d=self.date)
 
-class PlayerStats(models.Model):
+class HitterStats(models.Model):
 
 	class Meta:
-		verbose_name_plural = 'Player Stats'
+		verbose_name_plural = 'Hitting Stats'
 
-	game = models.ForeignKey('Game')	
-	player = models.ForeignKey('Player', related_name="playerstats")
+	game = models.ForeignKey('Game')
+	player = models.ForeignKey('Player', related_name="hitstats")
 	at_bats = models.IntegerField(default=0)
 	runs = models.IntegerField(default=0)
 	hits = models.IntegerField(default=0)
@@ -169,9 +169,20 @@ class PlayerStats(models.Model):
 	hbp = models.IntegerField(default=0)
 	sacrafice = models.IntegerField(default=0)
 	strikeouts = models.IntegerField(default=0)
-	starting_pitcher = models.BooleanField()
+
+	def __unicode__(self):
+		return u'{p} hitting stats'.format(p=self.player)
+
+class PitcherStats(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Pitching Stats'
+
+	game = models.ForeignKey('Game')
+	player = models.ForeignKey('Player', related_name="pitchstats")
+	starting_pitcher = models.BooleanField(default=False)
 	full_innings = models.IntegerField(default=0)
-	part_innings = models.IntegerField(choices=INNINGS)
+	part_innings = models.IntegerField(choices=INNINGS, default=0)
 	hits_allowed = models.IntegerField(default=0)
 	runs_allowed = models.IntegerField(default=0)
 	earned_runs = models.IntegerField(default=0)
@@ -184,8 +195,7 @@ class PlayerStats(models.Model):
 	sv = models.IntegerField(default=0)
 
 	def __unicode__(self):
-		return u'{p} stats'.format(p=self.player)
-
+		return u'{p} pitching stats'.format(p=self.player)
 
 
 class DepthChart(models.Model):
@@ -237,6 +247,3 @@ class DepthChart(models.Model):
 
 # 	def __unicode__(self):
 # 		return u'{p} pitching stats'.format(p=self.player)
-
-
-

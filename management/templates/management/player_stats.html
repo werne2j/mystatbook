@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <div class="tab-pane" id="stats">
 	<table class="table table-bordered table-striped" id="hitting_table">
-		<thead>	
+		<thead>
 			<tr class="text-center">
 				<th class="text-center">Player</th>
 				<th class="text-center">G</th>
@@ -48,7 +48,7 @@
 	</table>
 
 	<table class="table table-bordered table-striped" id="pitching_table">
-		<thead>	
+		<thead>
 			<tr class="text-center">
 				<th class="text-center">Player</th>
 				<th class="text-center">GP</th>
@@ -90,3 +90,9 @@
 		</tbody>
 	</table>
 </div>
+<script>
+	$(document).ajaxComplete(function(){
+		new Tablesort(document.getElementById('hitting_table'));
+		new Tablesort(document.getElementById('pitching_table'));
+	});
+</script>
