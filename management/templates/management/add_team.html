@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block content %}
-
 	<form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post">
 		<h1>Add Team</h1>
 		{% csrf_token %}
@@ -24,4 +23,8 @@
 		{{ form2 | as_bootstrap }}
 		<button type="submit" class="btn btn-success">Submit</button>
 	</form>
+    <script>
+        $("#div_id_coach").hide();
+        $("#id_coach").val({{user.pk}});
+    </script>
 {% endblock %}

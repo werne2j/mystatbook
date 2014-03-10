@@ -253,7 +253,7 @@ class AddTeam(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AddTeam, self).get_context_data(**kwargs)
 
-        form = AddTeamForm()
+        form = AddTeamForm(user=self.request.user)
         form2 = SeasonForm()
 
         context['teams'] = Team.objects.filter(coach=self.request.user)
@@ -287,8 +287,8 @@ class AddSeason(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AddSeason, self).get_context_data(**kwargs)
 
-        form = AddSeasonForm()
-
+        form = AddSeasonForm(coach=self.request.user)
+        print Team.objects.filter(coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['form'] = form
 

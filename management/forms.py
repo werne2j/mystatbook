@@ -26,9 +26,17 @@ class AddTeamForm(forms.ModelForm):
 	class Meta:
 		model = Team
 
+	def __init__(self, user, *args, **kwargs):
+		super(AddTeamForm, self).__init__(*args, **kwargs)
+		self.fields['coach'].queryset=User.objects.filter(username=user)
+
 class AddSeasonForm(forms.ModelForm):
 	class Meta:
 		model = Season
+
+	def __init__(self, coach, *args, **kwargs):
+		super(AddSeasonForm, self).__init__(*args, **kwargs)
+		self.fields['team'].queryset=Team.objects.filter(coach=coach)
 
 class SeasonForm(forms.ModelForm):
 	class Meta:
