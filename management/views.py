@@ -124,10 +124,24 @@ class GameList(LoginRequiredMixin, TemplateView):
 
     login_url = '/login/'
 
+    def post(self, request, **kwargs):
+        if request.POST:
+            game_form = AddGameForm(self.request.POST)
+            if game_form.is_valid():
+                game_form.save()
+                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+            else:
+                print game_form.errors
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+
     def get_context_data(self, **kwargs):
         context = super(GameList, self).get_context_data(**kwargs)
 
+        game_form = AddGameForm()
+
+        context['form'] = game_form
         context['games'] = Game.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        context['season'] = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
 
         return context
 

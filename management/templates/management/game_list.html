@@ -1,7 +1,6 @@
 {% load staticfiles %}
-<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Game</button>
 <table class="table table-bordered table-striped" id="game_list">
-	<thead>	
+	<thead>
 		<tr class="text-center">
 			<th class="text-center">Date</th>
 			<th class="text-center">Opponent</th>
@@ -22,6 +21,18 @@
 			<td class="text-center"><a class="game" href="#" data-form="{% url 'game_stats' username=user name=name year=year pk=g.pk %}"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Box Score</button></td>
 		</tr>
 		{% endfor %}
+		<form class="form-inline" action="{% url 'game_list' username=user name=name year=year %}" method=post>
+			{% csrf_token %}
+			<tr class="text-center">
+				<th id="game_season" style="display:none;">{{form.season}}</th>
+				<th class="text-center">{{form.date}}</th>
+				<th class="text-center">{{form.opponent}}</th>
+				<th class="text-center">{{form.location}}</th>
+				<th class="text-center">{{form.time}}</th>
+				<th class="text-center">{{form.doubleheader}}</th>
+				<th class="text-center no-sort"><button type="submit" class="btn btn-primary">Save</button></th>
+			</tr>
+		</form>
 	</tbody>
 </table>
 
@@ -38,9 +49,9 @@
         return false; // prevent the click propagation
     });
     $('.stats-form').on('submit', function() {
-        $.ajax({ 
-            type: $(this).attr('method'), 
-            url: this.action, 
+        $.ajax({
+            type: $(this).attr('method'),
+            url: this.action,
             data: $(this).serialize(),
             context: this,
             success: function(data, status) {
@@ -49,4 +60,6 @@
         });
         return false;
     });
+	$('#id_date').datepicker({format: 'yyyy-mm-dd'});
+	$('#game_season select[name="season"]').val({{season.id}});
 </script>

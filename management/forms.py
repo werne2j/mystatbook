@@ -39,6 +39,10 @@ class PositionForm(forms.ModelForm):
 	class Meta:
 		model = DepthChart
 
+class AddGameForm(forms.ModelForm):
+	class Meta:
+		model = Game
+
 class PlayerForm(forms.ModelForm):
 	class Meta:
 		model = Player
