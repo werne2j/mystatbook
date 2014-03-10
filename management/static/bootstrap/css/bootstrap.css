@@ -1417,7 +1417,7 @@ th {
 .table > tfoot > tr > td {
   padding: 6px;
   line-height: 1.428571429;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #ddd;
 }
 .table > thead > tr > th {

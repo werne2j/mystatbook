@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <title>Management</title>
 
         <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
@@ -15,9 +15,11 @@
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" />
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.css' %}" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'chosen_v1.1.0/chosen.css' %}" />
 
-        <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script> 
-        <script src="{% static 'js/jquery-ui.js' %}"></script> 
+        <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.js' %}"></script>
+        <script src="{% static 'chosen_v1.1.0/chosen.jquery.js' %}"></script>
         <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
@@ -63,7 +65,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         {% block header %}
-                        {% endblock %}     
+                        {% endblock %}
                     </div>
                 </div>
                 <div class="row">
@@ -71,13 +73,13 @@
 
                     {{ content }}
 
-                    {% endblock %}        
+                    {% endblock %}
                 </div>
             </div>
         </div>
 
         <script>
-        $('#mainNavigation a').each(function(){           
+        $('#mainNavigation a').each(function(){
             var team = window.location.pathname.split("/")[3];
             $("a:contains('" + team + "')").parent().addClass("active");
         });

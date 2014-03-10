@@ -7,7 +7,7 @@ from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from registration.backends.simple.views import RegistrationView
-from django.forms.formsets import formset_factory
+from django.forms.formsets import formset_factory, BaseFormSet
 from .models import *
 from .views import *
 from .forms import *
@@ -70,7 +70,6 @@ class SeasonDetail(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(SeasonDetail, self).get_context_data(**kwargs)
 
-
         try:
             season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
         except:
@@ -97,24 +96,26 @@ class PlayerList(LoginRequiredMixin, TemplateView):
     template_name = 'management/roster_list.html'
 
     login_url = '/login/'
+
     def post(self, request, **kwargs):
-        if 'new_player_modal' in request.POST:
-            new_player_form = PlayerForm(self.request.POST)
-            if new_player_form.is_valid():
-                new_player_form.save()
+        if request.POST:
+            player_form = PlayerForm(self.request.POST)
+            if player_form.is_valid():
+                player_form.save()
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
-                print "Form Not Valid"
-        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': username , 'name': name}))
-
+                print player_form.errors
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):
         context = super(PlayerList, self).get_context_data(**kwargs)
-        new_player_form = PlayerForm()
 
+        player_form = PlayerForm()
+
+        context['form'] = player_form
         context['team'] = Season.objects.get(team__name=self.kwargs.get("name"), year=self.kwargs.get("year"))
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
-        context['new_player_form'] = new_player_form
+
         return context
 
 class GameList(LoginRequiredMixin, TemplateView):
@@ -231,6 +232,7 @@ class AddSeason(LoginRequiredMixin, TemplateView):
 
         return context
 
+
 class GameStats(LoginRequiredMixin, TemplateView):
 
     template_name = 'management/game_stats.html'
@@ -245,8 +247,8 @@ class GameStats(LoginRequiredMixin, TemplateView):
 
     def post(self, request, **kwargs):
         print request.POST
-        hit_formset = self.HitStatsFormSet(request.POST, prefix='hit')
-        pitch_formset = self.PitchStatsFormSet(request.POST, prefix='pitch')
+        hit_formset = self.HitStatsFormSet(request.POST, request.FILES, prefix='hit')
+        pitch_formset = self.PitchStatsFormSet(request.POST, request.FILES,prefix='pitch')
         if hit_formset.is_valid() and pitch_formset.is_valid():
             for form in hit_formset:
                 form.save()
@@ -254,12 +256,11 @@ class GameStats(LoginRequiredMixin, TemplateView):
                 form2.save()
             return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
         else:
-            print hit_formset.errors
+            print hit_formset.error
         return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):
         context = super(GameStats, self).get_context_data(**kwargs)
-
         season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
 
         context['game'] = Game.objects.filter(season=season).get(pk=self.kwargs.get("pk"))
