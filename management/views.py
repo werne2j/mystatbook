@@ -1,9 +1,9 @@
 from django.shortcuts import render_to_response, render, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.views.generic.base import View, TemplateView
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from registration.backends.simple.views import RegistrationView
@@ -35,11 +35,17 @@ def login_page(request):
                 return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': request.user.username }))
     return render_to_response('management/login.html', {}, context_instance=RequestContext(request))
 
-class Homepage(LoginRequiredMixin, TemplateView):
+class Homepage(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/index.html'
 
     login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)
@@ -49,11 +55,17 @@ class Homepage(LoginRequiredMixin, TemplateView):
         return context
 
 
-class SeasonDetail(LoginRequiredMixin, TemplateView):
+class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/season_detail.html'
 
     login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def post(self, request, **kwargs):
         if 'update_modal' in request.POST:
@@ -92,10 +104,16 @@ class SeasonDetail(LoginRequiredMixin, TemplateView):
 
         return context
 
-class PlayerList(LoginRequiredMixin, TemplateView):
+class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     template_name = 'management/roster_list.html'
 
     login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def post(self, request, **kwargs):
         if request.POST:
@@ -118,11 +136,17 @@ class PlayerList(LoginRequiredMixin, TemplateView):
 
         return context
 
-class GameList(LoginRequiredMixin, TemplateView):
+class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/game_list.html'
 
     login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def post(self, request, **kwargs):
         if request.POST:
@@ -145,11 +169,17 @@ class GameList(LoginRequiredMixin, TemplateView):
 
         return context
 
-class PlayerStats(LoginRequiredMixin, TemplateView):
+class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/player_stats.html'
 
     login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def get_context_data(self, **kwargs):
         context = super(PlayerStats, self).get_context_data(**kwargs)
@@ -168,11 +198,17 @@ class PlayerStats(LoginRequiredMixin, TemplateView):
 
         return context
 
-class Depth_Chart(LoginRequiredMixin, TemplateView):
+class Depth_Chart(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/depth_chart.html'
 
     login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def get_context_data(self, **kwargs):
         context = super(Depth_Chart, self).get_context_data(**kwargs)
@@ -192,11 +228,17 @@ class UserRegistration(RegistrationView):
     def get_success_url(self, request, user):
         return reverse('coach_portal', kwargs={'username': request.user.username })
 
-class AddTeam(LoginRequiredMixin, TemplateView):
+class AddTeam(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/add_team.html'
 
     login = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def post(self, request, **kwargs):
         if request.POST:
@@ -220,11 +262,17 @@ class AddTeam(LoginRequiredMixin, TemplateView):
 
         return context
 
-class AddSeason(LoginRequiredMixin, TemplateView):
+class AddSeason(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/add_season.html'
 
     login = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     def post(self, request, **kwargs):
         if request.POST:
@@ -247,11 +295,17 @@ class AddSeason(LoginRequiredMixin, TemplateView):
         return context
 
 
-class GameStats(LoginRequiredMixin, TemplateView):
+class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/game_stats.html'
 
     login = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
 
     HitStatsFormSet = formset_factory(HitStatsForm, extra=9)
     PitchStatsFormSet = formset_factory(PitchStatsForm)
