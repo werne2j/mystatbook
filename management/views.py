@@ -116,14 +116,19 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             return True
 
     def post(self, request, **kwargs):
-        if request.POST:
+        if 'delete' in request.POST:
+            p = Player.objects.get(pk=request.POST['delete'])
+            p.delete()
+            return HttpResponseRedirect(reverse('player_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+        else:
             player_form = PlayerForm(self.request.POST)
             if player_form.is_valid():
                 player_form.save()
-                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+                return HttpResponseRedirect(reverse('player_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
                 print player_form.errors
         return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+
 
     def get_context_data(self, **kwargs):
         context = super(PlayerList, self).get_context_data(**kwargs)
@@ -151,11 +156,22 @@ class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def post(self, request, **kwargs):
         if request.POST:
             game_form = AddGameForm(self.request.POST)
-            if game_form.is_valid():
+            game_form2 = None
+            qset2 = self.request.POST.copy()
+            time2 = qset2.pop('time2', None)[0]
+            if time2:
+                qset2['time'] = time2
+                game_form2 = AddGameForm(qset2)
+            if game_form.is_valid() and game_form2 is None:
                 game_form.save()
+                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+            elif game_form.is_valid() and game_form2.is_valid():
+                game_form.save()
+                game_form2.save()
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
                 print game_form.errors
+                print game_form2.errors
         return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):
@@ -288,7 +304,6 @@ class AddSeason(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context = super(AddSeason, self).get_context_data(**kwargs)
 
         form = AddSeasonForm(coach=self.request.user)
-        print Team.objects.filter(coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['form'] = form
 
@@ -314,7 +329,6 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     pitch_formset = PitchStatsFormSet(prefix='pitch')
 
     def post(self, request, **kwargs):
-        print request.POST
         hit_formset = self.HitStatsFormSet(request.POST, request.FILES, prefix='hit')
         pitch_formset = self.PitchStatsFormSet(request.POST, request.FILES,prefix='pitch')
         if hit_formset.is_valid() and pitch_formset.is_valid():

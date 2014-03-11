@@ -56,7 +56,7 @@ ROOT_URLCONF = 'sportsbook.urls'
 
 WSGI_APPLICATION = 'sportsbook.wsgi.application'
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',) 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -97,3 +97,7 @@ STATIC_URL = '/static/'
 # EMAIL_PORT= 1023
 # EMAIL_HOST_USER='username'
 # EMAIL_HOST_PASSWORD='password'
+TIME_INPUT_FORMATS = (
+    '%I%p',
+    '%I %p',
+)

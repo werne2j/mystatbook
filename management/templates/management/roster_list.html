@@ -8,7 +8,7 @@
 			<th class="text-center">Position</th>
 			<th class="text-center">Class</th>
 			<th class="text-center">Throw/Hit</th>
-			<th class="text-center no-sort">Edit/Delete</th>
+			<th class="text-center no-sort">Delete</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,10 +19,16 @@
 			<td class="text-center">{{p.position.all|join:" / " }}</td>
 			<td class="text-center">{{p.class_standing}}</td>
 			<td class="text-center">{{p.throws}}/{{p.hits}}</td>
-			<td class="text-center"><button type="button" id="edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o"></i></button><button type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button></td>
+			<td class="text-center">
+				<form action="" class="delete_form" method=post>
+					{% csrf_token %}
+					<input type="hidden" value="{{p.id}}" name="delete">
+					<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
-		<form class="form-inline" action="{% url 'player_list' username=user name=name year=year %}" method=post>
+		<form class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
 			{% csrf_token %}
 			<tr class="text-center">
 				<th id="season_id" style="display:none;">{{form.season}}</th>
@@ -41,8 +47,33 @@
     $(document).ajaxComplete(function(){
 		new Tablesort(document.getElementById('player_list'));
 	});
-	$("#id_position").chosen();
+
+	$("#id_position").chosen({ placeholder_text_multiple: 'Select Positions' });
 
 	var season = {{team.id}};
 	$('select[name="season"]').val(season);
+
+	$('.delete_form').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url : "{% url 'player_list' username=user name=name year=year %}",
+			data : $(this).serialize(),
+			success: function(data){
+				$('#roster').html(data);
+			}
+		});
+	});
+
+	$('.add_form').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url : "{% url 'player_list' username=user name=name year=year %}",
+			data : $(this).serialize(),
+			success: function(data){
+				$('#roster').html(data);
+			}
+		});
+	});
 </script>
