@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.models import formset_factory
+from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.models import User
 from .models import *
@@ -23,18 +23,22 @@ class UserForm(forms.ModelForm):
 		fields = ('username', 'email', 'password1', 'password2')
 
 class AddTeamForm(forms.ModelForm):
+
+	def __init__(self, *args, **kwargs):
+		user = kwargs.pop('user')
+		super(AddTeamForm, self).__init__(*args, **kwargs)
+		self.fields['coach'].queryset = User.objects.filter(username=user)
+
 	class Meta:
 		model = Team
 
-	def __init__(self, user, *args, **kwargs):
-		super(AddTeamForm, self).__init__(*args, **kwargs)
-		self.fields['coach'].queryset=User.objects.filter(username=user)
 
 class AddSeasonForm(forms.ModelForm):
 	class Meta:
 		model = Season
 
-	def __init__(self, coach, *args, **kwargs):
+	def __init__(self, *args, **kwargs):
+		coach = kwargs.pop('coach')
 		super(AddSeasonForm, self).__init__(*args, **kwargs)
 		self.fields['team'].queryset=Team.objects.filter(coach=coach)
 

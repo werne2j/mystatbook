@@ -3,8 +3,8 @@
 <table class="table table-bordered table-striped" id="player_list">
 	<thead>
 		<tr class="text-center">
-			<th class="text-center">First Name</th>
 			<th class="text-center">Last Name</th>
+			<th class="text-center">First Name</th>
 			<th class="text-center">Position</th>
 			<th class="text-center">Class</th>
 			<th class="text-center">Throw/Hit</th>
@@ -14,8 +14,8 @@
 	<tbody>
 		{% for p in players %}
 		<tr>
-			<td class="text-center">{{p.first_name}}</td>
 			<td class="text-center">{{p.last_name}}</td>
+			<td class="text-center">{{p.first_name}}</td>
 			<td class="text-center">{{p.position.all|join:" / " }}</td>
 			<td class="text-center">{{p.class_standing}}</td>
 			<td class="text-center">{{p.throws}}/{{p.hits}}</td>
@@ -32,8 +32,8 @@
 			{% csrf_token %}
 			<tr class="text-center">
 				<th id="season_id" style="display:none;">{{form.season}}</th>
-				<th class="text-center">{{form.first_name}}</th>
 				<th class="text-center">{{form.last_name}}</th>
+				<th class="text-center">{{form.first_name}}</th>
 				<th class="text-center">{{form.position}}</th>
 				<th class="text-center">{{form.class_standing}}</th>
 				<th class="text-center">{{form.throws}}/{{form.hits}}</th>

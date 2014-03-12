@@ -33,4 +33,49 @@
 	</div>
 	{% endfor %}
 	<button type="button" class="btn btn-primary" id="save_depth_chart">Save Changes</button>
+	<div id="save_confirm" class="pull-right" style="margin-top:10px;"></div>
 </div>
+
+<!-- Jake's Fake Model-->
+<div id="editPlayerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 id="myModalLabel1">Edit Position</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="chart_form" id="form" action="{% url 'depth_chart' username=user name=name year=year %}" method="post">
+					{% csrf_token %}
+					<input type="hidden" class="form-group" id="id_pk" name="pk" value="change_this">
+					<div class="form-group">
+						{{ form }}
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger pull-left" name="delete" id="deleteButton">Delete</button>
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+						<button type="submit" class="btn btn-primary" name="update_modal" id="submitButton">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$('.chart_form').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url : "{% url 'depth_chart' username=user name=name year=year %}",
+			data : $(this).serialize(),
+			success: function(data){
+				$('#depthchart').html(data);
+				$('#save_confirm').text('Chart has been saved!');
+				setTimeout(function() {
+				    $('#save_confirm').fadeOut('fast');
+				}, 3000); // <-- time in milliseconds
+			}
+		});
+	});
+</script>

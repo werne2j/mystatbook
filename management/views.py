@@ -67,18 +67,6 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             return True
 
-    def post(self, request, **kwargs):
-        if 'update_modal' in request.POST:
-            object_pk = request.POST.get("pk", "")
-            position = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
-            this_form = PositionForm(self.request.POST, instance=position)
-            if this_form.is_valid():
-                this_form.save()
-                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
-            else:
-                print "Form Not Valid"
-        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
-
     def get_context_data(self, **kwargs):
         context = super(SeasonDetail, self).get_context_data(**kwargs)
 
@@ -88,15 +76,6 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             team = Team.objects.filter(coach=self.request.user).get(name=self.kwargs.get("name"))
             season = Season.objects.create(team=team ,year=self.kwargs.get("year"))
 
-        try:
-            depthchart = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
-        except:
-            season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
-            depthchart = DepthChart.objects.create(season=season)
-
-        this_form = PositionForm(instance=depthchart)
-
-        context['form'] = this_form
         context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
@@ -137,7 +116,7 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
         context['form'] = player_form
         context['team'] = Season.objects.get(team__name=self.kwargs.get("name"), year=self.kwargs.get("year"))
-        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('last_name')
 
         return context
 
@@ -184,7 +163,7 @@ class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         game_form = AddGameForm()
 
         context['form'] = game_form
-        context['games'] = Game.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        context['games'] = Game.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('date')
         context['season'] = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
 
         return context
@@ -213,8 +192,8 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             if player.pitch_totals().get('full_innings__sum') > 0:
                 pitchers.append(player)
 
-        context['batters'] = batters
-        context['pitchers'] = pitchers
+        context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
+        context['pitchers'] = sorted(pitchers, key=lambda x: x.era())
 
         return context
 
@@ -230,6 +209,18 @@ class Depth_Chart(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             return True
 
+    def post(self, request, **kwargs):
+        if request.POST:
+            object_pk = request.POST.get("pk", "")
+            position = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
+            this_form = PositionForm(self.request.POST, instance=position)
+            if this_form.is_valid():
+                this_form.save()
+                return HttpResponseRedirect(reverse('depth_chart', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+            else:
+                print this_form.errors
+        return HttpResponseRedirect(reverse('depth_chart', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+
     def get_context_data(self, **kwargs):
         context = super(Depth_Chart, self).get_context_data(**kwargs)
 
@@ -239,6 +230,9 @@ class Depth_Chart(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
             depthchart = DepthChart.objects.create(season=season)
 
+        this_form = PositionForm(instance=depthchart)
+
+        context['form'] = this_form
         context['depth'] = depthchart
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
 
@@ -262,12 +256,12 @@ class AddTeam(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def post(self, request, **kwargs):
         if request.POST:
-            form = AddTeamForm(self.request.POST)
+            form = AddTeamForm(self.request.POST, user=request.user.username)
             if form.is_valid:
                 form.save()
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username, 'name': request.POST['name'], 'year': request.POST['year']}))
             else:
-                print "form not valid"
+                print form.errors
         return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username,'name': request.POST['name'], 'year': request.POST['year']}))
 
     def get_context_data(self, **kwargs):
@@ -296,7 +290,7 @@ class AddSeason(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def post(self, request, **kwargs):
         if request.POST:
-            form = AddSeasonForm(self.request.POST)
+            form = AddSeasonForm(self.request.POST, coach=request.user)
             if form.is_valid:
                 form.save()
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username, 'name': self.kwargs.get("name"), 'year': request.POST['year']}))

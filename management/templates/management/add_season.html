@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block content %}
-
     <form id="seasonform" class="form-signin" action="{% url 'add_season' username=user.username name=name %}" role="form" method="post">
         <h1>Add Season</h1>
         {% csrf_token %}
@@ -23,4 +22,13 @@
         {{ form | as_bootstrap }}
         <button type="submit" class="btn btn-success">Submit</button>
     </form>
+    <script>
+        $("#div_id_team").hide();
+        // var k = $("#id_team").text("{{name}}").val();
+        $(function() {
+            $('[name=team] option').filter(function() {
+                return ($(this).text() == '{{name}}');
+            }).prop('selected', true);
+        });
+    </script>
 {% endblock %}
