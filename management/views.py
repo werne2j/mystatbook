@@ -154,7 +154,11 @@ class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             return True
 
     def post(self, request, **kwargs):
-        if request.POST:
+        if 'delete' in request.POST:
+            g = Game.objects.get(pk=request.POST['delete'])
+            g.delete()
+            return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+        else:
             game_form = AddGameForm(self.request.POST)
             game_form2 = None
             qset2 = self.request.POST.copy()
@@ -164,11 +168,11 @@ class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
                 game_form2 = AddGameForm(qset2)
             if game_form.is_valid() and game_form2 is None:
                 game_form.save()
-                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+                return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             elif game_form.is_valid() and game_form2.is_valid():
                 game_form.save()
                 game_form2.save()
-                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+                return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
                 print game_form.errors
                 print game_form2.errors

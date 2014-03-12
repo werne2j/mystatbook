@@ -21,13 +21,13 @@
 			<td class="text-center">
 				<form action="" class="delete_form" method=post>
 					{% csrf_token %}
-					<input type="hidden" value="{{p.id}}" name="delete">
+					<input type="hidden" value="{{g.id}}" name="delete">
 					<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
 				</form>
 			</td>
 		</tr>
 		{% endfor %}
-		<form class="form-inline" action="{% url 'game_list' username=user name=name year=year %}" method=post>
+		<form class="form-inline add_game" action="{% url 'game_list' username=user name=name year=year %}" method=post>
 			{% csrf_token %}
 			<tr class="text-center">
 				<th id="game_season" style="display:none;">{{form.season}}</th>
@@ -79,4 +79,30 @@
 			}
 		});
 	});
+
+	$('.delete_form').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url : "{% url 'game_list' username=user name=name year=year %}",
+			data : $(this).serialize(),
+			success: function(data){
+				$('#schedule').html(data);
+			}
+		});
+	});
+
+	$('.add_game').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url : "{% url 'game_list' username=user name=name year=year %}",
+			data : $(this).serialize(),
+			success: function(data){
+				$('#schedule').html(data);
+			}
+		});
+	});
+
+
 </script>

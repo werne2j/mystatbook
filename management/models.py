@@ -149,7 +149,7 @@ class Game(models.Model):
 	doubleheader = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return u'{opp} {d}'.format(opp=self.opponent, d=self.date)
+		return u'{opp} {d} {t}'.format(opp=self.opponent, d=self.date, t=self.time)
 
 class HitterStats(models.Model):
 
