@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     url(r'^register/$', UserRegistration.as_view(), name='registration'),
     url(r'^login/', 'management.views.login_page', name="login_page"),
     url(r'^logout/', 'management.views.logout_page', name="logout_page"),
-    url(r'^$', RedirectView.as_view(url= '/login/'))
+    url(r'^$', Front.as_view(), name='home'),
 )

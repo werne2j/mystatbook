@@ -1,23 +1,57 @@
 {% extends "registration/base.html" %}
-{% load bootstrap_tags %}
-{% block title %}Log in{% endblock %}
+{% load staticfiles %}
+{% url 'coach_portal' as portal %}
+
+{% block title %}Sign In{% endblock %}
 
 {% block extrastyle %}
 <style>
   #logform{
-    width: 500px;
+    width: 300px;
     margin: 0 auto;
+  }
+  #log{
+    border-left: 1px solid black;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div id="logform">
-	<form method="post" action="?next={{ next|default:"/" }}">
-	<h1>Log in</h1>
-	{% csrf_token %}
-	{{ form | as_bootstrap }}
-	<button type="submit" class="btn btn-success" value="Log in">Login</button>
-	</form>
+
+<div class="col-md-6">
+  <form id="logform" role="form" name="LoginForm" action="/login/" method="post">
+    {% csrf_token %}
+      <input type="hidden" name="next" value="{% firstof next portal %}" />
+      <p>{{portal}}</p>
+    <h2 class="form-signin-heading">Sign In</h2>
+    <div class="form-group">
+      <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" name="password" placeholder="Password" required>
+    </div>
+    <button class="btn btn-success btn-block" type="submit">Sign in</button>
 </div>
+<div class="col-md-6" id="log">
+  </form>
+    <form id="logform" role="form" name="LoginForm" action="/login/" method="post">
+    {% csrf_token %}
+    {% if next %}
+      <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
+    <h2 class="form-signin-heading">Sign In</h2>
+    <div class="form-group">
+      <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" name="password" placeholder="Password" required>
+    </div>
+    <button class="btn btn-success btn-block" type="submit">Sign in</button>
+  </form>
+<!--   </br>
+  <p class="text-center">If you don't have an account, please <a href="{% url 'registration' %}">register!</a></p> -->
+
+</div> <!-- /container -->
+  
 {% endblock %}
+

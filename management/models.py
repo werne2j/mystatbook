@@ -170,6 +170,7 @@ class HitterStats(models.Model):
 	sacrafice = models.IntegerField(default=0)
 	strikeouts = models.IntegerField(default=0)
 
+
 	def __unicode__(self):
 		return u'{p} hitting stats'.format(p=self.player)
 

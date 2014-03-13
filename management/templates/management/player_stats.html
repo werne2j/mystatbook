@@ -2,7 +2,7 @@
 <div class="tab-pane" id="stats">
 	<table class="table table-bordered table-striped" id="hitting_table">
 		<thead>
-			<tr class="text-center">
+			<tr class="text-center title">
 				<th class="text-center">Player</th>
 				<th class="text-center">G</th>
 				<th class="text-center">PA</th>
@@ -25,45 +25,47 @@
 		<tbody>
 			{% for b in batters %}
 				<tr>
-					<th class="text-center">{{b.first_name}} {{b.last_name}}</th>
-					<th class="text-center">{{b.hit_totals.game__count}}</th>
-					<th class="text-center">{{b.plate_apperances | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.at_bats__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.runs__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.hits__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.doubles__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.triples__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.hr__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.rbi__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.walks__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.hbp__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.strikeouts__sum | default:0 }}</th>
-					<th class="text-center">{{b.hit_totals.sacrafice__sum | default:0 }}</th>
-					<th class="text-center">{{b.average | default:0 }}</th>
-					<th class="text-center">{{b.on_base | default:0 }}</th>
-					<th class="text-center">{{b.slug | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.first_name}} {{b.last_name}}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.game__count}}</th>
+					<th class="text-center hit_stat">{{b.plate_apperances | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.at_bats__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.runs__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.hits__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.doubles__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.triples__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.hr__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.rbi__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.walks__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.hbp__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.strikeouts__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.hit_totals.sacrafice__sum | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.average | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.on_base | default:0 }}</th>
+					<th class="text-center hit_stat">{{b.slug | default:0 }}</th>
 				</tr>
 			{% endfor %}
-				<tr class="text-center">
-					<th class="text-center">Totals</th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-					<th class="text-center"></th>
-				</tr>
 		</tbody>
+		<tfoot>
+				<tr class="text-center totals">
+					<th class="text-center">Totals</th>
+					<th class="text-center totals">{{totals.games}}</th>
+					<th class="text-center totals">{{totals.plate_apperances}}</th>
+					<th class="text-center totals">{{totals.atbats}}</th>
+					<th class="text-center totals">{{totals.runs}}</th>
+					<th class="text-center totals">{{totals.hits}}</th>
+					<th class="text-center totals">{{totals.doubles}}</th>
+					<th class="text-center totals">{{totals.triples}}</th>
+					<th class="text-center totals">{{totals.hr}}</th>
+					<th class="text-center totals">{{totals.rbi}}</th>
+					<th class="text-center totals">{{totals.walks}}</th>
+					<th class="text-center totals">{{totals.hbp}}</th>
+					<th class="text-center totals">{{totals.strikeouts}}</th>
+					<th class="text-center totals">{{totals.sacrafice}}</th>
+					<th class="text-center totals">{{totals.average}}</th>
+					<th class="text-center totals">{{totals.onbase}}</th>
+					<th class="text-center totals">{{totals.slugging}}</th>
+				</tr>
+		</tfoot>
 	</table>
 
 	<table class="table table-bordered table-striped" id="pitching_table">
@@ -106,6 +108,8 @@
 					<th class="text-center">{{p.era}}</th>
 				</tr>
 			{% endfor %}
+		</tbody>
+		<tfoot>
 				<tr class="text-center">
 					<th class="text-center">Totals</th>
 					<th class="text-center"></th>
@@ -123,7 +127,7 @@
 					<th class="text-center"></th>
 					<th class="text-center"></th>
 				</tr>
-		</tbody>
+		</tfoot>
 	</table>
 </div>
 <script>

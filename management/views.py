@@ -35,6 +35,15 @@ def login_page(request):
                 return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': request.user.username }))
     return render_to_response('management/login.html', {}, context_instance=RequestContext(request))
 
+
+class UserRegistration(RegistrationView):
+    def get_success_url(self, request, user):
+        return reverse('coach_portal', kwargs={'username': request.user.username })
+
+class Front(TemplateView):
+
+    template_name = 'management/front.html'
+
 class Homepage(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/index.html'
@@ -192,6 +201,19 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             if player.pitch_totals().get('full_innings__sum') > 0:
                 pitchers.append(player)
 
+        totals = HitterStats.objects.filter(player__season__team__name=self.kwargs.get("name")).aggregate(atbats=Sum('at_bats'),
+            hits=Sum('hits'), runs=Sum('runs'), doubles=Sum('doubles'), triples=Sum('triples'), hr=Sum('hr'), rbi=Sum('rbi'),
+            walks=Sum('walks'), hbp=Sum('hbp'), strikeouts=Sum('strikeouts'), sacrafice=Sum('sacrafice'))
+
+        totals['plate_apperances'] = totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']
+        totals['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), hitterstats__isnull=True).count()
+        totals['average'] = round(float(totals['hits']) / float(totals['atbats']),3)
+        totals['onbase'] = round(float(totals['hits'] + totals['walks'] + totals['hbp']) / float(totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']),3)
+        totals['single'] = totals['hits']-(totals['doubles']+totals['triples']+totals['hr'])
+        totals['slugging'] = round(float(totals['single']+(2*totals['doubles'])+(3*totals['triples'])+(4*totals['hr']))/totals['atbats'],3)
+
+
+        context['totals'] = totals
         context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
         context['pitchers'] = sorted(pitchers, key=lambda x: x.era())
 
@@ -237,10 +259,6 @@ class Depth_Chart(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
 
         return context
-
-class UserRegistration(RegistrationView):
-    def get_success_url(self, request, user):
-        return reverse('coach_portal', kwargs={'username': request.user.username })
 
 class AddTeam(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
