@@ -15,7 +15,7 @@ class PositionAdmin(admin.ModelAdmin):
 	list_display = ('position',)
 
 class GameAdmin(admin.ModelAdmin):
-	list_display = ('season', 'opponent', 'date', 'location', 'time', 'doubleheader')
+	list_display = ('season', 'opponent', 'date', 'location', 'time', 'doubleheader', 'conference')
 
 class HitStatsAdmin(admin.ModelAdmin):
 	list_display = ('player', 'game', 'at_bats','runs','hits','hr','rbi','walks','strikeouts')

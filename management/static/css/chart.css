@@ -153,6 +153,7 @@ ul{
 #save_depth_chart {
 	float:right;
 	margin-top: 20px;
+	margin-bottom: 10px;
 }
 .ui-widget-header.position-danger{
 	background: linear-gradient(#D10015, #FB6978);;

@@ -6,60 +6,83 @@
 {% block extrastyle %}
 <style>
   #logform{
-    width: 300px;
+    width: 250px;
     margin: 0 auto;
   }
-
+  .panel-title{
+    font-size: 2.8rem;
+    color: white;
+  }
+  .panel-default > .panel-heading{
+    background-color: #6d6e70;
+  }
+  .panel-default > .panel-body{
+    background-color: #f2f2f2;
+  }
+  #log_form{
+    padding-left: 0px;
+  }
+  #reg_form{
+    padding-right: 0px;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="ui two column middle aligned relaxed grid basic segment">
-  <div class="col-md-6">
-    <form id="logform" role="form" name="LoginForm" action="/login/" method="post">
-      {% csrf_token %}
-      <h2 class="form-signin-heading">Log In</h2>
-      <div class="form-group">
-        <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
-      </div>
-      <div class="form-group">
-        <input type="password" class="form-control" name="password" placeholder="Password" required>
-      </div>
-      <button class="btn btn-success btn-block" type="submit">Log In</button>
-      <input type="hidden" name="next" value="{% firstof next '/' %}" />
-    </form>
-  </div>
-    <div class="ui vertical divider">
-      Or
+<div class="col-md-6" id="log_form">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Log In</h2>
     </div>
-  <div class="col-md-6" id="log">
-    <form id="logform" method="post" action="{% url 'registration' %}" >
-      {% csrf_token %}
-      <h2 class="form-signin-heading">Register</h2>
-      <input type="hidden" name="next" value="{{ next }}" />
-      <div id="div_id_username" class="form-group   required">   
-        <div class="">
-          <input class=" form-control" id="id_username" maxlength="30" name="username" type="text" placeholder="Username"/>
+    <div class="panel-body">
+      <form id="logform" role="form" name="LoginForm" action="/login/" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
         </div>
-      </div>
-      <div id="div_id_email" class="form-group   required">
-        <div class="">
-          <input class=" form-control" id="id_email" name="email" type="email" placeholder="Email"/>
+        <div class="form-group">
+          <input type="password" class="form-control" name="password" placeholder="Password" required>
         </div>
-      </div>
-      <div id="div_id_password1" class="form-group   required">
-        <div class="">
-          <input class=" form-control" id="id_password1" name="password1" type="password" placeholder="Password"/>
-        </div>
-      </div>
-      <div id="div_id_password2" class="form-group   required">
-        <div class="">
-          <input class=" form-control" id="id_password2" name="password2" type="password" placeholder="Password (again)"/>   
-        </div>
-      </div>
-      <button type="submit" class="btn btn-success btn-block" value="Register &rarr;">Register</button>
-    </form>
-  </div> 
+        <button class="btn btn-success btn-block" type="submit">Log In</button>
+        <input type="hidden" name="next" value="{% firstof next '/' %}" />
+      </form>
+    </div>
+  </div>
 </div>
+<div class="col-md-6" id="reg_form">
+    <div class="panel panel-default" id="log">
+        <div class="panel-heading">
+            <h3 class="panel-title">Register</h3>
+        </div>
+        <div class="panel-body">
+          <form id="logform" method="post" action="{% url 'registration' %}" >
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div id="div_id_username" class="form-group   required">   
+              <div class="">
+                <input class=" form-control" id="id_username" maxlength="30" name="username" type="text" placeholder="Username"/>
+              </div>
+            </div>
+            <div id="div_id_email" class="form-group   required">
+              <div class="">
+                <input class=" form-control" id="id_email" name="email" type="email" placeholder="Email"/>
+              </div>
+            </div>
+            <div id="div_id_password1" class="form-group   required">
+              <div class="">
+                <input class=" form-control" id="id_password1" name="password1" type="password" placeholder="Password"/>
+              </div>
+            </div>
+            <div id="div_id_password2" class="form-group   required">
+              <div class="">
+                <input class=" form-control" id="id_password2" name="password2" type="password" placeholder="Password (again)"/>   
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success btn-block" value="Register &rarr;">Register</button>
+          </form>
+        </div>
+    </div> 
+</div>
+
 {% endblock %}
 

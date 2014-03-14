@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
         <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" />
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" />
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.css' %}" />
+<!--         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.css' %}" /> -->
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'chosen_v1.1.0/chosen.css' %}" />
         <link rel="stylesheet" href="{% static 'datepicker/css/datepicker.css' %}" />
@@ -41,7 +41,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand">Sportsbook</a>
+                        <a class="navbar-brand">MyStatBook</a>
                     </div>
                     <div class="navbar-collapse collapse" id="mainNavigation">
                         <ul class="nav navbar-nav">
@@ -53,7 +53,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-user"></i> {% filter force_escape %}{% firstof user.username %}{% endfilter %} <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#"><i class="fa fa-cogs"></i> Settings</a></li>
+                                    <li><a href="{% url 'user_settings' user.username %}"><i class="fa fa-cogs"></i> Settings</a></li>
                                     {% url 'logout_page' as logout_url %}
                                     <li><a href="{{ logout_url }}"><i class="fa fa-sign-out"></i> {% trans 'Log out' %}</a></li>
                                 </ul>

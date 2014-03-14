@@ -147,6 +147,7 @@ class Game(models.Model):
 	location = models.CharField(max_length=100)
 	time = models.TimeField()
 	doubleheader = models.BooleanField(default=False)
+	conference = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return u'{opp} {d} {t}'.format(opp=self.opponent, d=self.date, t=self.time)

@@ -7,7 +7,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from registration.backends.simple.views import RegistrationView
-from django.forms.formsets import formset_factory, BaseFormSet
+from django.forms.models import modelformset_factory
 from .models import *
 from .views import *
 from .forms import *
@@ -39,6 +39,25 @@ def login_page(request):
 class UserRegistration(RegistrationView):
     def get_success_url(self, request, user):
         return reverse('coach_portal', kwargs={'username': request.user.username })
+
+class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+
+    template_name = 'management/settings.html'
+
+    login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
+
+    def get_context_data(self, **kwargs):
+        context = super(Settings, self).get_context_data(**kwargs)
+
+        context['teamlist'] = Team.objects.filter(coach=self.request.user)
+
+        return context
 
 class Front(TemplateView):
 
@@ -212,8 +231,16 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         totals['single'] = totals['hits']-(totals['doubles']+totals['triples']+totals['hr'])
         totals['slugging'] = round(float(totals['single']+(2*totals['doubles'])+(3*totals['triples'])+(4*totals['hr']))/totals['atbats'],3)
 
+        pitch = PitcherStats.objects.filter(player__season__team__name=self.kwargs.get("name")).aggregate(starts=Count('starting_pitcher'), full=Sum('full_innings'),part=Sum('part_innings'),
+            hits=Sum('hits_allowed'),runs=Sum('runs_allowed'), earned=Sum('earned_runs'), walks=Sum('walks_allowed'), k=Sum('strikeout_amount'),wp=Sum('wild_pitches'),
+            hbp=Sum('hit_by_pitch'), w=Sum('win'), l=Sum('loss'), sv=Sum('sv'))
 
+        pitch['innings'] = str(((pitch['full']*3)+pitch['part']) / 3) + "." + str(((pitch['full']*3)+pitch['part']) % 3)
+        pitch['era'] = round(float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0 ,2)
+        pitch['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
+        
         context['totals'] = totals
+        context['pitch'] = pitch
         context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
         context['pitchers'] = sorted(pitchers, key=lambda x: x.era())
 
@@ -338,32 +365,45 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             return True
 
-    HitStatsFormSet = formset_factory(HitStatsForm, extra=9)
-    PitchStatsFormSet = formset_factory(PitchStatsForm)
+    # HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=9)
+    # PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm)
 
-    hit_formset = HitStatsFormSet(prefix='hit')
-    pitch_formset = PitchStatsFormSet(prefix='pitch')
+    # hit_formset = HitStatsFormSet(queryset=game, prefix='hit')
+    # pitch_formset = PitchStatsFormSet(queryset=game, prefix='pitch')
 
     def post(self, request, **kwargs):
-        hit_formset = self.HitStatsFormSet(request.POST, request.FILES, prefix='hit')
-        pitch_formset = self.PitchStatsFormSet(request.POST, request.FILES,prefix='pitch')
-        if hit_formset.is_valid() and pitch_formset.is_valid():
-            for form in hit_formset:
-                form.save()
-            for form2 in pitch_formset:
-                form2.save()
-            return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+        hit = HitterStats.objects.filter(game__pk=self.kwargs.get("pk"))
+        pitch = PitcherStats.objects.filter(game__pk=self.kwargs.get("pk"))
+        HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm)
+        PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm)
+        hit_formset = HitStatsFormSet(request.POST, request.FILES, queryset=hit, prefix='hit')
+        pitch_formset = PitchStatsFormSet(request.POST, request.FILES, queryset=pitch, prefix='pitch')
+        if hit_formset.is_valid():
+            hit_formset.save()
         else:
-            print hit_formset.error
+            print hit_formset.errors
+        if pitch_formset.is_valid():
+            pitch_formset.save()
+        else:
+            print pitch_formset.errors
         return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):
         context = super(GameStats, self).get_context_data(**kwargs)
         season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+        game = Game.objects.filter(season=season).get(pk=self.kwargs.get("pk"))
+        hit = HitterStats.objects.filter(game__pk=self.kwargs.get("pk"))
+        pitch = PitcherStats.objects.filter(game__pk=self.kwargs.get("pk"))
 
-        context['game'] = Game.objects.filter(season=season).get(pk=self.kwargs.get("pk"))
+        HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=9-len(hit))
+        PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm, extra=1-len(pitch))
+
+        hit_formset = HitStatsFormSet(initial=[{'game': game,}], queryset=hit, prefix='hit')
+        pitch_formset = PitchStatsFormSet(initial=[{'game': game,}], queryset=pitch, prefix='pitch')
+
+        context['game'] = game
         context['players'] = Player.objects.filter(season=season)
-        context['formset'] = self.hit_formset
-        context['formset2'] = self.pitch_formset
+        context['formset'] = hit_formset
+        context['formset2'] = pitch_formset
 
         return context

@@ -1,10 +1,5 @@
 {% load staticfiles %}
 {% load bootstrap_tags %}
-<script>
-var game = {{game.id}}
-$("#statsModal #game").children().val(game);
-$("#statsModal #game2").children().val(game);
-</script>
 <div class="modal-dialog modal-lg">
 	<div class="modal-content">
 		<div class="modal-header">
@@ -16,7 +11,7 @@ $("#statsModal #game2").children().val(game);
 				<h3>Hitting Stats</h3>
 				<fieldset>
 					{{ formset.management_form }}
-						<table class="table">
+						<table class="table" id="hitter_tab">
 							<thead>
 								<tr>
 									<th class="text-center">Player</th>
@@ -33,9 +28,10 @@ $("#statsModal #game2").children().val(game);
 									<th class="text-center">K</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="hitter_body">
 								{% for form in formset %}
 									<tr class="hit_stats text-center">
+										{{form.id}}
 										<td id="game" style="display:none;">{{form.game}}</td>
 										<td>{{form.player}}</td>
 										<td>{{form.at_bats}}</td>
@@ -54,10 +50,11 @@ $("#statsModal #game2").children().val(game);
 							</tbody>
 						</table>
 				</fieldset>
+				<p><a href="#" id="add_hit"><i class="fa fa-plus"></i> Add another hitter</a></p>
 			    <fieldset>
 				{{ formset2.management_form }}
 					<h3>Pitching Stats</h3>
-					<table class="table">
+					<table class="table" id="pitcher_tab">
 						<thead>
 							<tr>
 								<th class="text-center">Player</th>
@@ -75,9 +72,10 @@ $("#statsModal #game2").children().val(game);
 								<th class="text-center">SV</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="pitcher_body">
 							{% for form2 in formset2 %}
 								<tr class="hit_stats text-center" id="pitch_stats">
+									{{form2.id}}
 									<td id="game2" style="display:none;">{{form2.game}}</td>
 									<td>{{form2.player}}</td>
 									<td>{{form2.starting_pitcher}}</td>
@@ -97,12 +95,127 @@ $("#statsModal #game2").children().val(game);
 						</tbody>
 					</table>
 				</fieldset>
+				<p><a href="#" id="add_pitch"><i class="fa fa-plus"></i> Add another pitcher</a></p>
 
 				<div class="modal-footer">
 				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				    <button type="submit" name="add_stats" class="btn btn-primary">Save changes</button>
+				    <button type="submit" name="add_stats" id="add_stats" class="btn btn-primary">Save changes</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+<script>
+	$(".fa-plus").css({'color':'green'});
+
+	$(document).ready(function () {
+	    // Code adapted from http://djangosnippets.org/snippets/1389/  
+	    function updateElementIndex(el, prefix, ndx) {
+	        var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+	        var replacement = prefix + '-' + ndx + '-';
+	        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
+	        replacement));
+	        if (el.id) el.id = el.id.replace(id_regex, replacement);
+	        if (el.name) el.name = el.name.replace(id_regex, replacement);
+	    }
+
+	    // function deleteForm(btn, prefix) {
+	    //     var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+	    //     if (formCount > 1) {
+	    //         // Delete the item/form
+	    //         $(btn).parents('.item').remove();
+	    //         var forms = $('.item'); // Get all the forms  
+	    //         // Update the total number of forms (1 less than before)
+	    //         $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+	    //         var i = 0;
+	    //         // Go through the forms and set their indices, names and IDs
+	    //         for (formCount = forms.length; i < formCount; i++) {
+	    //             $(forms.get(i)).children().children().each(function () {
+	    //                 if ($(this).attr('type') == 'text') updateElementIndex(this, prefix, i);
+	    //             });
+	    //         }
+	    //     } // End if
+	    //     else {
+	    //         alert("You have to enter at least one todo item!");
+	    //     }
+	    //     return false;
+	    // }
+
+	    function addHitForm(btn, prefix) {
+	        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+	        // You can only submit a maximum of 10 todo items 
+	        if (formCount < 13) {
+	            // Clone a form (without event handlers) from the first form
+	            var row = $(".hitter_body").children('tr:first').clone(false).get(0);
+	            // Insert it after the last form
+	            $(row).removeAttr('id').hide().insertAfter("#hitter_tab tr:last").slideDown(300);
+
+	            // Remove the bits we don't want in the new row/form
+	            // e.g. error messages
+	            // $(".errorlist", row).remove();
+	            // $(row).children().removeClass("error");
+
+	            // Relabel or rename all the relevant bits
+	            $(row).children().children().each(function () {
+	                updateElementIndex(this, prefix, formCount);
+	                $(this).val("");
+	            });
+
+	            // Add an event handler for the delete item/form link 
+	            // $(row).find(".delete").click(function () {
+	            //     return deleteForm(this, prefix);
+	            // });
+	            // Update the total form count
+	            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+	        } // End if
+	        else {
+	            alert("Sorry, you can only enter a maximum of ten items.");
+	        }
+	        return false;
+	    }
+
+	   	function addPitchForm(btn, prefix) {
+	        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+	        // You can only submit a maximum of 10 todo items 
+	        if (formCount < 6) {
+	            // Clone a form (without event handlers) from the first form
+	            var row = $(".pitcher_body").children('tr:first').clone(false).get(0);
+	            // Insert it after the last form
+	            $(row).removeAttr('id').hide().insertAfter("#pitcher_tab tr:last").slideDown(300);
+
+	            // Remove the bits we don't want in the new row/form
+	            // e.g. error messages
+	            // $(".errorlist", row).remove();
+	            // $(row).children().removeClass("error");
+
+	            // Relabel or rename all the relevant bits
+	            $(row).children().children().each(function () {
+	                updateElementIndex(this, prefix, formCount);
+	                $(this).val("");
+	            });
+
+	            // Add an event handler for the delete item/form link 
+	            // $(row).find(".delete").click(function () {
+	            //     return deleteForm(this, prefix);
+	            // });
+	            // Update the total form count
+	            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+	        } // End if
+	        else {
+	            alert("Sorry, you can only enter a maximum of ten items.");
+	        }
+	        return false;
+	    }
+	    // Register the click event handlers
+	    $("#add_hit").click(function () {
+	        return addHitForm(this, "hit");
+	    });
+	   	$("#add_pitch").click(function () {
+	        return addPitchForm(this, "pitch");
+	    });
+
+	    // $(".delete").click(function () {
+	    //     return deleteForm(this, "form");
+	    // });
+	});
+</script>
