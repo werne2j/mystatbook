@@ -50,7 +50,7 @@
 			{% endfor %}
 		</tbody>
 		<tfoot>
-			<form class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
+			<form id="playerform" class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
 				{% csrf_token %}
 				<tr class="text-center">
 					<th id="season_id" style="display:none;">{{form.season}}</th>
