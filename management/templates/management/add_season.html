@@ -4,6 +4,7 @@
 {% load i18n %}
 
 {% block extrastyle %}
+<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
 <style>
   #seasonform{
     width: 300px;
@@ -11,6 +12,9 @@
   }
   #wrapper{
     padding-right: 225px;
+  }
+  .btn-success{
+    margin-top: 0px;
   }
 </style>
 {% endblock %}
@@ -28,13 +32,34 @@
 {% endblock %}
 
 {% block extrascript %}
-    <script>
-        $("#div_id_team").hide();
-        // var k = $("#id_team").text("{{name}}").val();
-        $(function() {
-            $('[name=team] option').filter(function() {
-                return ($(this).text() == '{{name}}');
-            }).prop('selected', true);
-        });
-    </script>
+<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script>
+    $("#div_id_team").hide();
+    // var k = $("#id_team").text("{{name}}").val();
+    $(function() {
+        $('[name=team] option').filter(function() {
+            return ($(this).text() == '{{name}}');
+        }).prop('selected', true);
+    });
+
+    $(document).ready(function() {
+      $("#seasonform").bootstrapValidator({
+        feedbackIcons: {
+          valid: 'fa fa-check',
+          invalid: 'fa fa-times',
+          validating: 'fa fa-refresh'
+        },
+        fields: {
+          year: {
+            message: 'Season year is not valid',
+            validators: {
+              notEmpty: {
+                message: 'Season year is required'
+              },
+            }
+          },
+        }
+      });
+    });
+</script>
 {% endblock %}

@@ -1,5 +1,29 @@
 {% load staticfiles %}
 {% load bootstrap_tags %}
+<style>
+    input[type="number"]{
+      font-size: 1rem;
+      border: 0;
+      color: black;
+      outline: none;
+      width: 2rem;
+      margin: auto .75rem;
+      text-align: center;
+    }
+
+    input[type='number']:valid{
+      border-bottom: 2px dotted black;
+      color: black;
+    }
+
+    input[type="number"]:focus{
+      border-bottom: 2px solid black;
+      color: black;
+    }
+	input {
+	    text-align: center;
+	}
+</style>
 <div class="modal-dialog modal-lg">
 	<div class="modal-content">
 		<div class="modal-header">

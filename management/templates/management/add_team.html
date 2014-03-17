@@ -4,6 +4,7 @@
 {% load i18n %}
 
 {% block extrastyle %}
+<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
 <style>
   #teamform{
     width: 300px;
@@ -29,8 +30,36 @@
 {% endblock %}
 
 {% block extrascript %}
-    <script>
-        $("#div_id_coach").hide();
-        $("#id_coach").val({{user.pk}});
-    </script>
+<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script>
+    $("#div_id_coach").hide();
+    $("#id_coach").val({{user.pk}});
+
+    $(document).ready(function() {
+      $("#teamform").bootstrapValidator({
+        feedbackIcons: {
+          valid: 'fa fa-check',
+          invalid: 'fa fa-times',
+          validating: 'fa fa-refresh'
+        },
+        fields: {
+          name: {
+            message: 'Team name is not valid',
+            validators: {
+              notEmpty: {
+                message: 'Team name is required'
+              },
+            }
+          },
+          year: {
+            validators: {
+              notEmpty: {
+                message: 'Team year is required'
+              },
+            }
+          },
+        }
+      });
+    });
+</script>
 {% endblock %}

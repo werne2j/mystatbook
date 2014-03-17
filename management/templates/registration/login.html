@@ -5,6 +5,7 @@
 {% block title %}Sign In{% endblock %}
 
 {% block extrastyle %}
+<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
 <style>
   #logform{
     width: 300px;
@@ -55,3 +56,37 @@
   
 {% endblock %}
 
+{% block extrascript %}
+<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    $("#logform").bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'fa fa-check',
+            invalid: 'fa fa-times',
+            validating: 'fa fa-refresh'
+        }
+        submitButtons: 'button[type="submit"]',
+        submitHandler: null,
+        live: 'enabled',
+        fields: {
+          username: {
+            validators: {
+              notEmpty: {
+                message: 'Username is required'
+              }
+            }
+          },
+          password: {
+            validators: {
+              notEmpty: {
+                messaage: 'Password is required'
+              }
+            }
+          }
+        }
+    });
+});
+</script>
+{% endblock %}

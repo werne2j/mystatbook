@@ -4,8 +4,9 @@
 {% block title %}Sign In{% endblock %}
 
 {% block extrastyle %}
+<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
 <style>
-  #logform{
+  #logform, #regform{
     width: 250px;
     margin: 0 auto;
   }
@@ -60,7 +61,7 @@
             <h3 class="panel-title">Register</h3>
         </div>
         <div class="panel-body">
-          <form id="logform" method="post" action="{% url 'registration' %}" >
+          <form id="regform" method="post" action="{% url 'registration' %}" >
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}" />
             <div id="div_id_username" class="form-group   required">   
@@ -91,3 +92,83 @@
 
 {% endblock %}
 
+{% block extrascript %}
+<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+      $("#logform").bootstrapValidator({
+        feedbackIcons: {
+          valid: 'fa fa-check',
+          invalid: 'fa fa-times',
+          validating: 'fa fa-refresh'
+        },
+        fields: {
+          username: {
+            message: 'Username is not valid',
+            validators: {
+              notEmpty: {
+                message: 'Username is required'
+              },
+            }
+          },
+          password: {
+            validators: {
+              notEmpty: {
+                message: 'Password is required'
+              },
+            }
+          },
+        }
+    });
+    $("#regform").bootstrapValidator({
+        feedbackIcons: {
+          valid: 'fa fa-check',
+          invalid: 'fa fa-times',
+          validating: 'fa fa-refresh'
+        },
+        fields: {
+          username: {
+            message: 'Username is not valid',
+            validators: {
+              notEmpty: {
+                message: 'Username is required'
+              },
+            }
+          },
+          email: {
+            validators: {
+              notEmpty: {
+                message: 'Email is required'
+              },
+              emailAddress: {
+                message: 'The input is not a valid email address'
+              },
+            }
+          },
+          password1: {
+            validators: {
+              notEmpty: {
+                message: 'Password is required'
+              },
+              identical: {
+                field: 'password2',
+                  message: 'Passwords do not match'
+              },
+            }
+          },
+          password2: {
+            validators: {
+              notEmpty: {
+                message: 'Password Confirmation is required'
+              },
+              identical: {
+                field: 'password1',
+                  message: 'Passwords do not match'
+              },
+            }
+          },
+        }
+    });
+});
+</script>
+{% endblock %}

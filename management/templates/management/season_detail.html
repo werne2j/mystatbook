@@ -28,10 +28,12 @@
 <div class="col-md-4">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Panel title</h3>
+	    <h3 class="panel-title">Batting Average Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    Panel content
+	    {% for a in avgLeaders %}
+	    	<p>{{a}} {{a.average}}</p>
+	    {% endfor %}
 	  </div>
 	</div>
 </div>
@@ -39,10 +41,12 @@
 <div class="col-md-4">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Panel title</h3>
+	    <h3 class="panel-title">On Base Percentage Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    Panel content
+	    {% for o in obpLeaders %}
+	    	<p>{{o}} {{o.on_base}}</p>
+	    {% endfor %}
 	  </div>
 	</div>
 </div>
@@ -50,10 +54,12 @@
 <div class="col-md-4">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Panel title</h3>
+	    <h3 class="panel-title">Slugging Percentage Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    Panel content
+	    {% for s in slugLeaders %}
+	    	<p>{{s}} {{s.slug}}</p>
+	    {% endfor %}
 	  </div>
 	</div>
 </div>
@@ -61,10 +67,12 @@
 <div class="col-md-4">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Panel title</h3>
+	    <h3 class="panel-title">ERA Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    Panel content
+	    {% for e in eraLeaders %}
+	    	<p>{{e}} {{e.era}}</p>
+	    {% endfor %}
 	  </div>
 	</div>
 </div>
@@ -72,10 +80,12 @@
 <div class="col-md-4">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Panel title</h3>
+	    <h3 class="panel-title">Inning Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    Panel content
+	    {% for i in innLeaders %}
+	    	<p>{{i}} {{i.innings}}</p>
+	    {% endfor %}
 	  </div>
 	</div>
 </div>
@@ -83,10 +93,12 @@
 <div class="col-md-4">
 	<div class="panel panel-primary">
 	  <div class="panel-heading">
-	    <h3 class="panel-title">Panel title</h3>
+	    <h3 class="panel-title">Win Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    Panel content
+	    {% for w in winLeaders %}
+	    	<p>{{w}} {{w.pitch_totals.win__sum}}</p>
+	    {% endfor %}
 	  </div>
 	</div>
 </div>

@@ -104,6 +104,21 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             team = Team.objects.filter(coach=self.request.user).get(name=self.kwargs.get("name"))
             season = Season.objects.create(team=team ,year=self.kwargs.get("year"))
 
+        players = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        batters = []
+        pitchers = []
+        for player in players:
+            if player.plate_apperances() > 0:
+                batters.append(player)
+            if player.pitch_totals().get('full_innings__sum') > 0:
+                pitchers.append(player)
+
+        context['avgLeaders'] = sorted(batters, key=lambda x: x.average(), reverse=True)[:5]
+        context['obpLeaders'] = sorted(batters, key=lambda x: x.on_base(), reverse=True)[:5]
+        context['slugLeaders'] = sorted(batters, key=lambda x: x.slug(), reverse=True)[:5]
+        context['eraLeaders'] = sorted(pitchers, key=lambda x: x.era())[:5]
+        context['innLeaders'] = sorted(pitchers, key=lambda x: x.innings(), reverse=True)[:5]
+        context['winLeaders'] = sorted(pitchers, key=lambda x: x.pitch_totals()['win__sum'], reverse=True)[:5]
         context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
@@ -248,7 +263,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             pitch['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
         else: 
             pitch = 0
-            
+
         context['totals'] = totals
         context['pitch'] = pitch
         context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
