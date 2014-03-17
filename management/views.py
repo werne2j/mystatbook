@@ -425,7 +425,7 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         hit = HitterStats.objects.filter(game__pk=self.kwargs.get("pk"))
         pitch = PitcherStats.objects.filter(game__pk=self.kwargs.get("pk"))
 
-        HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=9-len(hit))
+        HitStatsFormSet = modelformset_factory(HitterStats,form=HitStatsForm, extra=9-len(hit))
         PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm, extra=1-len(pitch))
 
         hit_formset = HitStatsFormSet(initial=[{'game': game,}], queryset=hit, prefix='hit')

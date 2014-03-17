@@ -61,6 +61,10 @@ class PlayerForm(forms.ModelForm):
 		fields = ('season', 'first_name', 'last_name', 'position', 'class_standing', 'throws', 'hits')
 
 class HitStatsForm(forms.ModelForm):
+	# def __init__(self, *args, **kwargs):
+	# 	super(HitStatsForm, self).__init__(*args, **kwargs)
+	# 	self.fields['player'].queryset = Player.objects.filter(season=self.instance.game.season)
+
 	class Meta:
 		model = HitterStats
 		fields = ('game','player','at_bats', 'runs', 'hits', 'doubles', 'triples', 'hr', 'rbi', 'walks', 'hbp', 'sacrafice', 'strikeouts')
