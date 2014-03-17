@@ -66,11 +66,6 @@ body {
 table.tablesorter thead {
   cursor: pointer;
 }
-
-table.tablesorter thead tr th:hover {
-  background-color: #f5f5f5;
-}
-
 /* Flot Chart Containers */
 
 .flot-chart {

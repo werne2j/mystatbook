@@ -6,6 +6,16 @@
 <h1>{{name}} {{year}} <small>Schedule</small></h1>
 {% endblock %}
 
+{% block extrastyle %}
+<style>
+	#save_game{
+		padding: 2px 12px;
+	}
+	tfoot{
+		border-top: 2px solid #ddd;
+	}
+</style>
+{% endblock %}
 {% block content %}
 <div id="schedule">
 	<table class="table table-bordered table-striped" id="game_list">
@@ -14,13 +24,13 @@
 				<th class="text-center">Date</th>
 				<th class="text-center">Opponent</th>
 				<th class="text-center">Location</th>
-				<th class="text-center">Time</th>
-				<th class="text-center">Doubleheader</th>
-				<th class="text-center">Box Score</th>
-				<th class="text-center">Delete</th>
+				<th class="text-center no-sort">Time</th>
+				<th class="text-center no-sort">Doubleheader</th>
+				<th class="text-center no-sort">Box Score</th>
+				<th class="text-center no-sort">Delete</th>
 			</tr>
 		</thead>
-		<tbody data-link="row" class="rowlink">
+		<tbody>
 			{% for g in games %}
 			<tr {% if g.conference %}class="bold"{% endif %}>
 				<td class="text-center">{{g.date}}</td>
@@ -38,6 +48,8 @@
 				</td>
 			</tr>
 			{% endfor %}
+		</tbody>
+		<tfoot>
 			<form class="form-inline add_game" action="{% url 'game_list' username=user name=name year=year %}" method=post>
 				{% csrf_token %}
 				<tr class="text-center">
@@ -46,12 +58,12 @@
 					<th class="text-center">{{form.opponent}}</th>
 					<th class="text-center">{{form.location}}</th>
 					<th class="text-center" id="game_time">{{form.time}}<input id='id_time2' name='time2' type='hidden'></th>
-					<td class="text-center"><label for="id_doubleheader" style="font-size:.9em;">Doubleheader</label> <br> {{form.doubleheader}}</td>
-					<td class="text-center"><label for="id_doubleheader" style="font-size:.9em;">Conference</label> <br> {{form.conference}}</td>
-					<th class="text-center no-sort"><button type="submit" class="btn btn-primary">Save</button></th>
+					<td class="text-center"><label for="id_doubleheader" style="font-size:.9em;">Doubleheader: </label> {{form.doubleheader}}</td>
+					<td class="text-center"><label for="id_doubleheader" style="font-size:.9em;">Conference: </label> {{form.conference}}</td>
+					<th class="text-center no-sort"><button type="submit" class="btn btn-primary"id="save_game">Save</button></th>
 				</tr>
 			</form>
-		</tbody>
+		</tfoot>
 	</table>
 	<p>*<strong>Bold</strong> indicates conference games</p> 
 	<div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -60,7 +72,10 @@
 {% endblock %}
 
 {% block extrascript %}
+<script src="{% static 'js/tablesort.min.js' %}"></script>
 <script>
+	new Tablesort(document.getElementById('game_list'));
+
    $(".game").click(function(ev) { // for each edit contact url
         ev.preventDefault(); // prevent navigation
         var url = $(this).data("form"); // get the contact form url

@@ -3,13 +3,24 @@
 {% load bootstrap_tags %}
 {% load i18n %}
 
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'chosen_v1.1.0/chosen.css' %}">
+<style>
+	#save_player{
+		padding: 2px 12px;
+	}
+	tfoot{
+		border-top: 2px solid #ddd;
+	}
+</style>
+{% endblock %}
 {% block header %}
 <h1>{{name}} {{year}} <small>Roster</small></h1>
 {% endblock %}
 
 {% block content %}
 <div id="#roster">
-	<table class="table table-bordered table-striped" id="player_list">
+	<table class="table table-bordered table-striped tablesorter" id="player_list">
 		<thead>
 			<tr class="text-center">
 				<th class="text-center">Last Name</th>
@@ -37,6 +48,8 @@
 				</td>
 			</tr>
 			{% endfor %}
+		</tbody>
+		<tfoot>
 			<form class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
 				{% csrf_token %}
 				<tr class="text-center">
@@ -46,16 +59,21 @@
 					<th class="text-center">{{form.position}}</th>
 					<th class="text-center">{{form.class_standing}}</th>
 					<th class="text-center">{{form.throws}}/{{form.hits}}</th>
-					<th class="text-center no-sort"><button type="submit" class="btn btn-primary">Save</button></th>
+					<th class="text-center no-sort"><button type="submit" class="btn btn-primary" id="save_player">Save</button></th>
 				</tr>
 			</form>
-		</tbody>
+		</tfoot>
 	</table>
 </div>
 {% endblock %}
 
 {% block extrascript %}
+<script src="{% static 'chosen_v1.1.0/chosen.jquery.js' %}"></script>
+<script src="{% static 'js/tablesort.min.js' %}"></script>
 <script>
+	new Tablesort(document.getElementById('player_list'));
+
+	$("#id_position").chosen({width: "140px", placeholder_text_multiple: "Positions"});
 
 	var season = {{team.id}};
 	$('select[name="season"]').val(season);
