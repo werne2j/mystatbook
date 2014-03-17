@@ -1,60 +1,66 @@
+{% extends "management/season_detail.html" %}
 {% load staticfiles %}
 {% load bootstrap_tags %}
-<table class="table table-bordered table-striped" id="player_list">
-	<thead>
-		<tr class="text-center">
-			<th class="text-center">Last Name</th>
-			<th class="text-center">First Name</th>
-			<th class="text-center">Position</th>
-			<th class="text-center">Class</th>
-			<th class="text-center">Throw/Hit</th>
-			<th class="text-center no-sort">Delete</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for p in players %}
-		<tr>
-			<td class="text-center">{{p.last_name}}</td>
-			<td class="text-center">{{p.first_name}}</td>
-			<td class="text-center">{{p.position.all|join:" / " }}</td>
-			<td class="text-center">{{p.class_standing}}</td>
-			<td class="text-center">{{p.throws}}/{{p.hits}}</td>
-			<td class="text-center">
-				<form action="" class="delete_form" method=post>
-					{% csrf_token %}
-					<input type="hidden" value="{{p.id}}" name="delete">
-					<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
-				</form>
-			</td>
-		</tr>
-		{% endfor %}
-		<form class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
-			{% csrf_token %}
+{% load i18n %}
+
+{% block header %}
+<h1>{{name}} {{year}} <small>Roster</small></h1>
+{% endblock %}
+
+{% block content %}
+<div id="#roster">
+	<table class="table table-bordered table-striped" id="player_list">
+		<thead>
 			<tr class="text-center">
-				<th id="season_id" style="display:none;">{{form.season}}</th>
-				<th class="text-center">{{form.last_name}}</th>
-				<th class="text-center">{{form.first_name}}</th>
-				<th class="text-center">{{form.position}}</th>
-				<th class="text-center">{{form.class_standing}}</th>
-				<th class="text-center">{{form.throws}}/{{form.hits}}</th>
-				<th class="text-center no-sort"><button type="submit" class="btn btn-primary">Save</button></th>
+				<th class="text-center">Last Name</th>
+				<th class="text-center">First Name</th>
+				<th class="text-center">Position</th>
+				<th class="text-center">Class</th>
+				<th class="text-center">Throw/Hit</th>
+				<th class="text-center no-sort">Delete</th>
 			</tr>
-		</form>
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{% for p in players %}
+			<tr>
+				<td class="text-center">{{p.last_name}}</td>
+				<td class="text-center">{{p.first_name}}</td>
+				<td class="text-center">{{p.position.all|join:" / " }}</td>
+				<td class="text-center">{{p.class_standing}}</td>
+				<td class="text-center">{{p.throws}}/{{p.hits}}</td>
+				<td class="text-center">
+					<form action="" class="delete_form" method=post>
+						{% csrf_token %}
+						<input type="hidden" value="{{p.id}}" name="delete">
+						<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+			<form class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
+				{% csrf_token %}
+				<tr class="text-center">
+					<th id="season_id" style="display:none;">{{form.season}}</th>
+					<th class="text-center">{{form.last_name}}</th>
+					<th class="text-center">{{form.first_name}}</th>
+					<th class="text-center">{{form.position}}</th>
+					<th class="text-center">{{form.class_standing}}</th>
+					<th class="text-center">{{form.throws}}/{{form.hits}}</th>
+					<th class="text-center no-sort"><button type="submit" class="btn btn-primary">Save</button></th>
+				</tr>
+			</form>
+		</tbody>
+	</table>
+</div>
+{% endblock %}
 
+{% block extrascript %}
 <script>
-    $(document).ajaxComplete(function(){
-		new Tablesort(document.getElementById('player_list'));
-	});
-
-	$("#id_position").chosen({ placeholder_text_multiple: 'Select Positions' });
 
 	var season = {{team.id}};
 	$('select[name="season"]').val(season);
 
 	$('.delete_form').submit(function (e) {
-		e.preventDefault();
 		$.ajax({
 			type: 'post',
 			url : "{% url 'player_list' username=user name=name year=year %}",
@@ -66,7 +72,6 @@
 	});
 
 	$('.add_form').submit(function (e) {
-		e.preventDefault();
 		$.ajax({
 			type: 'post',
 			url : "{% url 'player_list' username=user name=name year=year %}",
@@ -77,3 +82,4 @@
 		});
 	});
 </script>
+{% endblock %}

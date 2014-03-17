@@ -1,4 +1,13 @@
+{% extends "management/season_detail.html" %}
 {% load staticfiles %}
+{% load i18n %}
+
+{% block header %}
+<h1>{{name}} {{year}} <small>Statistics</small></h1>
+{% endblock %}
+
+{% block content %}
+
 <div class="tab-pane" id="stats">
 	<table class="table table-bordered table-striped" id="hitting_table">
 		<thead>
@@ -130,9 +139,14 @@
 		</tfoot>
 	</table>
 </div>
+
+{% endblock %}
+
+{% block extrascript %}
 <script>
 	$(document).ajaxComplete(function(){
 		new Tablesort(document.getElementById('hitting_table'));
 		new Tablesort(document.getElementById('pitching_table'));
 	});
 </script>
+{% endblock %}

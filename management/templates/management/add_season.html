@@ -3,11 +3,14 @@
 {% load staticfiles %}
 {% load i18n %}
 
-{% block extrascript %}
+{% block extrastyle %}
 <style>
   #seasonform{
     width: 300px;
     margin: 0 auto;
+  }
+  #wrapper{
+    padding-right: 225px;
   }
 </style>
 {% endblock %}
@@ -22,6 +25,9 @@
         {{ form | as_bootstrap }}
         <button type="submit" class="btn btn-success">Submit</button>
     </form>
+{% endblock %}
+
+{% block extrascript %}
     <script>
         $("#div_id_team").hide();
         // var k = $("#id_team").text("{{name}}").val();

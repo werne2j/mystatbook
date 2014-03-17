@@ -1,0 +1,76 @@
+{% load staticfiles %}
+{% load firstof from future %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>MyStatBook</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet">
+
+        <!-- Add custom CSS here -->
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+        <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}">
+        <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}">
+
+        {% block extrastyle %}{% endblock %}
+    </head>
+    {% load i18n %}
+    <body>
+
+        <div>
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><i class="fa fa-clipboard fa-3"></i> MyStatBook</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse" id="mainNavigation">
+                    <ul class="nav navbar-nav navbar-left">
+                        {% block teamlinks %}{% endblock %}
+                        <li><a href="{% url 'add_team' username=user.username %}"><i class="fa fa-plus"></i> Add Team</a></li>  
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right navbar-user">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i> {% filter force_escape %}{% firstof user.username %}{% endfilter %} 
+                                <i class="fa fa-caret-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'user_settings' user.username %}"><i class="fa fa-cogs"></i> Settings</a></li>
+                                {% url 'logout_page' as logout_url %}
+                                <li><a href="{{ logout_url }}"><i class="fa fa-sign-out"></i> {% trans 'Log out' %}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+
+            <div id="page-wrapper">
+                {% block header %}{% endblock %}
+                {% block content %}{% endblock %}
+            </div><!-- /#page-wrapper -->
+
+        </div><!-- /#wrapper -->
+
+        <!-- JavaScript -->
+        <script src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.js' %}"></script>
+        <script src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
+        {% block extrascript %}{% endblock %}
+    </body>
+</html>

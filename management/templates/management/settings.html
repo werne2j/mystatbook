@@ -1,10 +1,14 @@
-{% extends "management/index.html" %}
+{% extends "management/index_team.html" %}
 {% load bootstrap_tags %}
 {% load staticfiles %}
 {% load i18n %}
 
-{% block extrascript %}
-
+{% block extrastyle %}
+<style>
+  #wrapper{
+    padding-right: 225px;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -13,7 +17,7 @@
     <h3 class="panel-title">Delete Teams</h3>
   </div>
   <div class="panel-body">
-    {% for t in teamlist %}
+    {% for t in teams %}
         <p>{{t}}</p>
     {% endfor %}
   </div>

@@ -4,16 +4,17 @@
 
 <!-- Content -->
 {% block header %}
-
+<h1>{{name}} {{year}} <small>Dashboard</small></h1>
 {% endblock %}
 
-{% block extrascript %}
+{% block extrastyle %}
 <link rel="stylesheet" href="{% static 'css/chart.css' %}" />
 
 <style>
 	#field{
 		background-image: url("{% static 'diamond.png' %}");
 		height: 731px;
+		width: 950px;
 		margin-bottom:20px;
 	}
 	table th.sort-up,table th.sort-down{
@@ -116,134 +117,88 @@
 		border-top:5px solid #ddd;
 	}
 </style>
+{% endblock %}
 
-<script>
-	$( document ).ajaxComplete(function() {
-    	$('#editPlayerModal #id_team').val("{{teams.0.pk}}");
-    	$('#save_depth_chart').click(function() {
-    		$('#submitButton').click();
-    	});
-    	$('.dropElement').each(function() {
-    		if ($(this).text() == "Left Field" ||
-    			$(this).text() == "Center Field" ||
-    			$(this).text() == "Right Field" ||
-    			$(this).text() == "Shortstop" ||
-    			$(this).text() == "Second Base" ||
-    			$(this).text() == "Third Base" ||
-    			$(this).text() == "Starting Pitcher" ||
-    			$(this).text() == "First Base" ||
-    			$(this).text() == "Relief Pitcher" ||
-    			$(this).text() == "Catcher" ||
-    			$(this).text() == "Designated Hitter") {
-    				$(this).parent().addClass("position-danger");
-    		};
-    	});
-    	$('.selectpicker').selectpicker();
-	});
-	$( document ).ajaxComplete(function() {
-		$( ".draggable" ).draggable({ snap: ".ui-widget-header", helper: "clone" });
-		$( ".droppable" ).droppable({
-			drop: function( event, ui ) {
-        		$( this ).find( "p" ).remove();
-        		$( "<p id='dropElement'></p>" ).text( ui.draggable.text() ).appendTo( this );
-        		var position_id = $(this).attr("id") ;
-        		var player = ui.helper.context.innerText;
-        		$('#editPlayerModal #id_' + position_id).val(player);
-        		$(this).removeClass("position-danger");
-            }
-        });
-	});
-</script>
+{% block sidelinks %}
+<ul class="nav navbar-nav side-nav">
+	<li><a href="{% url 'season_detail' username=user name=name year=year %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+	<li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users"></i> Players <b class="caret"></b></a>
+	    <ul class="dropdown-menu">
+	        <li><a href="{% url 'player_list' username=user name=name year=year %}"><i class="fa fa-th-list"></i> Roster</a></li>
+	        <li><a href="{% url 'depth_chart' username=user name=name year=year %}"><i class="fa fa-picture-o"></i> Depth Chart</a></li>
+	    </ul>
+	</li>
+	<li><a href="{% url 'game_list' username=user name=name year=year %}"><i class="fa fa-calendar"></i> Schedule</a></li>
+	<li><a href="{% url 'player_stats' username=user name=name year=year %}"><i class="fa fa-bar-chart-o"></i> Statistics</a></li>
+</ul>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-			Players <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li><a href="#roster" data-toggle="tab" id="player_roster">Roster</a></li>
-				<li><a href="#depthchart" data-toggle="tab" id="depth_chart">Depth Chart</a></li>
-			</ul>
-		</li>
-		<li><a href="#schedule" data-toggle="tab" id="game_schedule">Schedule</a></li>
-		<li><a href="#stats" data-toggle="tab" id="player_stats">Statistics</a></li>
-		<div class="btn-group pull-right">
-			<li class="pull-left" id="add-season"><a href="{% url 'add_season' username=user name=name %}"><span class="glyphicon glyphicon-plus"></span> Add Season</a></li>
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{year}} <span class="caret"></span></button>
-			<ul class="dropdown-menu" role="menu">
-				{% for s in seasons %}
-					<li><a href="{% url 'season_detail' username=user name=name year=s.year %}">{{s.year}}</a></li>
-				{% endfor %}
-			</ul>
-		</div>
-	</ul>
-    <div id='content' class="tab-content">
-
-		<div class="tab-pane active" id="home"></div>
-
-		<div class="tab-pane" id="roster"></div>
-
-		<div class="tab-pane" id="depthchart"></div>
-
-		<div class="tab-pane" id="schedule"></div>
-
-		<div class="tab-pane" id="stats"></div>
-
-    </div>
+<div class="col-md-4">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Panel title</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div>
 </div>
-<script type="text/javascript" src="{% static 'js/tablesort.min.js' %}"></script>
-<script>
-$('#player_roster').click(function (e) {
-	e.preventDefault()
-	$(this).tab('show');
-    $.ajax({
-        url : "{% url 'player_list' username=user name=name year=year %}",
-        success: function(data){
-            $('#roster').html(data);
-        }
-    });
-    $('.dropdown-toggle').dropdown("toggle");
-})
 
-$('#game_schedule').click(function (e) {
-	e.preventDefault()
-	$(this).tab('show');
-    $.ajax({
-        url : "{% url 'game_list' username=user name=name year=year %}",
-        success: function(data){
-            $('#schedule').html(data);
-        }
-    });
-    $('.dropdown-toggle').dropdown("toggle");
-})
+<div class="col-md-4">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Panel title</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div>
+</div>
 
-$('#player_stats').click(function (e) {
-	e.preventDefault()
-	$(this).tab('show');
-    $.ajax({
-        url : "{% url 'player_stats' username=user name=name year=year %}",
-        success: function(data){
-            $('#stats').html(data);
-        }
-    });
-    $('.dropdown-toggle').dropdown("toggle");
-})
+<div class="col-md-4">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Panel title</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div>
+</div>
 
-$('#depth_chart').click(function (e) {
-	e.preventDefault()
-	$(this).tab('show');
-    $.ajax({
-        url : "{% url 'depth_chart' username=user name=name year=year %}",
-        success: function(data){
-            $('#depthchart').html(data);
-        }
-    });
-    $('.dropdown-toggle').dropdown("toggle");
-})
-</script>
+<div class="col-md-4">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Panel title</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div>
+</div>
 
+<div class="col-md-4">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Panel title</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div>
+</div>
+
+<div class="col-md-4">
+	<div class="panel panel-primary">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Panel title</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div>
+</div>
 {% endblock %}
+

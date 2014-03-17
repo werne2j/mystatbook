@@ -1,16 +1,21 @@
-{% extends "management/base.html" %}
+{% extends "management/base2.html" %}
 {% load i18n %}
 
 
-{% block links %}
+{% block teamlinks %}
 		{% for t in teams %}
-			<li><a href="{% url 'season_detail' username=t.coach name=t.name year=t.latest_year.year %}">{{t.name}}</a></li>
+		<li class="dropdown">
+			<a href="{% url 'season_detail' username=t.coach name=t.name year=t.latest_year.year %}" class="dropdown-toggle" data-toggle="dropdown">{{t.name}} <i class="fa fa-caret-down"></i></a>
+			<ul class="dropdown-menu">
+				{% for s in t.season_set.all %}
+					<li><a href="{% url 'season_detail' username=user name=t.name year=s.year %}">{{s.year}}</a></li>
+				{% endfor %}
+				<li id="add-season"><a href="{% url 'add_season' username=user name=t.name %}"><i class="fa fa-plus"></i> New Season</a></li>
+			</ul>
+		</li>
 		{% endfor %}
 {% endblock %}
 <!-- Content -->
-{% block header %}
-    
-{% endblock %}
 
 {% block content %}
 
