@@ -37,8 +37,12 @@ def login_page(request):
 
 
 class UserRegistration(RegistrationView):
+
+    template_name = 'management/register.html'
+
     def get_success_url(self, request, user):
         return reverse('add_team', kwargs={'username': request.user.username })
+
 
 class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
@@ -99,12 +103,12 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context = super(SeasonDetail, self).get_context_data(**kwargs)
 
         try:
-            season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+            season = Season.objects.filter(team__coach__username=self.request.user.username).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
         except:
             team = Team.objects.filter(coach=self.request.user).get(name=self.kwargs.get("name"))
             season = Season.objects.create(team=team ,year=self.kwargs.get("year"))
 
-        players = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        players = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
         batters = []
         pitchers = []
         for player in players:
@@ -158,8 +162,8 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         player_form = PlayerForm()
 
         context['form'] = player_form
-        context['team'] = Season.objects.get(team__name=self.kwargs.get("name"), year=self.kwargs.get("year"))
-        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('last_name')
+        context['team'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+        context['players'] = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('last_name')
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
 
@@ -208,10 +212,10 @@ class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         game_form = AddGameForm()
 
         context['form'] = game_form
-        context['games'] = Game.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('date')
-        context['season'] = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+        context['games'] = Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('date')
+        context['season'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
         context['teams'] = Team.objects.filter(coach=self.request.user)
-        context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
+        context['seasons'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).order_by("-year")
 
         return context
 
@@ -230,7 +234,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerStats, self).get_context_data(**kwargs)
 
-        players = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        players = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
         batters = []
         pitchers = []
         for player in players:
@@ -239,11 +243,11 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             if player.pitch_totals().get('full_innings__sum') > 0:
                 pitchers.append(player)
 
-        totals = HitterStats.objects.filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(atbats=Sum('at_bats'),
+        totals = HitterStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(atbats=Sum('at_bats'),
             hits=Sum('hits'), runs=Sum('runs'), doubles=Sum('doubles'), triples=Sum('triples'), hr=Sum('hr'), rbi=Sum('rbi'),
             walks=Sum('walks'), hbp=Sum('hbp'), strikeouts=Sum('strikeouts'), sacrafice=Sum('sacrafice'))
 
-        if HitterStats.objects.filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
+        if HitterStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
             totals['plate_apperances'] = totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']
             totals['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), hitterstats__isnull=True).count()
             totals['average'] = round(float(totals['hits']) / float(totals['atbats']),3)
@@ -253,14 +257,14 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             totals = 0
 
-        pitch = PitcherStats.objects.filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(starts=Count('starting_pitcher'), full=Sum('full_innings'),part=Sum('part_innings'),
+        pitch = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(starts=Count('starting_pitcher'), full=Sum('full_innings'),part=Sum('part_innings'),
             hits=Sum('hits_allowed'),runs=Sum('runs_allowed'), earned=Sum('earned_runs'), walks=Sum('walks_allowed'), k=Sum('strikeout_amount'),wp=Sum('wild_pitches'),
             hbp=Sum('hit_by_pitch'), w=Sum('win'), l=Sum('loss'), sv=Sum('sv'))
 
-        if PitcherStats.objects.filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
+        if PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
             pitch['innings'] = str(((pitch['full']*3)+pitch['part']) / 3) + "." + str(((pitch['full']*3)+pitch['part']) % 3)
             pitch['era'] = round(float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0 ,2)
-            pitch['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
+            pitch['games'] = Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
         else: 
             pitch = 0
 
@@ -269,7 +273,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
         context['pitchers'] = sorted(pitchers, key=lambda x: x.era())
         context['teams'] = Team.objects.filter(coach=self.request.user)
-        context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
+        context['seasons'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).order_by("-year")
 
         return context
 
@@ -301,18 +305,18 @@ class Depth_Chart(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context = super(Depth_Chart, self).get_context_data(**kwargs)
 
         try:
-            depthchart = DepthChart.objects.filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
+            depthchart = DepthChart.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).get(season__year=self.kwargs.get("year"))
         except:
-            season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+            season = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
             depthchart = DepthChart.objects.create(season=season)
 
         this_form = PositionForm(instance=depthchart)
 
         context['form'] = this_form
         context['depth'] = depthchart
-        context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        context['players'] = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
         context['teams'] = Team.objects.filter(coach=self.request.user)
-        context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
+        context['seasons'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).order_by("-year")
 
         return context
 
@@ -395,12 +399,6 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             return True
 
-    # HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=9)
-    # PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm)
-
-    # hit_formset = HitStatsFormSet(queryset=game, prefix='hit')
-    # pitch_formset = PitchStatsFormSet(queryset=game, prefix='pitch')
-
     def post(self, request, **kwargs):
         hit = HitterStats.objects.filter(game__pk=self.kwargs.get("pk"))
         pitch = PitcherStats.objects.filter(game__pk=self.kwargs.get("pk"))
@@ -416,16 +414,16 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             pitch_formset.save()
         else:
             print pitch_formset.errors
-        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
+        return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):
         context = super(GameStats, self).get_context_data(**kwargs)
-        season = Season.objects.filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+        season = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
         game = Game.objects.filter(season=season).get(pk=self.kwargs.get("pk"))
         hit = HitterStats.objects.filter(game__pk=self.kwargs.get("pk"))
         pitch = PitcherStats.objects.filter(game__pk=self.kwargs.get("pk"))
 
-        HitStatsFormSet = modelformset_factory(HitterStats,form=HitStatsForm, extra=9-len(hit))
+        HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=9-len(hit))
         PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm, extra=1-len(pitch))
 
         hit_formset = HitStatsFormSet(initial=[{'game': game,}], queryset=hit, prefix='hit')

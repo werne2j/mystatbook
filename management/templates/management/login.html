@@ -6,16 +6,12 @@
 {% block extrastyle %}
 <link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
 <style>
-  #logform, #regform{
+  #logform{
     width: 250px;
     margin: 0 auto;
   }
   #log_form{
     padding-left: 0px;
-    padding-top: 40px;
-  }
-  #reg_form{
-    padding-right: 0px;
     padding-top: 40px;
   }
   .panel{
@@ -35,7 +31,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-md-6" id="log_form">
+<div class="col-md-6 col-md-offset-3" id="log_form">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">Log In</h2>
@@ -51,11 +47,13 @@
         </div>
         <button class="btn btn-success btn-block" type="submit">Log In</button>
         <input type="hidden" name="next" value="{% firstof next '/' %}" />
+        <br>
+        <p>Forget your password?</p>
       </form>
     </div>
   </div>
 </div>
-<div class="col-md-6" id="reg_form">
+<!-- <div class="col-md-6" id="reg_form">
     <div class="panel panel-default" id="log">
         <div class="panel-heading">
             <h3 class="panel-title">Register</h3>
@@ -88,7 +86,7 @@
           </form>
         </div>
     </div> 
-</div>
+</div> -->
 
 {% endblock %}
 
@@ -120,55 +118,55 @@ $(document).ready(function() {
           },
         }
     });
-    $("#regform").bootstrapValidator({
-        feedbackIcons: {
-          valid: 'fa fa-check',
-          invalid: 'fa fa-times',
-          validating: 'fa fa-refresh'
-        },
-        fields: {
-          username: {
-            message: 'Username is not valid',
-            validators: {
-              notEmpty: {
-                message: 'Username is required'
-              },
-            }
-          },
-          email: {
-            validators: {
-              notEmpty: {
-                message: 'Email is required'
-              },
-              emailAddress: {
-                message: 'The input is not a valid email address'
-              },
-            }
-          },
-          password1: {
-            validators: {
-              notEmpty: {
-                message: 'Password is required'
-              },
-              identical: {
-                field: 'password2',
-                  message: 'Passwords do not match'
-              },
-            }
-          },
-          password2: {
-            validators: {
-              notEmpty: {
-                message: 'Password Confirmation is required'
-              },
-              identical: {
-                field: 'password1',
-                  message: 'Passwords do not match'
-              },
-            }
-          },
-        }
-    });
+    // $("#regform").bootstrapValidator({
+    //     feedbackIcons: {
+    //       valid: 'fa fa-check',
+    //       invalid: 'fa fa-times',
+    //       validating: 'fa fa-refresh'
+    //     },
+    //     fields: {
+    //       username: {
+    //         message: 'Username is not valid',
+    //         validators: {
+    //           notEmpty: {
+    //             message: 'Username is required'
+    //           },
+    //         }
+    //       },
+    //       email: {
+    //         validators: {
+    //           notEmpty: {
+    //             message: 'Email is required'
+    //           },
+    //           emailAddress: {
+    //             message: 'The input is not a valid email address'
+    //           },
+    //         }
+    //       },
+    //       password1: {
+    //         validators: {
+    //           notEmpty: {
+    //             message: 'Password is required'
+    //           },
+    //           identical: {
+    //             field: 'password2',
+    //               message: 'Passwords do not match'
+    //           },
+    //         }
+    //       },
+    //       password2: {
+    //         validators: {
+    //           notEmpty: {
+    //             message: 'Password Confirmation is required'
+    //           },
+    //           identical: {
+    //             field: 'password1',
+    //               message: 'Passwords do not match'
+    //           },
+    //         }
+    //       },
+    //     }
+    // });
 });
 </script>
 {% endblock %}

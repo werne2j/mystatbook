@@ -43,7 +43,13 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="{% url 'login_page' %}">Login</a></li>
+            <li class="active">
+            	{% if user.is_authenticated %}
+            	<a href="{% url 'coach_portal' username=user.username %}">Logged in as {{user.username}}</a>
+            	{% else %}
+            	<a href="{% url 'login_page' %}">Login</a>
+            	{% endif %}
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -56,6 +62,7 @@
 	    		<div class="col-lg-8 col-lg-offset-2 centered">
 	    			<h1>Bolt Theme</h1>
 	    			<h2>FREE BOOTSTRAP THEMES</h2>
+	    			<a href="{% url 'registration' %}" class="btn btn-success">Sign Up Today!</a>
 	    		</div><!-- /col-lg-8 -->
 	    	</div><!-- /row -->
 	    </div> <!-- /container -->
