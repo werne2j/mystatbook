@@ -7,7 +7,14 @@
 <h1>{{name}} {{year}} <small>Dashboard</small></h1>
 {% endblock %}
 
-{% block extrastyle %}{% endblock %}
+{% block extrastyle %}
+<style>
+.table{
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+</style>
+{% endblock %}
 
 {% block sidelinks %}
 <ul class="nav navbar-nav side-nav">
@@ -31,9 +38,22 @@
 	    <h3 class="panel-title">Batting Average Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    {% for a in avgLeaders %}
-	    	<p>{{a}} {{a.average}}</p>
-	    {% endfor %}
+	  	<table class="table">
+		  <thead>
+		  	<tr>
+		  		<th>Player</th>
+		  		<th class="text-center">Average</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  	{% for a in avgLeaders %}
+		  	<tr>
+		  		<td>{{a}}</t>
+		  		<td class="text-center">{{a.average}}</td>
+		  	</tr>
+		  	{% endfor %}
+		  </tbody>
+		</table>
 	  </div>
 	</div>
 </div>
@@ -44,9 +64,22 @@
 	    <h3 class="panel-title">On Base Percentage Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    {% for o in obpLeaders %}
-	    	<p>{{o}} {{o.on_base}}</p>
-	    {% endfor %}
+	  	<table class="table">
+		  <thead>
+		  	<tr>
+		  		<th>Player</th>
+		  		<th class="text-center">On-Base Percentage</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  	{% for o in obpLeaders %}
+		  	<tr>
+		  		<td>{{o}}</t>
+		  		<td class="text-center">{{o.on_base}}</td>
+		  	</tr>
+		  	{% endfor %}
+		  </tbody>
+		</table>
 	  </div>
 	</div>
 </div>
@@ -57,9 +90,22 @@
 	    <h3 class="panel-title">Slugging Percentage Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    {% for s in slugLeaders %}
-	    	<p>{{s}} {{s.slug}}</p>
-	    {% endfor %}
+	  	<table class="table">
+		  <thead>
+		  	<tr>
+		  		<th>Player</th>
+		  		<th class="text-center">Slugging Percentage</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  	{% for s in slugLeaders %}
+		  	<tr>
+		  		<td>{{s}}</t>
+		  		<td class="text-center">{{s.slug}}</td>
+		  	</tr>
+		  	{% endfor %}
+		  </tbody>
+		</table>
 	  </div>
 	</div>
 </div>
@@ -70,9 +116,22 @@
 	    <h3 class="panel-title">ERA Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    {% for e in eraLeaders %}
-	    	<p>{{e}} {{e.era}}</p>
-	    {% endfor %}
+	  	<table class="table">
+		  <thead>
+		  	<tr>
+		  		<th>Player</th>
+		  		<th class="text-center">ERA</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  	{% for e in eraLeaders %}
+		  	<tr>
+		  		<td>{{e}}</t>
+		  		<td class="text-center">{{e.era}}</td>
+		  	</tr>
+		  	{% endfor %}
+		  </tbody>
+		</table>
 	  </div>
 	</div>
 </div>
@@ -83,9 +142,22 @@
 	    <h3 class="panel-title">Inning Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    {% for i in innLeaders %}
-	    	<p>{{i}} {{i.innings}}</p>
-	    {% endfor %}
+	  	<table class="table">
+		  <thead>
+		  	<tr>
+		  		<th>Player</th>
+		  		<th class="text-center">Innings</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  	{% for i in innLeaders %}
+		  	<tr>
+		  		<td>{{i}}</t>
+		  		<td class="text-center">{{i.innings}}</td>
+		  	</tr>
+		  	{% endfor %}
+		  </tbody>
+		</table>
 	  </div>
 	</div>
 </div>
@@ -96,9 +168,22 @@
 	    <h3 class="panel-title">Win Leaders</h3>
 	  </div>
 	  <div class="panel-body">
-	    {% for w in winLeaders %}
-	    	<p>{{w}} {{w.pitch_totals.win__sum}}</p>
-	    {% endfor %}
+	  	<table class="table">
+		  <thead>
+		  	<tr>
+		  		<th>Player</th>
+		  		<th class="text-center">Wins</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  	{% for w in winLeaders %}
+		  	<tr>
+		  		<td>{{w}}</t>
+		  		<td class="text-center">{{w.pitch_totals.win__sum}}</td>
+		  	</tr>
+		  	{% endfor %}
+		  </tbody>
+		</table>
 	  </div>
 	</div>
 </div>

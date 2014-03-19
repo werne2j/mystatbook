@@ -406,14 +406,24 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm)
         hit_formset = HitStatsFormSet(request.POST, request.FILES, queryset=hit, prefix='hit')
         pitch_formset = PitchStatsFormSet(request.POST, request.FILES, queryset=pitch, prefix='pitch')
-        if hit_formset.is_valid():
-            hit_formset.save()
-        else:
-            print hit_formset.errors
-        if pitch_formset.is_valid():
-            pitch_formset.save()
-        else:
-            print pitch_formset.errors
+        for form in hit_formset:
+            if form.is_valid():
+                try:
+                    form.save()
+                except Exception, e:
+                    print e
+                    continue
+            else:
+                print form.errors
+        for form in pitch_formset:
+            if form.is_valid():
+                try:
+                    form.save()
+                except Exception, e:
+                    print e
+                    continue
+            else:
+                print form.errors
         return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):
@@ -428,6 +438,13 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
         hit_formset = HitStatsFormSet(initial=[{'game': game,}], queryset=hit, prefix='hit')
         pitch_formset = PitchStatsFormSet(initial=[{'game': game,}], queryset=pitch, prefix='pitch')
+
+        for form in hit_formset.forms:
+            form.fields['player'].queryset = Player.objects.filter(season=season)
+            form.fields['game'].initial = game
+        for form in pitch_formset.forms:
+            form.fields['player'].queryset = Player.objects.filter(season=season)
+            form.fields['game'].initial = game
 
         context['game'] = game
         context['players'] = Player.objects.filter(season=season)
