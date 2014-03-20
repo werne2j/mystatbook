@@ -27,7 +27,9 @@ def login_page(request):
             if user.is_active:
                 login(request, user)
                 # Redirect to a success page.
-                return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': username }))
+                # team = Team.objects.filter(coach__username=username).order_by('-season__date_added')[0]
+                # season = Season.objects.filter(team__coach__username=username, team=team).order_by('date_added')[0]
+                return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': username}))
 
     else:
         if request.user.is_authenticated:

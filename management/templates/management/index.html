@@ -1,6 +1,128 @@
 {% extends "management/base3.html" %}
+{% load staticfiles %}
 {% load i18n %}
 
+{% block extrastyle %}
+<style>
+body{
+	background-color: #E4E4E4;
+}
+#f1_container {
+  position: relative;
+  /*width: 300px;*/
+  height: 300px;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+#f1_container {
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  -o-perspective: 1000px;
+  perspective: 1000px;
+}
+#f1_card {
+  width: 100%;
+  height: 100%;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transition: all 1.0s linear;
+  -moz-transform-style: preserve-3d;
+  -moz-transition: all 1.0s linear;
+  -o-transform-style: preserve-3d;
+  -o-transition: all 1.0s linear;
+  transform-style: preserve-3d;
+  transition: all 1.0s linear;
+    -webkit-box-shadow: -5px 5px 5px #aaa;
+  -moz-box-shadow: -5px 5px 5px #aaa;
+  box-shadow: -5px 5px 5px #aaa;
+}
+#f1_container:hover #f1_card, #f1_container.hover_effect #f1_card {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+
+/*  -webkit-box-shadow: -5px 5px 5px #aaa;
+  -moz-box-shadow: -5px 5px 5px #aaa;
+  box-shadow: -5px 5px 5px #aaa;*/
+}
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+}
+.face.front{
+  background-color: #ccc;
+}
+.face.back {
+  display: block;
+  -webkit-transform: rotateY(180deg);
+  -webkit-box-sizing: border-box;
+  -moz-transform: rotateY(180deg);
+  -moz-box-sizing: border-box;
+  -o-transform: rotateY(180deg);
+  -o-box-sizing: border-box;
+  transform: rotateY(180deg);
+  box-sizing: border-box;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  background-color: #aaa;
+}
+.fa-6{
+	font-size: 15em;
+}
+.add{
+	background: transparent;
+}
+a{
+	color: #008000;
+}
+a:hover{
+	text-decoration: none;
+	color: #33B333;
+}
+.Aligner {
+display: -webkit-box;
+display: -webkit-flex;
+display: -moz-box;
+display: -ms-flexbox;
+display: flex;
+-webkit-box-align: center;
+-webkit-align-items: center;
+-moz-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+-webkit-box-pack: center;
+-webkit-justify-content: center;
+-moz-box-pack: center;
+-ms-flex-pack: center;
+justify-content: center;
+height: auto;
+min-height: 21.5em;
+}
+
+.Aligner-item {
+  max-width: 50%;
+}
+.circular {
+  width: 200px;
+  height: 200px;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  background: url("{% static 'placeholder.png' %}") no-repeat;
+  background-size: 100% 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, .8);
+  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, .8);
+  }
+</style>
+{% endblock %}
 
 {% block teamlinks %}
 		{% for t in teamlist %}
@@ -18,5 +140,46 @@
 <!-- Content -->
 
 {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"><h1>My Teams</h1></div>
+    <div class="col-md-3 col-md-offset-6 text-right"><h1><i class="fa fa-user"></i>{{user.username}}</h1></div>
+  </div>
+  <br>
+  <div class="row">
+
+  	{% for t in teamlist %}
+  		<div id="f1_container" class="col-md-3">
+        <a href="{% url 'season_detail' username=t.coach name=t.name year=t.latest_year.year %}">
+    			<div id="f1_card" class="shadow">
+    			  <div class="front face">
+              <div class="Aligner">
+    			  	  <div class="circular Aligner-Item">
+                  <div class="text-center" style="margin-top: 210px;">
+                    <h3>{{t.name}}</h3>
+                  </div>
+                </div>
+              </div>
+    			  </div>
+    				<div class="back face center">
+    				  {{t}}
+    				</div>
+    			</div>
+        </a>
+  		</div>
+  	{% endfor %}
+  	<div class="col-md-3 Aligner">
+      <div class="Aligner-Item text-center">
+  			<a href="{% url 'add_team' username=user.username %}">  
+  			<!-- <div id="icon" class="text-center"> -->
+  				<i class="fa fa-plus-circle fa-6"></i>
+  			<!-- </div> -->
+  			</a>
+      </div>
+  	</div>
+
+  </div>
+</div>
+<!-- </div> -->
 
 {% endblock %}

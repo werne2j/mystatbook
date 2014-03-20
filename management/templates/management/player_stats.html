@@ -2,6 +2,13 @@
 {% load staticfiles %}
 {% load i18n %}
 
+{% block extrastyle %}
+<style>
+#hitting_table{
+	margin-bottom: 20px;
+}
+</style>
+{% endblock %}
 {% block header %}
 <h1>{{name}} {{year}} <small>Statistics</small></h1>
 {% endblock %}
@@ -10,6 +17,7 @@
 
 <div class="tab-pane" id="stats">
 	<table class="table table-bordered table-striped" id="hitting_table">
+		<h3>Hitting Stats</h3>
 		<thead>
 			<tr class="text-center title">
 				<th class="text-center">Player</th>
@@ -78,6 +86,7 @@
 	</table>
 
 	<table class="table table-bordered table-striped" id="pitching_table">
+		<h3>Pitching Stats</h3>
 		<thead>
 			<tr class="text-center">
 				<th class="text-center">Player</th>

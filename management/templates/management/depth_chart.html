@@ -41,7 +41,7 @@
 	  <p>{{p.first_name}} {{p.last_name}}</p>
 	</div>
 	{% endfor %}
-	<button type="button" class="btn btn-primary" id="save_depth_chart">Save Changes</button>
+	<button type="button" class="btn btn-primary pull-right" id="save_depth_chart">Save Changes</button>
 	<button type="button" class="btn btn-danger pull-right" id="reset_chart">Reset Chart</button>
 	<div id="save_confirm" class="pull-right" style="margin-top:10px;"></div>
 </div>
@@ -110,8 +110,7 @@
             }
         });
     });
-</script>
-<script>
+
 	$('.chart_form').submit(function (e) {
 		e.preventDefault();
 		$.ajax({
