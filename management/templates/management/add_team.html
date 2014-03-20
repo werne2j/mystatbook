@@ -13,20 +13,93 @@
   #wrapper{
   	padding-right: 225px;
   }
+  .panel{
+    border: 1px solid #eee;
+  }
+  .panel-title{
+    font-size: 2.8rem;
+    color: white;
+  }
+  .panel-default > .panel-heading{
+    background-color: #3498db;
+  }
+  .panel-default > .panel-body{
+    background-color: #eee;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
 </style>
 {% endblock %}
 
+{% block nav %}
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'coach_portal' username=user.username %}"><i class="fa fa-clipboard fa-3"></i> MyStatBook</a>
+    </div>
+
+    <div class="collapse navbar-collapse navbar-ex1-collapse" id="mainNavigation">
+        <ul class="nav navbar-nav navbar-left">
+            {% for t in teamlist %}
+            <li class="dropdown">
+              <a href="{% url 'season_detail' username=t.coach name=t.name year=t.latest_year.year %}" class="dropdown-toggle" data-toggle="dropdown">{{t.name}} <i class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-menu">
+                {% for s in t.season_set.all %}
+                  <li><a href="{% url 'season_detail' username=user name=t.name year=s.year %}">{{s.year}}</a></li>
+                {% endfor %}
+                <li id="add-season"><a href="{% url 'add_season' username=user name=t.name %}"><i class="fa fa-plus"></i> New Season</a></li>
+              </ul>
+            </li>
+            {% endfor %}
+            <li><a href="{% url 'add_team' username=user.username %}"><i class="fa fa-plus"></i> Add Team</a></li>  
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right navbar-user">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-user"></i> {% filter force_escape %}{% firstof user.username %}{% endfilter %} 
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'user_settings' user.username %}"><i class="fa fa-cogs"></i> Settings</a></li>
+                    {% url 'logout_page' as logout_url %}
+                    <li><a href="{{ logout_url }}"><i class="fa fa-sign-out"></i> {% trans 'Log out' %}</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+
 {% block content %}
-	<form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post">
-		<h1>Add Team</h1>
-		{% csrf_token %}
-		{% if next %}
-			<input type="hidden" name="next" value="{{ next }}" />
-		{% endif %}
-		{{ form | as_bootstrap }}
-		{{ form2 | as_bootstrap }}
-		<button type="submit" class="btn btn-success">Submit</button>
-	</form>
+<div class="container">
+  <div class="col-md-6 col-md-offset-3" id="team_form">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">Add Team</h2>
+      </div>
+      <div class="panel-body">
+          <form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post">
+            {% csrf_token %}
+            {% if next %}
+              <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+            {{ form | as_bootstrap }}
+            {{ form2 | as_bootstrap }}
+            <button type="submit" class="btn btn-success">Submit</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extrascript %}

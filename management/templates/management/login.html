@@ -27,6 +27,9 @@
   .panel-default > .panel-body{
     background-color: #eee;
   }
+  a:hover{
+    text-decoration: none;
+  }
 </style>
 {% endblock %}
 
@@ -45,48 +48,14 @@
         <div class="form-group">
           <input type="password" class="form-control" name="password" placeholder="Password" required>
         </div>
+        <a href="#" class="text-center">Forget your password?</p>
         <button class="btn btn-success btn-block" type="submit">Log In</button>
         <input type="hidden" name="next" value="{% firstof next '/' %}" />
         <br>
-        <a href="#">Forget your password?</p>
       </form>
     </div>
   </div>
 </div>
-<!-- <div class="col-md-6" id="reg_form">
-    <div class="panel panel-default" id="log">
-        <div class="panel-heading">
-            <h3 class="panel-title">Register</h3>
-        </div>
-        <div class="panel-body">
-          <form id="regform" method="post" action="{% url 'registration' %}" >
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <div id="div_id_username" class="form-group   required">   
-              <div class="">
-                <input class=" form-control" id="id_username" maxlength="30" name="username" type="text" placeholder="Username"/>
-              </div>
-            </div>
-            <div id="div_id_email" class="form-group   required">
-              <div class="">
-                <input class=" form-control" id="id_email" name="email" type="email" placeholder="Email"/>
-              </div>
-            </div>
-            <div id="div_id_password1" class="form-group   required">
-              <div class="">
-                <input class=" form-control" id="id_password1" name="password1" type="password" placeholder="Password"/>
-              </div>
-            </div>
-            <div id="div_id_password2" class="form-group   required">
-              <div class="">
-                <input class=" form-control" id="id_password2" name="password2" type="password" placeholder="Password (again)"/>   
-              </div>
-            </div>
-            <button type="submit" class="btn btn-success btn-block" value="Register &rarr;">Register</button>
-          </form>
-        </div>
-    </div> 
-</div> -->
 
 {% endblock %}
 

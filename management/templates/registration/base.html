@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
         <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}">
         <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}">
-        <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+
         {% block extrastyle %}{% endblock %}
     </head>
     {% load i18n %}
@@ -35,7 +35,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><i class="fa fa-clipboard fa-3"></i> MyStatBook</a>
+                    <a class="navbar-brand" href="{% url 'coach_portal' username=user.username %}"><i class="fa fa-clipboard fa-3"></i> MyStatBook</a>
                 </div>
             </nav>
 
