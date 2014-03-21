@@ -17,6 +17,7 @@
   .panel{
     margin-top: 0;
     margin-bottom: 0;
+    margin-bottom: 20px;
   }
   .panel-default{
     margin-top: 20px;
@@ -71,20 +72,23 @@
             <h3 class="panel-title">Delete Account</h3>
           </div>
           <div class="panel-body">
-            Delete Account?
+            Would you like to delete you account? <br><br>
+            <button type="button" class="btn btn-danger">Delete Account</button>
           </div>
         </div>
       </div>
+
       <div class="tab-pane" id="teams">
-        <ul>
-            <li>profile</li>
-            <li>profile</li>
-            <li>profile</li>
-            <li>profile</li>
-            <li>profile</li>
-            <li>profile</li>
-            <li>profile</li>
-        </ul>
+        {% for t in teams %}
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{t.name}}</h3>
+          </div>
+          <div class="panel-body">
+            {{t}}
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>   
 </div> 

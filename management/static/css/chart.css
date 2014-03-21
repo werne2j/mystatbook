@@ -1,3 +1,4 @@
+{% load staticfiles %}
 .draggable { 
 	width: 150px; 
 	height: 30px; 
@@ -24,7 +25,7 @@
 #deleteDrop {
 	height:150px;
 	margin-top: 150px;
-	background: url(trashcan.jpg);
+	background: url("trashcan.jpg");
 	background-size: 100%;
 	border: none;
 	z-index: -9000;
@@ -117,7 +118,7 @@
 }
 #starter1{
 	position: absolute;
-	top: 56%;
+	top: 56.1%;
 	left: 42.5%;
 }
 #starter2{
