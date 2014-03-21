@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 class TeamAdmin(admin.ModelAdmin):
-	list_display = ('coach', 'name')
+	list_display = ('coach', 'name', 'logo')
 
 class SeasonAdmin(admin.ModelAdmin):
 	list_display = ('team','year', 'date_added')

@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
 from django.contrib import admin
 from management.views import *
+from sportsbook import settings
+from django.conf.urls.static import static
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -17,3 +19,6 @@ urlpatterns = patterns('',
     url(r'^logout/', 'management.views.logout_page', name="logout_page"),
     url(r'^$', Front.as_view(), name='home'),
 )
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

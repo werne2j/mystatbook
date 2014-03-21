@@ -2,6 +2,8 @@ from django.db import models
 from fractions import Fraction
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
+from django.templatetags.static import static
+from PIL import Image
 
 CLASS_STANDINGS = (('Fr', 'Freshman'), ('So', 'Sophomore'), (
     'Jr', 'Junior'), ('Sr', 'Senior'), ('O', 'Other'))
@@ -14,12 +16,18 @@ INNINGS = ((0, 0), (1, 1), (2, 2))
 class Team(models.Model):
 	coach = models.ForeignKey(User)
 	name = models.CharField(max_length=50)
+	logo = models.ImageField(upload_to='logos/', blank=True, null=True)
 
 	def __unicode__(self):
 		return unicode(self.name)
 
 	def latest_year(self):
 		return self.season_set.all().order_by("-year")[0]
+
+	def get_logo(self):
+		if not self.logo:
+			return static('200.jpeg')
+		return self.logo.url
 
 class Season(models.Model):
 	team = models.ForeignKey('Team')

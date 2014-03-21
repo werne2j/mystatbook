@@ -5,9 +5,13 @@ from django.template import RequestContext
 from django.views.generic.base import View, TemplateView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from registration.backends.simple.views import RegistrationView
 from django.forms.models import modelformset_factory
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .views import *
 from .forms import *
@@ -38,6 +42,35 @@ def login_page(request):
     return render_to_response('management/login.html', {}, context_instance=RequestContext(request))
 
 
+@sensitive_post_parameters()
+@csrf_protect
+@login_required
+def password_change(request,
+                    template_name='registration/password_change_form.html',
+                    post_change_redirect=None,
+                    password_change_form=PasswordChangeForm,
+                    current_app=None, extra_context=None):
+    if post_change_redirect is None:
+        post_change_redirect = reverse('user_settings', kwargs={'username':request.user.username})
+    else:
+        post_change_redirect = reverse('user_settings', kwargs={'username':request.user.username})
+    if request.method == "POST":
+        form = password_change_form(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('user_settings', kwargs={'username':request.user.username}))
+    else:
+        form = password_change_form(user=request.user)
+    context = {
+        'form': form,
+        'title': 'Password change',
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return HttpResponseRedirect(reverse('user_settings', kwargs={'username':request.user.username}))
+
+
+
 class UserRegistration(RegistrationView):
 
     template_name = 'management/register.html'
@@ -54,6 +87,7 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def test_func(self, user):
         if self.kwargs['username'] != user.username:
+            print "h"
             raise Http404
         else:
             return True
@@ -61,6 +95,7 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Settings, self).get_context_data(**kwargs)
 
+        context['form'] = PasswordChangeForm(user=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
 
         return context
@@ -81,10 +116,25 @@ class Homepage(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             return True
 
+    def post(self, request, **kwargs):
+        if request.POST:
+            form = AddTeamForm(self.request.POST, user=request.user.username)
+            if form.is_valid:
+                form.save()
+                return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username, 'name': request.POST['name'], 'year': request.POST['year']}))
+            else:
+                print form.errors
+        return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username,'name': request.POST['name'], 'year': request.POST['year']}))
+
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)
 
-        context['teamlist'] = Team.objects.filter(coach=self.request.user)
+        form = AddTeamForm(user=self.request.user)
+        form2 = SeasonForm()
+
+        context['teamlist'] = Team.objects.filter(coach=self.request.user).order_by('name')
+        context['form'] = form
+        context['form2'] = form2
 
         return context
 

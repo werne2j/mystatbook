@@ -121,8 +121,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse" id="mainNavigation">
                     <ul class="nav navbar-nav navbar-left">
-                        {% block teamlinks %}{% endblock %}
-                        <li><a href="{% url 'add_team' username=user.username %}"><i class="fa fa-plus"></i> Add Team</a></li>  
+                        {% block teamlinks %}{% endblock %} 
                     </ul>
 
                     {% block sidelinks %}{% endblock %}
