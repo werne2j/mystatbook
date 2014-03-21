@@ -36,8 +36,6 @@
 		<div id="relief4" class="ui-widget-header text-center droppable"><p class="dropElement" id="Relief Pitcher"></p></div>
 		<div id="dh" class="ui-widget-header text-center droppable"><p class="dropElement" id="Designated Hitter"></p></div>
 
-<<<<<<< HEAD
-
 		<div id="catch1" class="ui-widget-header text-center draggable"><p class="dragElement" id="Catcher">{{depth.catch1}}</p></div>
 		<div id="catch2" class="ui-widget-header text-center draggable"><p class="dragElement" id="Catcher">{{depth.catch2}}</p></div>
 		<div id="first1" class="ui-widget-header text-center draggable"><p class="dragElement" id="First Base">{{depth.first1}}</p></div>
@@ -64,7 +62,7 @@
 		<div id="relief4" class="ui-widget-header text-center draggable"><p class="dragElement" id="Relief Pitcher">{{depth.relief4}}</p></div>
 		<div id="dh" class="ui-widget-header text-center draggable"><p class="dragElement" id="Designated Hitter">{{depth.dh}}</p></div>
 	</div>
-	<div class="col-md-2" id="sidebar">
+	<div class="col-md-2">
 		{% for p in players %}
 		<div class="draggable text-center">
 		  <p>{{p.first_name}} {{p.last_name}}</p>
@@ -73,40 +71,10 @@
 		<button type="button" class="btn btn-primary pull-right button-margin" id="save_depth_chart">Save Changes</button>
 		<button type="button" class="btn btn-danger pull-right button-margin" id="reset_chart">Reset Chart</button>
 		<div id="save_confirm" class="pull-right" style="margin-top:10px;"></div>
+		<div id="emptydiv"></div>
+	</div>
+	<div class="col-md-2" id="sidebar">
 		<div id="deleteDrop" class="droppable"></div>
-=======
-<div id="field" class="col-md-10">
-	<div id="catch1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.catch1}}</p></div>
-	<div id="catch2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.catch2}}</p></div>
-	<div id="first1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.first1}}</p></div>
-	<div id="first2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.first2}}</p></div>
-	<div id="second1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.second1}}</p></div>
-	<div id="second2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.second2}}</p></div>
-	<div id="short1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.short1}}</p></div>
-	<div id="short2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.short2}}</p></div>
-	<div id="third1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.third1}}</p></div>
-	<div id="third2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.third2}}</p></div>
-	<div id="left1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.left1}}</p></div>
-	<div id="left2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.left2}}</p></div>
-	<div id="center1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.center1}}</p></div>
-	<div id="center2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.center2}}</p></div>
-	<div id="right1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.right1}}</p></div>
-	<div id="right2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.right2}}</p></div>
-	<div id="starter1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter1}}</p></div>
-	<div id="starter2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter2}}</p></div>
-	<div id="starter3" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter3}}</p></div>
-	<div id="starter4" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.starter4}}</p></div>
-	<div id="relief1" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief1}}</p></div>
-	<div id="relief2" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief2}}</p></div>
-	<div id="relief3" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief3}}</p></div>
-	<div id="relief4" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.relief4}}</p></div>
-	<div id="dh" class="ui-widget-header text-center droppable"><p class="dropElement">{{depth.dh}}</p></div>
-</div>
-<div class="col-md-1 pull-right">
-	{% for p in players %}
-	<div class="draggable text-center pull-right">
-	  <p>{{p.first_name}} {{p.last_name}}</p>
->>>>>>> 365abdf2c808a8397b1fc58e92355640d7584d26
 	</div>
 </div>
 
@@ -160,21 +128,25 @@
             	if ($(this).attr('id') != ui.draggable.attr('id')) {
             		if ($(this).attr('id') != "deleteDrop") {
 	            		var keepString = $(this).children().attr('id');
-		            	$('#saveWarning').css('display', 'block');
-		                $( this ).find( "p" ).remove();
-		                $( "<p class='dropElement'></p>" ).text( ui.draggable.text() ).appendTo( this );
-		                $('#' + $(this).attr('id') + '.draggable').find('p').remove();
-		                $( "<p class='dragElement' id='" + keepString + "'></p>" ).text( ui.draggable.text() ).appendTo( $('#' + $(this).attr('id') + '.draggable') );
+		                $( this ).find( "p" ).text(ui.draggable.text());	
+		                // console.log(ui.draggable.text());	      
+		                $('#' + $(this).attr('id') + '.draggable').find('p').text(ui.draggable.text());
+		                if ($('#' + $(this).attr('id') + '.draggable').find('p').text() == "") {
+		                	console.log("ERROR");
+		                	console.log("drag text: ", ui.draggable.text());
+		                }
+		                // console.log($('#' + $(this).attr('id') + '.draggable').find('p').text());
 		                var position_id = $(this).attr("id") ;
 		                var player = ui.helper.context.innerText;
 		                $('#editPlayerModal #id_' + position_id).val(player);
 		                $(this).removeClass("position-danger");
 		                $('#' + $(this).attr('id') + '.draggable').removeClass('position-danger');
 		            }
+		            $('#saveWarning').css('display', 'block');
 
 	                var drag_id = ui.draggable.attr('id');
 	                var default_string = ui.draggable.children().attr('id');
-	                ui.draggable.text(ui.draggable.children().attr('id'));
+	                ui.draggable.children().text(ui.draggable.children().attr('id'));
 	                ui.draggable.addClass('position-danger');
 	                $('#editPlayerModal #id_' + drag_id).val(default_string);
             	}
