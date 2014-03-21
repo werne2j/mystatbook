@@ -386,8 +386,9 @@ class AddTeam(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def post(self, request, **kwargs):
         if request.POST:
-            form = AddTeamForm(self.request.POST, user=request.user.username)
+            form = AddTeamForm(self.request.POST, self.request.FILES, user=request.user.username)
             if form.is_valid:
+                print form
                 form.save()
                 return HttpResponseRedirect(reverse('season_detail', kwargs={'username': request.user.username, 'name': request.POST['name'], 'year': request.POST['year']}))
             else:

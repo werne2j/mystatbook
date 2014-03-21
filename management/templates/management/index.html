@@ -162,8 +162,9 @@ min-height: 21.5em;
             </div>
             <div class="back face center">
               <h3>Add Team</h3>
-              <form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post">
+              <form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {{form.coach}}
                 <div class="form-group">
                   <input id="id_name" class="form-control" maxlength="50" name="name" type="text" placeholder="Team Name">
                 </div>
@@ -187,7 +188,7 @@ min-height: 21.5em;
 {% block extrascript %}
 <script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
 <script>
-    $("#div_id_coach").hide();
+    $("#id_coach").hide();
     $("#id_coach").val({{user.pk}});
 
     $(document).ready(function() {
