@@ -62,7 +62,7 @@
 		<div id="relief4" class="ui-widget-header text-center draggable"><p class="dragElement" id="Relief Pitcher">{{depth.relief4}}</p></div>
 		<div id="dh" class="ui-widget-header text-center draggable"><p class="dragElement" id="Designated Hitter">{{depth.dh}}</p></div>
 	</div>
-	<div class="col-md-2" id="sidebar">
+	<div class="col-md-2">
 		{% for p in players %}
 		<div class="draggable text-center">
 		  <p>{{p.first_name}} {{p.last_name}}</p>
@@ -71,6 +71,9 @@
 		<button type="button" class="btn btn-primary pull-right button-margin" id="save_depth_chart">Save Changes</button>
 		<button type="button" class="btn btn-danger pull-right button-margin" id="reset_chart">Reset Chart</button>
 		<div id="save_confirm" class="pull-right" style="margin-top:10px;"></div>
+		<div id="emptydiv"></div>
+	</div>
+	<div class="col-md-2" id="sidebar">
 		<div id="deleteDrop" class="droppable"></div>
 	</div>
 </div>
@@ -125,21 +128,25 @@
             	if ($(this).attr('id') != ui.draggable.attr('id')) {
             		if ($(this).attr('id') != "deleteDrop") {
 	            		var keepString = $(this).children().attr('id');
-		            	$('#saveWarning').css('display', 'block');
-		                $( this ).find( "p" ).remove();
-		                $( "<p class='dropElement'></p>" ).text( ui.draggable.text() ).appendTo( this );
-		                $('#' + $(this).attr('id') + '.draggable').find('p').remove();
-		                $( "<p class='dragElement' id='" + keepString + "'></p>" ).text( ui.draggable.text() ).appendTo( $('#' + $(this).attr('id') + '.draggable') );
+		                $( this ).find( "p" ).text(ui.draggable.text());	
+		                // console.log(ui.draggable.text());	      
+		                $('#' + $(this).attr('id') + '.draggable').find('p').text(ui.draggable.text());
+		                if ($('#' + $(this).attr('id') + '.draggable').find('p').text() == "") {
+		                	console.log("ERROR");
+		                	console.log("drag text: ", ui.draggable.text());
+		                }
+		                // console.log($('#' + $(this).attr('id') + '.draggable').find('p').text());
 		                var position_id = $(this).attr("id") ;
 		                var player = ui.helper.context.innerText;
 		                $('#editPlayerModal #id_' + position_id).val(player);
 		                $(this).removeClass("position-danger");
 		                $('#' + $(this).attr('id') + '.draggable').removeClass('position-danger');
 		            }
+		            $('#saveWarning').css('display', 'block');
 
 	                var drag_id = ui.draggable.attr('id');
 	                var default_string = ui.draggable.children().attr('id');
-	                ui.draggable.text(ui.draggable.children().attr('id'));
+	                ui.draggable.children().text(ui.draggable.children().attr('id'));
 	                ui.draggable.addClass('position-danger');
 	                $('#editPlayerModal #id_' + drag_id).val(default_string);
             	}

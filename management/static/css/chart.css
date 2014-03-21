@@ -1,4 +1,4 @@
-{% load staticfiles %}
+
 .draggable { 
 	width: 150px; 
 	height: 30px; 
@@ -13,6 +13,9 @@
 }
 .button-margin {
 	margin-right: 10px;
+}
+#emptydiv {
+	height: 130px;
 }
 #sidebar {
 	z-index: -9000;
