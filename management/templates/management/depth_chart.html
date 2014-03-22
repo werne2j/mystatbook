@@ -65,7 +65,7 @@
 	<div class="col-md-2">
 		{% for p in players %}
 		<div class="draggable text-center">
-		  <p>{{p.last_name}}</p>
+		  <p>{{p.first_name|slice:":1"}}. {{p.last_name}}</p>
 		</div>
 		{% endfor %}
 		<button type="button" class="btn btn-primary pull-right button-margin" id="save_depth_chart">Save Changes</button>
