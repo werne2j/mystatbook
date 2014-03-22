@@ -32,7 +32,6 @@ class AddTeamForm(forms.ModelForm):
 	class Meta:
 		model = Team
 
-
 class AddSeasonForm(forms.ModelForm):
 	class Meta:
 		model = Season

@@ -26,7 +26,7 @@ class Team(models.Model):
 
 	def get_logo(self):
 		if not self.logo:
-			return static('200.jpeg')
+			return static('baseball.png')
 		return self.logo.url
 
 class Season(models.Model):

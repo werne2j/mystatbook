@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_forms_bootstrap',
+    'bootstrapform',
+    'form_utils',
     'django_extensions',
     'registration',
     'south',

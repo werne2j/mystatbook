@@ -12,6 +12,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from form_utils.widgets import ImageWidget
 from .models import *
 from .views import *
 from .forms import *
@@ -87,16 +88,39 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def test_func(self, user):
         if self.kwargs['username'] != user.username:
-            print "h"
             raise Http404
         else:
             return True
 
+    def post(self, request, **kwargs):
+        TeamFormSet = modelformset_factory(Team)
+        teams = Team.objects.filter(coach=self.request.user)
+        formset = TeamFormSet(request.POST, request.FILES, queryset=teams)
+        if formset.is_valid:
+            print formset
+            formset.save()
+            return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
+        else:
+            print formset.errors
+        return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
+
+
     def get_context_data(self, **kwargs):
         context = super(Settings, self).get_context_data(**kwargs)
 
+        num = Team.objects.filter(coach=self.request.user).count()
+        TeamFormSet = modelformset_factory(Team, max_num=num)
+        teams = Team.objects.filter(coach=self.request.user)
+        formset = TeamFormSet(queryset=teams)
+
+        for form in formset.forms:
+            form.fields['coach'].queryset = User.objects.filter(username=self.request.user)
+            form.fields['coach'].widget = forms.HiddenInput()
+            # form.fields['logo'].widget = ImageWidget()
+
         context['form'] = PasswordChangeForm(user=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
+        context['formset'] = formset
 
         return context
 
