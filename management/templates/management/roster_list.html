@@ -12,6 +12,12 @@
 	tfoot{
 		border-top: 2px solid #ddd;
 	}
+	@media print {
+       table td:last-child {display:none;}
+       table th:last-child {display:none;}
+       tfoot {display:none;}
+       #print-button {display: none;}
+   }
 </style>
 {% endblock %}
 {% block header %}
@@ -65,6 +71,7 @@
 		</tfoot>
 	</table>
 </div>
+<a href="javascript:window.print()"><button id="print-button" class="btn btn-primary"><i class="fa fa-print"></i> Print</button></a>
 {% endblock %}
 
 {% block extrascript %}

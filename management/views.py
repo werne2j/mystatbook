@@ -97,7 +97,6 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         teams = Team.objects.filter(coach=self.request.user)
         formset = TeamFormSet(request.POST, request.FILES, queryset=teams)
         if formset.is_valid:
-            print formset
             formset.save()
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
         else:
@@ -127,6 +126,7 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 class Front(TemplateView):
 
     template_name = 'management/front2.html'
+
 
 class Homepage(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 

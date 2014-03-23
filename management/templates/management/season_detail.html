@@ -13,6 +13,10 @@
 	margin-bottom: 0px;
 	margin-top: 0px;
 }
+.box{
+	margin-top:20px;
+	margin-bottom:0;
+}
 </style>
 {% endblock %}
 
@@ -33,158 +37,176 @@
 
 {% block content %}
 <div class="col-md-4">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Batting Average Leaders</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<table class="table">
-		  <thead>
-		  	<tr>
-		  		<th>Player</th>
-		  		<th class="text-center">Average</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	{% for a in avgLeaders %}
-		  	<tr>
-		  		<td>{{a}}</t>
-		  		<td class="text-center">{{a.average}}</td>
-		  	</tr>
-		  	{% endfor %}
-		  </tbody>
-		</table>
-	  </div>
+	<div class="box box-solid box-primary">
+	    <div class="box-header">
+	        <h3 class="box-title">Batting Average Leaders</h3>
+	        <div class="box-tools pull-right">
+	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	        </div>
+	    </div>
+	    <div class="box-body" style="display: block;">
+		  	<table class="table">
+			  <thead>
+			  	<tr>
+			  		<th>Player</th>
+			  		<th class="text-center">Average</th>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	{% for a in avgLeaders %}
+			  	<tr>
+			  		<td>{{a}}</t>
+			  		<td class="text-center">{{a.average}}</td>
+			  	</tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+	    </div><!-- /.box-body -->
 	</div>
 </div>
 
 <div class="col-md-4">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">On Base Percentage Leaders</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<table class="table">
-		  <thead>
-		  	<tr>
-		  		<th>Player</th>
-		  		<th class="text-center">On-Base Percentage</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	{% for o in obpLeaders %}
-		  	<tr>
-		  		<td>{{o}}</t>
-		  		<td class="text-center">{{o.on_base}}</td>
-		  	</tr>
-		  	{% endfor %}
-		  </tbody>
-		</table>
-	  </div>
+	<div class="box box-solid box-primary">
+	    <div class="box-header">
+	        <h3 class="box-title">On Base Percentage Leaders</h3>
+	        <div class="box-tools pull-right">
+	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	        </div>
+	    </div>
+	    <div class="box-body" style="display: block;">
+		  	<table class="table">
+			  <thead>
+			  	<tr>
+			  		<th>Player</th>
+			  		<th class="text-center">On Base Percentage</th>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	{% for o in obpLeaders %}
+			  	<tr>
+			  		<td>{{o}}</t>
+			  		<td class="text-center">{{o.on_base}}</td>
+			  	</tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+	    </div><!-- /.box-body -->
 	</div>
 </div>
 
 <div class="col-md-4">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Slugging Percentage Leaders</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<table class="table">
-		  <thead>
-		  	<tr>
-		  		<th>Player</th>
-		  		<th class="text-center">Slugging Percentage</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	{% for s in slugLeaders %}
-		  	<tr>
-		  		<td>{{s}}</t>
-		  		<td class="text-center">{{s.slug}}</td>
-		  	</tr>
-		  	{% endfor %}
-		  </tbody>
-		</table>
-	  </div>
+	<div class="box box-solid box-primary">
+	    <div class="box-header">
+	        <h3 class="box-title">Slugging Percentage Leaders</h3>
+	        <div class="box-tools pull-right">
+	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	        </div>
+	    </div>
+	    <div class="box-body" style="display: block;">
+		  	<table class="table">
+			  <thead>
+			  	<tr>
+			  		<th>Player</th>
+			  		<th class="text-center">Slugging Percentage</th>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	{% for s in slugLeaders %}
+			  	<tr>
+			  		<td>{{s}}</t>
+			  		<td class="text-center">{{s.slug}}</td>
+			  	</tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+	    </div><!-- /.box-body -->
 	</div>
 </div>
 
 <div class="col-md-4">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">ERA Leaders</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<table class="table">
-		  <thead>
-		  	<tr>
-		  		<th>Player</th>
-		  		<th class="text-center">ERA</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	{% for e in eraLeaders %}
-		  	<tr>
-		  		<td>{{e}}</t>
-		  		<td class="text-center">{{e.era}}</td>
-		  	</tr>
-		  	{% endfor %}
-		  </tbody>
-		</table>
-	  </div>
+	<div class="box box-solid box-primary">
+	    <div class="box-header">
+	        <h3 class="box-title">ERA Leaders</h3>
+	        <div class="box-tools pull-right">
+	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	        </div>
+	    </div>
+	    <div class="box-body" style="display: block;">
+		  	<table class="table">
+			  <thead>
+			  	<tr>
+			  		<th>Player</th>
+			  		<th class="text-center">ERA</th>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	{% for e in eraLeaders %}
+			  	<tr>
+			  		<td>{{e}}</t>
+			  		<td class="text-center">{{e.era}}</td>
+			  	</tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+	    </div><!-- /.box-body -->
 	</div>
 </div>
 
 <div class="col-md-4">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Inning Leaders</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<table class="table">
-		  <thead>
-		  	<tr>
-		  		<th>Player</th>
-		  		<th class="text-center">Innings</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	{% for i in innLeaders %}
-		  	<tr>
-		  		<td>{{i}}</t>
-		  		<td class="text-center">{{i.innings}}</td>
-		  	</tr>
-		  	{% endfor %}
-		  </tbody>
-		</table>
-	  </div>
+	<div class="box box-solid box-primary">
+	    <div class="box-header">
+	        <h3 class="box-title">Innings Leaders</h3>
+	        <div class="box-tools pull-right">
+	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	        </div>
+	    </div>
+	    <div class="box-body" style="display: block;">
+		  	<table class="table">
+			  <thead>
+			  	<tr>
+			  		<th>Player</th>
+			  		<th class="text-center">Innings</th>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	{% for i in innLeaders %}
+			  	<tr>
+			  		<td>{{i}}</t>
+			  		<td class="text-center">{{i.innings}}</td>
+			  	</tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+	    </div><!-- /.box-body -->
 	</div>
 </div>
 
 <div class="col-md-4">
-	<div class="panel panel-primary">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Win Leaders</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<table class="table">
-		  <thead>
-		  	<tr>
-		  		<th>Player</th>
-		  		<th class="text-center">Wins</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	{% for w in winLeaders %}
-		  	<tr>
-		  		<td>{{w}}</t>
-		  		<td class="text-center">{{w.pitch_totals.win__sum}}</td>
-		  	</tr>
-		  	{% endfor %}
-		  </tbody>
-		</table>
-	  </div>
+	<div class="box box-solid box-primary">
+	    <div class="box-header">
+	        <h3 class="box-title">Wins Leaders</h3>
+	        <div class="box-tools pull-right">
+	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	        </div>
+	    </div>
+	    <div class="box-body" style="display: block;">
+		  	<table class="table">
+			  <thead>
+			  	<tr>
+			  		<th>Player</th>
+			  		<th class="text-center">Wins</th>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	{% for w in winLeaders %}
+			  	<tr>
+			  		<td>{{w}}</t>
+			  		<td class="text-center">{{w.pitch_totals.win__sum}}</td>
+			  	</tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+	    </div><!-- /.box-body -->
 	</div>
 </div>
 {% endblock %}

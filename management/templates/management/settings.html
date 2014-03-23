@@ -36,6 +36,51 @@
   .btn-success{
     margin-top:0;
   }
+  .nav.nav-pills > li > a {
+  border-top: 3px solid transparent;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  color: #444;
+}
+.nav.nav-pills > li > a > .fa,
+.nav.nav-pills > li > a > .glyphicon,
+.nav.nav-pills > li > a > .ion {
+  margin-right: 5px;
+}
+.nav.nav-pills > li.active > a,
+.nav.nav-pills > li.active > a:hover {
+  background-color: #f6f6f6;
+  border-top-color: #3c8dbc;
+  color: #444;
+}
+.nav.nav-pills > li.active > a {
+  font-weight: 600;
+}
+.nav.nav-pills > li > a:hover {
+  background-color: #f6f6f6;
+}
+.nav.nav-pills.nav-stacked > li > a {
+  border-top: 0;
+  border-left: 3px solid transparent;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  color: #444;
+}
+.nav.nav-pills.nav-stacked > li.active > a,
+.nav.nav-pills.nav-stacked > li.active > a:hover {
+  background-color: #f6f6f6;
+  border-left-color: #3c8dbc;
+  color: #444;
+}
+.nav.nav-pills.nav-stacked > li.header {
+  border-bottom: 1px solid #ddd;
+  color: #777;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
 </style>
 {% endblock %}
 
@@ -49,37 +94,37 @@
 <div class="col-md-8 col-md-offset-1" id="block">
     <div id='content' class="tab-content">
       <div class="tab-pane active" id="account">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Change Password</h3>
-          </div>
-          <div class="panel-body">
-            <form role="form" action="{% url 'change_password' %}" method="post">
-              {% csrf_token %}
-              <div class="form-group">
-                <input id="id_old_password" class="form-control" name="old_password" type="password" placeholder="Old Password">
-              </div>
-              <div class="form-group">
-                <input id="id_new_password1" class="form-control" name="new_password1" type="password" placeholder="New Password">
-              </div>           
-              <div class="form-group">
-                <input id="id_new_password2" class="form-control" name="new_password2" type="password" placeholder="Comfirm Password">
-              </div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary" value="Change my password">Save</button>
+        <div class="box box-solid box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Change Password</h3>
+            </div>
+            <div class="box-body" style="display: block;">
+              <form role="form" action="{% url 'change_password' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input id="id_old_password" class="form-control" name="old_password" type="password" placeholder="Old Password">
                 </div>
-            </form>
-          </div>
+                <div class="form-group">
+                  <input id="id_new_password1" class="form-control" name="new_password1" type="password" placeholder="New Password">
+                </div>           
+                <div class="form-group">
+                  <input id="id_new_password2" class="form-control" name="new_password2" type="password" placeholder="Comfirm Password">
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary" value="Change my password">Save</button>
+                  </div>
+              </form>
+            </div><!-- /.box-body -->
         </div>
 
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Delete Account</h3>
-          </div>
-          <div class="panel-body">
-            Would you like to delete you account? <br><br>
-            <button type="button" class="btn btn-danger">Delete Account</button>
-          </div>
+        <div class="box box-solid box-danger">
+            <div class="box-header">
+                <h3 class="box-title">Delete Account</h3>
+            </div>
+            <div class="box-body" style="display: block;">
+              Would you like to delete you account? <br><br>
+              <button type="button" class="btn btn-danger">Delete Account</button>
+            </div><!-- /.box-body -->
         </div>
       </div>
 
@@ -87,18 +132,20 @@
         <form role="form" action="{% url 'user_settings' username=user.username %}" method="post" enctype="multipart/form-data">
         {{ formset.management_form }}
         {% for form in formset %}
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{ form.name.value }}</h3>
-          </div>
-          <div class="panel-body">
+        <div class="box box-solid box-primary">
+            <div class="box-header">
+                <h3 class="box-title">{{ form.name.value }}</h3>
+            </div>
+            <div class="box-body" style="display: block;">
               {% csrf_token %}
+              {{form.id}}
+              {{ form.coach }}
               {{ form.name | bootstrap }}
               <img src="{{ form.instance.logo.url }}" />
               {{ form.logo | bootstrap }}
               <button type="submit" class="btn btn-success">Save</button>
               <button type="submit" class="btn btn-danger pull-right">Delete Team</button>
-          </div>
+            </div><!-- /.box-body -->
         </div>
         {% endfor %}
         </form>
