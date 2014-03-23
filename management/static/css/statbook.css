@@ -664,3 +664,50 @@ ul{
   z-index: 1020;
   background: transparent url('../img/ajax-loader1.gif') 50% 50% no-repeat;
 }
+
+/* pills */
+  .nav.nav-pills > li > a {
+    border-top: 3px solid transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    color: #444;
+  }
+  .nav.nav-pills > li > a > .fa,
+  .nav.nav-pills > li > a > .glyphicon,
+  .nav.nav-pills > li > a > .ion {
+    margin-right: 5px;
+  }
+  .nav.nav-pills > li.active > a,
+  .nav.nav-pills > li.active > a:hover {
+    background-color: #f6f6f6;
+    border-top-color: #3c8dbc;
+    color: #444;
+  }
+  .nav.nav-pills > li.active > a {
+    font-weight: 600;
+  }
+  .nav.nav-pills > li > a:hover {
+    background-color: #f6f6f6;
+  }
+  .nav.nav-pills.nav-stacked > li > a {
+    border-top: 0;
+    border-left: 3px solid transparent;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    color: #444;
+  }
+  .nav.nav-pills.nav-stacked > li.active > a,
+  .nav.nav-pills.nav-stacked > li.active > a:hover {
+    background-color: #f6f6f6;
+    border-left-color: #3c8dbc;
+    color: #444;
+  }
+  .nav.nav-pills.nav-stacked > li.header {
+    border-bottom: 1px solid #ddd;
+    color: #777;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+  }
