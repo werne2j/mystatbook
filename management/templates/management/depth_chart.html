@@ -70,7 +70,7 @@
 		{% endfor %}
 		<button type="button" class="btn btn-primary pull-right button-margin" id="save_depth_chart">Save Changes</button>
 		<button type="button" class="btn btn-danger pull-right button-margin" id="reset_chart">Reset Chart</button>
-		<div id="save_confirm" class="pull-right" style="margin-top:10px;"></div>
+		<div id="save_confirm" class="pull-right" style="margin-top:10px;display:none;">Chart has been saved!</div>
 		<div id="emptydiv"></div>
 	</div>
 	<div class="col-md-2" id="sidebar">
@@ -202,7 +202,7 @@
 			data : $(this).serialize(),
 			success: function(data){
 				$('#depthchart').html(data);
-				$('#save_confirm').text('Chart has been saved!');
+				$('#save_confirm').css("display","initial");
 				$('#saveWarning').css("display", "none");
 				setTimeout(function() {
 				    $('#save_confirm').fadeOut('fast');
