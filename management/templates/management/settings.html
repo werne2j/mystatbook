@@ -85,7 +85,11 @@
               {% if form.instance.logo %}<img src="{{ form.instance.logo.url}}" />{% endif %}
               {{ form.logo | bootstrap }}
               <button type="submit" class="btn btn-success">Save</button>
-              <button type="submit" class="btn btn-danger pull-right">Delete Team</button>
+              <!-- <form role="form" class="pull-right" action="{% url 'user_settings' username=user.username %}" method="post"> -->
+                {% csrf_token %}
+                <input type="hidden" value="{{form.name.value}}" name="delete_team">
+                <button type="submit" class="btn btn-danger pull-right">Delete Team</button>
+             <!--  </form> -->
             </div><!-- /.box-body -->
         </div>
         {% endfor %}

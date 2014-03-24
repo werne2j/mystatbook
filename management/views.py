@@ -93,14 +93,19 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             return True
 
     def post(self, request, **kwargs):
-        TeamFormSet = modelformset_factory(Team)
-        teams = Team.objects.filter(coach=self.request.user)
-        formset = TeamFormSet(request.POST, request.FILES, queryset=teams)
-        if formset.is_valid:
-            formset.save()
+        if 'delete_team' in request.POST:
+            t = Team.objects.filter(coach=self.request.user).get(name=request.POST['delete_team'])
+            t.delete()
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
         else:
-            print formset.errors
+            TeamFormSet = modelformset_factory(Team)
+            teams = Team.objects.filter(coach=self.request.user)
+            formset = TeamFormSet(request.POST, request.FILES, queryset=teams)
+            if formset.is_valid:
+                formset.save()
+                return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
+            else:
+                print formset.errors
         return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
 
 
