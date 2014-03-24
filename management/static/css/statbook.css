@@ -266,6 +266,13 @@ ul{
 	color: #fff;
 }
 
+.draggable.position-danger:hover{
+  z-index: -1;
+}
+.droppable:hover{
+  z-index: 1;
+}
+
 /*
     component: Boxes
 -------------------------
