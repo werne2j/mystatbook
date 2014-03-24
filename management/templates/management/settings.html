@@ -64,7 +64,11 @@
             </div>
             <div class="box-body" style="display: block;">
               Would you like to delete you account? <br><br>
-              <button type="button" class="btn btn-danger">Deactivate Account</button>
+              <form role="form" action="{% url 'user_settings' username=user.username %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" value="{{user.pk}}" name="deactivate">
+                <button id="delete_user" type="submit" class="btn btn-danger">Deactivate Account</button>
+              </form>
             </div><!-- /.box-body -->
         </div>
       </div>
@@ -86,7 +90,6 @@
               {{ form.logo | bootstrap }}
               <button type="submit" class="btn btn-success">Save</button>
               <!-- <form role="form" class="pull-right" action="{% url 'user_settings' username=user.username %}" method="post"> -->
-                {% csrf_token %}
                 <input type="hidden" value="{{form.name.value}}" name="delete_team">
                 <button type="submit" class="btn btn-danger pull-right">Delete Team</button>
              <!--  </form> -->
@@ -105,5 +108,10 @@
 <script>
     $("#id_coach").hide();
     $("#id_coach").val({{user.pk}});
+
+    $("#delete_user").click(function(e){
+      if (confirm('Are you sure you want to delete your accout?')) {
+          $("#delete_user").submit();
+    });
 </script>
 {% endblock %}

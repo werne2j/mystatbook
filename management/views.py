@@ -97,6 +97,10 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             t = Team.objects.filter(coach=self.request.user).get(name=request.POST['delete_team'])
             t.delete()
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
+        elif 'deactivate' in request.POST:
+            user = User.objects.get(pk=request.POST['deactivate'])
+            user.delete()
+            return HttpResponseRedirect('/')
         else:
             TeamFormSet = modelformset_factory(Team)
             teams = Team.objects.filter(coach=self.request.user)
