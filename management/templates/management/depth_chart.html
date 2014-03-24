@@ -108,6 +108,12 @@
 
 {% block extrascript %}
 <script>
+	$(window).bind('beforeunload', function(){
+		if ($('#saveWarning').css('display') == 'block'){
+	  		return 'There are unsaved changes on your Depth Chart.';
+		}
+	});
+
 	$('#reset_chart').click(function() {
 		$('.dragElement').each(function() {
 			$('#editPlayerModal #id_' + $(this).parent().attr('id')).val($(this).attr('id'));
