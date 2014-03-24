@@ -239,21 +239,3 @@ class DepthChart(models.Model):
 	def __unicode__(self):
 		return u'{t} depth chart'.format(t=self.season)
 
-
-# class IndivPitchStats(models.Model):
-
-# 	class Meta:
-# 		verbose_name_plural = 'Individual Pitching Stats'
-
-# 	player = models.ForeignKey('Player')
-# 	innings = models.IntegerField(default=0)
-# 	hits_allowed = models.IntegerField(default=0)
-# 	runs_allowed = models.IntegerField(default=0)
-# 	earned_runs = models.IntegerField(default=0)
-# 	walks_allowed = models.IntegerField(default=0)
-# 	strikeouts = models.IntegerField(default=0)
-# 	wild_pitches = models.IntegerField(default=0)
-# 	hit_by_pitch = models.IntegerField(default=0)
-
-# 	def __unicode__(self):
-# 		return u'{p} pitching stats'.format(p=self.player)

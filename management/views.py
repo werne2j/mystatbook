@@ -115,7 +115,6 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         for form in formset.forms:
             form.fields['coach'].queryset = User.objects.filter(username=self.request.user)
             form.fields['coach'].widget = forms.HiddenInput()
-            # form.fields['logo'].widget = ImageWidget()
 
         context['form'] = PasswordChangeForm(user=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)

@@ -18,6 +18,10 @@
   .btn-success{
     margin-top:0;
   }
+  input[type="checkbox"]{
+    opacity: 1;
+    margin-left: 42px;
+  }
 </style>
 {% endblock %}
 
@@ -78,7 +82,7 @@
               {{form.id}}
               {{ form.coach }}
               {{ form.name | bootstrap }}
-              <img src="{{ form.instance.logo.url }}" />
+              {% if form.instance.logo %}<img src="{{ form.instance.logo.url}}" />{% endif %}
               {{ form.logo | bootstrap }}
               <button type="submit" class="btn btn-success">Save</button>
               <button type="submit" class="btn btn-danger pull-right">Delete Team</button>
