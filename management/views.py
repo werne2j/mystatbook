@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.views.generic.base import View, TemplateView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth.views import logout
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from registration.backends.simple.views import RegistrationView
 from django.forms.models import modelformset_factory
@@ -12,7 +13,6 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from form_utils.widgets import ImageWidget
 from .models import *
 from .views import *
 from .forms import *
@@ -99,7 +99,9 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
         elif 'deactivate' in request.POST:
             user = User.objects.get(pk=request.POST['deactivate'])
-            user.delete()
+            user.is_active = False
+            user.save()
+            logout(request)
             return HttpResponseRedirect('/')
         else:
             TeamFormSet = modelformset_factory(Team)
