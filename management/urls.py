@@ -7,6 +7,7 @@ from .views import *
 urlpatterns = patterns('',
     url(r'^(?P<username>\w+)/$', Homepage.as_view(), name='coach_portal'),
     url(r'^(?P<username>\w+)/settings$', Settings.as_view(), name='user_settings'),
+    url(r'^(?P<username>\w+)/settings/delete/$', DeleteTeam.as_view(), name='delete_team'),
     url(r'^/change_password/$', 'management.views.password_change', name='change_password'),
     url(r'^(?P<username>\w+)/add_team/$', AddTeam.as_view(), name='add_team'),
     url(r'^(?P<username>\w+)/(?P<name>\w+)/add_season/$', AddSeason.as_view(), name='add_season'),

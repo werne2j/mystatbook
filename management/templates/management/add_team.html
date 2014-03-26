@@ -110,7 +110,7 @@
 {% block extrascript %}
 <script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
 <script>
-    $("#div_id_coach").hide();
+    $("#id_coach").hide();
     $("#id_coach").val({{user.pk}});
 
     $(document).ready(function() {

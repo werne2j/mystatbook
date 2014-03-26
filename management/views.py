@@ -80,6 +80,24 @@ class UserRegistration(RegistrationView):
         return reverse('add_team', kwargs={'username': request.user.username })
 
 
+class DeleteTeam(LoginRequiredMixin, UserPassesTestMixin, View):
+
+    login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
+
+    def post(self,request, **kwargs):
+        print request.POST
+        t = Team.objects.filter(coach=self.request.user).get(pk=request.POST['pk'])
+        t.delete()
+        return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
+
+
+
 class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     template_name = 'management/settings.html'
@@ -94,7 +112,7 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def post(self, request, **kwargs):
         if 'delete_team' in request.POST:
-            t = Team.objects.filter(coach=self.request.user).get(name=request.POST['delete_team'])
+            t = Team.objects.filter(coach=self.request.user).get(pk=request.POST['pk'])
             t.delete()
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username': request.user.username}))
         elif 'deactivate' in request.POST:

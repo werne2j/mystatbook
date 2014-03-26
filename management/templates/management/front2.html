@@ -53,14 +53,14 @@
           .vert {
             vertical-align: middle;
             width:100%;
-            padding-top:17%;
+            padding-top:10%;
             text-align:center;
           }
 
           .header .btn-lg {
              font-size:28px;
-             border-color:#eeeeee;
              padding:15px;
+             border: 2px solid black;
           }
 
           .header .btn-lg:hover {
@@ -89,8 +89,10 @@
 
               
           .header h1 {
-            font-size:80px;
-            -webkit-text-stroke: 1px rgba(f,f,f,0.1);
+            font-size:125px;
+           -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+           -webkit-text-stroke-width: 6px;
+           -webkit-text-stroke-color: black;
             color:#431a6d;
             color:#fff;
             margin-left:-5px;
@@ -104,8 +106,8 @@
           }
 
           .header {
-            height: 90%;
-            background: #8AFFFF url("{% static 'live.png' %}") center center fixed;
+            height: 80%;
+            background: #8DFFFF url("{% static 'mound.jpg' %}") center center fixed;
             background-size: 100%;
           }
 
@@ -138,7 +140,7 @@
 
           .featurette {
             background: #222334;
-            padding: 120px 0;
+            padding: 80px 0;
             color: #ffffff;
           }
 
@@ -167,10 +169,9 @@
             padding-top:15%;
             height: 500px;
             width: 100%;
-            background: #8AFFFF url('live.png') center center fixed;
+            background: #8AFFFF url("{% static 'live.png' %}") center center fixed;
             background-size: 100%;
           }
-
           .gallery {
             padding: 50px 0;
           }
@@ -186,6 +187,18 @@
 
           footer {
             padding: 100px 0;
+          }
+          .box-thumb{
+            height:300px;
+            width: 300px;
+            background-image: url("{% static 'box_thumb.png' %}");
+            background-size: 100% 100%;
+          }
+          .chart-thumb{
+            height:300px;
+            width: 300px;
+            background-image: url("{% static 'box_thumb.png' %}");
+            background-size: 100% 100%;
           }
 
           /* -- end custom css for Bootstrap 3.x --*/
@@ -227,9 +240,9 @@
     <div class="container">
       
       <h1>MyStatBook</h1>
-        <p class="lead">Something about MyStatBook...</p>
+        <p class="lead"></p>
         <div>&nbsp;</div>
-        <a href="{% url 'registration' %}" class="btn btn-default btn-lg">Sign Up Today!</a>
+        <a href="{% url 'registration' %}" class="btn btn-primary btn-lg">Sign Up Today!</a>
     </div>
   </div>
 
@@ -237,11 +250,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-7">
-          <h1>Drag and Drop Depth Chart</h1>
-          <p class="lead">The Most Popular Responsive Framework</p>
+          <h1>Box Scores</h1>
+          <p class="lead"></p>
         </div>
-        <div class="col-md-5">
-          <h1 class="pull-right"><i class="fa fa-mobile-phone fa-5x"></i> <i class="fa fa-tablet fa-5x"></i></h1>
+        <div class="col-md-5 pull-right box-thumb">
         </div>
       </div>
     </div>
@@ -251,29 +263,24 @@
     <div class="container">
       <div class="row">
         <div class="col-md-5">
-          <h1 class="pull-left"><i class="fa fa-mobile-phone fa-5x"></i> <i class="fa fa-tablet fa-5x"></i></h1>
+            <div class="col-md-5 pull-left chart-thumb"></div>
         </div>
         <div class="col-md-7">
-          <h1>Box Scores</h1>
-          <p class="lead">The Most Popular Responsive Framework</p>
+          <h1>Drag and Drop Depth Chart</h1>
+          <p class="lead"></p>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="featurette" id="sec2">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-7">
-          <h1>Multiple Seasons</h1>
-          <p class="lead">The Most Popular Responsive Framework</p>
-        </div>
-        <div class="col-md-5">
-          <h1 class="pull-right"><i class="fa fa-mobile-phone fa-5x"></i> <i class="fa fa-tablet fa-5x"></i></h1>
-        </div>
+  <div class="edges">
+    <div class="callout alt vert">
+      <div class="container">
+
       </div>
     </div>
   </div>
+
 
 
 
@@ -373,27 +380,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center">
-          <ul class="list-inline">
-            <li><i class="fa fa-facebook"></i></li>
-            <li><i class="fa fa-twitter"></i></li>
-            <li><i class="fa fa-google-plus"></i></li>
-            <li><i class="fa fa-pinterest"></i></li>
-          </ul>
           <hr>
           <p>Built by Jake Wernette ©2014</p>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- <ul class="nav pull-right scroll-down">
-    <li><a href="#" title="Scroll down"><i class="icon-chevron-down icon-3x"></i></a></li>
-  </ul>
-  <ul class="nav pull-right scroll-top">
-    <li><a href="#" title="Scroll to top"><i class="icon-chevron-up icon-3x"></i></a></li>
-  </ul>
-   -->
-          
+\
           <script src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
 
 
