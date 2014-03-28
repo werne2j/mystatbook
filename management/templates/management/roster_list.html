@@ -17,7 +17,15 @@
        table th:last-child {display:none;}
        tfoot {display:none;}
        #print-button {display: none;}
-   }
+   	}
+    .form-group{
+    	margin-bottom: 0;
+    	margin-left:5%;
+    	margin-right: 5%;
+    }
+    .form-control{
+    	height: 28px;
+    }
 </style>
 {% endblock %}
 {% block header %}
@@ -61,10 +69,14 @@
 				<tr class="text-center">
 					<th id="season_id" style="display:none;">{{form.season}}</th>
 					<th class="text-center">
-						<input id="id_last_name" maxlength="50" name="last_name" type="text" placeholder="Last Name..">
+						<div class="form-group">
+							<input id="id_last_name" class="form-control" maxlength="50" name="last_name" type="text" placeholder="Last Name">
+						</div>
 					</th>
 					<th class="text-center">
-						<input id="id_first_name" maxlength="50" name="first_name" type="text" placeholder="First Name..">
+						<div class="form-group">
+							<input id="id_first_name" class="form-control" maxlength="50" name="first_name" type="text" placeholder="First Name">
+						</div>
 					</th>
 					<th class="text-center">{{form.position}}</th>
 					<th class="text-center">

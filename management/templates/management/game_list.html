@@ -21,6 +21,14 @@
        .box-score{display:none;}
        #print-button {display: none;}
     }
+    .form-group{
+    	margin-bottom: 0;
+    	margin-left:5%;
+    	margin-right: 5%;
+    }
+    .form-control{
+    	height: 28px;
+    }
 </style>
 {% endblock %}
 {% block content %}
@@ -62,17 +70,25 @@
 				<tr class="text-center">
 					<th id="game_season" style="display:none;">{{form.season}}</th>
 					<th class="text-center">
-						<input id="id_date" name="date" type="text" placeholder="Date..">
+						<div class="form-group">
+							<input id="id_date" class="form-control" name="date" type="text" placeholder="Date">
+						</div>
 					</th>
 					<th class="text-center">
-						<input id="id_opponent" maxlength="100" name="opponent" type="text" placeholder="Opponent..">
+						<div class="form-group">
+							<input id="id_opponent" class="form-control" maxlength="100" name="opponent" type="text" placeholder="Opponent">
+						</div>
 					</th>
 					<th class="text-center">
-						<input id="id_location" maxlength="100" name="location" type="text" placeholder="Location..">
+						<div class="form-group">
+							<input id="id_location" class="form-control" maxlength="100" name="location" type="text" placeholder="Location">
+						</div>
 					</th>
 					<th class="text-center" id="game_time">
-						<input id="id_time" name="time" type="text" placeholder="Time..">
-						<input id="id_time2" name="time2" type="hidden" placeholder="Time..">
+						<div class="form-group">
+							<input id="id_time" class="form-control" name="time" type="text" placeholder="Time">
+							<input id="id_time2" class="form-control" name="time2" type="hidden" placeholder="Time">
+						</div>
 					</th>
 					<td class="text-center">
 						<label for="id_doubleheader" style="font-size:.9em;">Doubleheader: </label>
