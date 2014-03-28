@@ -60,11 +60,36 @@
 				{% csrf_token %}
 				<tr class="text-center">
 					<th id="season_id" style="display:none;">{{form.season}}</th>
-					<th class="text-center">{{form.last_name}}</th>
-					<th class="text-center">{{form.first_name}}</th>
+					<th class="text-center">
+						<input id="id_last_name" maxlength="50" name="last_name" type="text" placeholder="Last Name..">
+					</th>
+					<th class="text-center">
+						<input id="id_first_name" maxlength="50" name="first_name" type="text" placeholder="First Name..">
+					</th>
 					<th class="text-center">{{form.position}}</th>
-					<th class="text-center">{{form.class_standing}}</th>
-					<th class="text-center">{{form.throws}}/{{form.hits}}</th>
+					<th class="text-center">
+						<select id="id_class_standing" name="class_standing">
+							<option value="" selected="selected">Class</option>
+							<option value="Fr">Freshman</option>
+							<option value="So">Sophomore</option>
+							<option value="Jr">Junior</option>
+							<option value="Sr">Senior</option>
+							<option value="O">Other</option>
+						</select>
+					</th>
+					<th class="text-center">
+						<select id="id_throws" name="throws">
+							<option value="" selected="selected">Throws</option>
+							<option value="L">Left</option>
+							<option value="R">Right</option>
+						</select>
+						/
+						<select id="id_hits" name="hits">
+							<option value="" selected="selected">Hits</option>
+							<option value="L">Left</option>
+							<option value="R">Right</option>
+						</select>
+					</th>
 					<th class="text-center no-sort"><button type="submit" class="btn btn-primary" id="save_player">Save</button></th>
 				</tr>
 			</form>

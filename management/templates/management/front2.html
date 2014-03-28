@@ -10,7 +10,7 @@
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <link href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Signika:400,600' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
         
         <style type="text/css">
             /* -- custom css for Bootstrap 3.x --*/
@@ -19,8 +19,8 @@
           body {
             height: 100%;
             width: 100%;
-            font-family: 'Signika', sans-serif;
-            font-weight: 600;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
             font-style: none;
           }
 
@@ -29,6 +29,7 @@
 
           h1 {
             font-size:50px;
+            font-weight: 300;
           }
 
           .icon-bar {
@@ -89,9 +90,10 @@
               
           .header h1 {
             font-size:125px;
-           -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+            font-weight: 100;
+/*           -webkit-text-fill-color: white;  Will override color (regardless of order) 
            -webkit-text-stroke-width: 6px;
-           -webkit-text-stroke-color: black;
+           -webkit-text-stroke-color: black;*/
             color:#431a6d;
             color:#fff;
             margin-left:-5px;
@@ -100,7 +102,7 @@
           }
 
           .header .lead {
-            color:#d46054;
+            color:#fff;
             font-size:25px;
           }
 
@@ -111,7 +113,8 @@
           }
 
           .alt .lead {
-            color: #3B0496;
+            color: #fff;
+            font-weight: 400;
           }
 
           .alt.affix {
@@ -166,9 +169,9 @@
           .callout {
             color: #ffffff;
             padding-top:15%;
-            height: 500px;
+            height: 600px;
             width: 100%;
-            background: #8AFFFF url("{% static 'live.png' %}") center center fixed;
+            background: #8AFFFF url("{% static 'book.jpg' %}") center center fixed;
             background-size: 100%;
           }
           .gallery {
@@ -196,8 +199,11 @@
           .chart-thumb{
             height:300px;
             width: 300px;
-            background-image: url("{% static 'box_thumb.png' %}");
+            background-image: url("{% static 'chart_thumb.png' %}");
             background-size: 100% 100%;
+          }
+          #sec1{
+            background-color: #bfc8d3;
           }
 
           /* -- end custom css for Bootstrap 3.x --*/
@@ -239,7 +245,7 @@
     <div class="container">
       
       <h1>MyStatBook</h1>
-        <p class="lead"></p>
+        <p class="lead">Keep All Your Team Information in One Place!</p>
         <div>&nbsp;</div>
         <a href="{% url 'registration' %}" class="btn btn-primary btn-lg">Sign Up Today!</a>
     </div>
@@ -250,7 +256,7 @@
       <div class="row">
         <div class="col-md-7">
           <h1>Box Scores</h1>
-          <p class="lead"></p>
+          <p class="lead">stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff </p>
         </div>
         <div class="col-md-5 pull-right box-thumb">
         </div>
@@ -266,7 +272,7 @@
         </div>
         <div class="col-md-7">
           <h1>Drag and Drop Depth Chart</h1>
-          <p class="lead"></p>
+          <p class="lead">stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff </p>
         </div>
       </div>
     </div>
@@ -287,8 +293,7 @@
     
     <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center">
-          <h5>This Template is Responsive</h5>
-          <h2>Features Galore</h2>
+          <h2>Features</h2>
           <br>
         </div>
     </div>
@@ -385,39 +390,30 @@
       </div>
     </div>
   </footer>
-\
-          <script src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
 
+  <script src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
+  <script src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
+  
+  <script type="text/javascript">
+  
+  $(document).ready(function() {
+  
+      /* smooth scrolling for scroll to top */
+      $('.scroll-top').click(function(){
+        $('body,html').animate({scrollTop:0},800);
+      })
+      /* smooth scrolling for scroll down */
+      $('.scroll-down').click(function(){
+        $('body,html').animate({scrollTop:$(window).scrollTop()+800},1000);
+      })
 
-          <script src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
+      /* highlight the top nav as scrolling occurs */
+      $('body').scrollspy({ target: '#navbar' })
 
-
-
-
-
-          
-          <!-- JavaScript jQuery code from Bootply.com editor -->
-          
-          <script type="text/javascript">
-          
-          $(document).ready(function() {
-          
-              /* smooth scrolling for scroll to top */
-              $('.scroll-top').click(function(){
-                $('body,html').animate({scrollTop:0},800);
-              })
-              /* smooth scrolling for scroll down */
-              $('.scroll-down').click(function(){
-                $('body,html').animate({scrollTop:$(window).scrollTop()+800},1000);
-              })
-
-              /* highlight the top nav as scrolling occurs */
-              $('body').scrollspy({ target: '#navbar' })
-
-          
-          });
-          
-          </script>
+  
+  });
+  
+  </script>
           
       
   </body>

@@ -33,7 +33,7 @@
 		<div class="modal-body">
 			<form class="stats-form form-inline" method="post" action="{% url 'game_stats' username=user.username name=name year=year pk=pk %}">
 				{% csrf_token %}
-				<h3>Hitting Stats</h3>
+				<h3>Batting Stats</h3>
 				<fieldset>
 					{{ formset.management_form }}
 						<table class="table" id="hitter_tab">
@@ -76,7 +76,7 @@
 							</tbody>
 						</table>
 				</fieldset>
-				<p><a href="#" id="add_hit"><i class="fa fa-plus"></i> Add another hitter</a></p>
+				<p><a href="#" id="add_hit"><i class="fa fa-plus"></i> Add another batter</a></p>
 			    <fieldset>
 				{{ formset2.management_form }}
 					<h3>Pitching Stats</h3>

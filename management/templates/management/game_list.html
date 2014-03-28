@@ -61,12 +61,27 @@
 				{% csrf_token %}
 				<tr class="text-center">
 					<th id="game_season" style="display:none;">{{form.season}}</th>
-					<th class="text-center">{{form.date}}</th>
-					<th class="text-center">{{form.opponent}}</th>
-					<th class="text-center">{{form.location}}</th>
-					<th class="text-center" id="game_time">{{form.time}}<input id='id_time2' name='time2' type='hidden'></th>
-					<td class="text-center"><label for="id_doubleheader" style="font-size:.9em;">Doubleheader: </label> {{form.doubleheader}}</td>
-					<td class="text-center"><label for="id_doubleheader" style="font-size:.9em;">Conference: </label> {{form.conference}}</td>
+					<th class="text-center">
+						<input id="id_date" name="date" type="text" placeholder="Date..">
+					</th>
+					<th class="text-center">
+						<input id="id_opponent" maxlength="100" name="opponent" type="text" placeholder="Opponent..">
+					</th>
+					<th class="text-center">
+						<input id="id_location" maxlength="100" name="location" type="text" placeholder="Location..">
+					</th>
+					<th class="text-center" id="game_time">
+						<input id="id_time" name="time" type="text" placeholder="Time..">
+						<input id="id_time2" name="time2" type="hidden" placeholder="Time..">
+					</th>
+					<td class="text-center">
+						<label for="id_doubleheader" style="font-size:.9em;">Doubleheader: </label>
+						{{form.doubleheader}}
+					</td>
+					<td class="text-center">
+						<label for="id_doubleheader" style="font-size:.9em;">Conference: </label>
+						{{form.conference}}
+					</td>
 					<th class="text-center no-sort"><button type="submit" class="btn btn-primary"id="save_game">Save</button></th>
 				</tr>
 			</form>
