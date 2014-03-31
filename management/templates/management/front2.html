@@ -13,7 +13,6 @@
         <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
         
         <style type="text/css">
-            /* -- custom css for Bootstrap 3.x --*/
 
           html,
           body {
@@ -116,6 +115,9 @@
             color: #fff;
             font-weight: 400;
           }
+          .lead{
+            font-weight: 300;
+          }
 
           .alt.affix {
             background-color:#4C06AB;
@@ -205,19 +207,17 @@
           #sec1{
             background-color: #bfc8d3;
           }
-
-          /* -- end custom css for Bootstrap 3.x --*/
+          .list-group{
+            margin-bottom: 0;
+          }
 
         </style>
     </head>
-    
-    <!-- HTML code from Bootply.com editor -->
     
     <body>
         
           
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-          <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
               <span class="sr-only">Toggle navigation</span>
@@ -237,7 +237,7 @@
                 {% endif %}
               </li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
 
       </nav>
 
@@ -256,7 +256,7 @@
       <div class="row">
         <div class="col-md-7">
           <h1>Box Scores</h1>
-          <p class="lead">stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff </p>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
         <div class="col-md-5 pull-right box-thumb">
         </div>
@@ -272,7 +272,7 @@
         </div>
         <div class="col-md-7">
           <h1>Drag and Drop Depth Chart</h1>
-          <p class="lead">stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff stuff </p>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
       </div>
     </div>
@@ -289,7 +289,7 @@
 
 
 
-  <div class="gallery">
+<!--   <div class="gallery">
     
     <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center">
@@ -305,25 +305,25 @@
         	<div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item">
-                <span class="text-success"><i class="icon-film"></i></span> Carousel</a>
+                <span class="text-success"><i class="icon-film"></i></span> Multiple Teams</a>
             </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item">
-                <span class="text-success"><i class="icon-folder-close-alt"></i></span> Tabs</a>
+                <span class="text-success"><i class="icon-folder-close-alt"></i></span> Multiple Seasons</a>
             </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item">
-                <span class="text-success"><i class="icon-credit-card"></i></span> Modal</a>
+                <span class="text-success"><i class="icon-credit-card"></i></span> Upload Logo</a>
             </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item">
-                <span class="text-success"><i class="icon-reorder"></i></span> Navigation</a>
+                <span class="text-success"><i class="icon-reorder"></i></span> Game by Game Stats</a>
             </div>
           </div>
           <div class="col-sm-3">
@@ -376,7 +376,7 @@
           </div>      
       </div>
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -398,16 +398,14 @@
   
   $(document).ready(function() {
   
-      /* smooth scrolling for scroll to top */
       $('.scroll-top').click(function(){
         $('body,html').animate({scrollTop:0},800);
       })
-      /* smooth scrolling for scroll down */
+
       $('.scroll-down').click(function(){
         $('body,html').animate({scrollTop:$(window).scrollTop()+800},1000);
       })
 
-      /* highlight the top nav as scrolling occurs */
       $('body').scrollspy({ target: '#navbar' })
 
   
