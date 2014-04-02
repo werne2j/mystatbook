@@ -537,17 +537,19 @@ class GameStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         hit = HitterStats.objects.filter(game__pk=self.kwargs.get("pk"))
         pitch = PitcherStats.objects.filter(game__pk=self.kwargs.get("pk"))
 
-        HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=9-len(hit))
-        PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm, extra=1-len(pitch))
+        HitStatsFormSet = modelformset_factory(HitterStats, form=HitStatsForm, extra=15-len(hit))
+        PitchStatsFormSet = modelformset_factory(PitcherStats, form=PitchStatsForm, extra=10-len(pitch))
 
         hit_formset = HitStatsFormSet(initial=[{'game': game,}], queryset=hit, prefix='hit')
         pitch_formset = PitchStatsFormSet(initial=[{'game': game,}], queryset=pitch, prefix='pitch')
 
         for form in hit_formset.forms:
             form.fields['player'].queryset = Player.objects.filter(season=season)
+            form.fields['game'].queryset = Game.objects.filter(season__team__coach=self.request.user).filter(season=season)
             form.fields['game'].initial = game
         for form in pitch_formset.forms:
             form.fields['player'].queryset = Player.objects.filter(season=season)
+            form.fields['game'].queryset = Game.objects.filter(season__team__coach=self.request.user).filter(season=season)
             form.fields['game'].initial = game
 
         context['game'] = game

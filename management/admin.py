@@ -21,7 +21,7 @@ class HitStatsAdmin(admin.ModelAdmin):
 	list_display = ('player', 'game', 'at_bats','runs','hits','hr','rbi','walks','strikeouts')
 
 class PitchStatsAdmin(admin.ModelAdmin):
-	list_display = ('player', 'game','starting_pitcher','full_innings','part_innings','hits_allowed','runs_allowed','earned_runs','walks_allowed','strikeout_amount', 'wild_pitches', 'hit_by_pitch')
+	list_display = ('id', 'player', 'game','starting_pitcher','full_innings','part_innings','hits_allowed','runs_allowed','earned_runs','walks_allowed','strikeout_amount', 'wild_pitches', 'hit_by_pitch')
 
 class DepthChartAdmin(admin.ModelAdmin):
 	pass

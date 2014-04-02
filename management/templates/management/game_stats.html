@@ -100,12 +100,12 @@
 						</thead>
 						<tbody class="pitcher_body">
 							{% for form2 in formset2 %}
-								<tr class="hit_stats text-center" id="pitch_stats">
+								<tr class="hit_stats text-center">
 									{{form2.id}}
 									<td id="game2" style="display:none;">{{form2.game}}</td>
 									<td>{{form2.player}}</td>
-									<td>{{form2.starting_pitcher}}</td>
-									<td>{{form2.full_innings}}.<span id="partial">{{form2.part_innings}}</span></td>
+									<td id="starting">{{form2.starting_pitcher}}</td>
+									<td>{{form2.full_innings}}.{{form2.part_innings}}</td>
 									<td>{{form2.hits_allowed}}</td>
 									<td>{{form2.runs_allowed}}</td>
 									<td>{{form2.earned_runs}}</td>
@@ -133,116 +133,31 @@
 </div>
 {% block extrascript %}
 <script>
-
 	$(document).ready(function () {
-	    // Code adapted from http://djangosnippets.org/snippets/1389/  
-	    function updateElementIndex(el, prefix, ndx) {
-	        var id_regex = new RegExp('(' + prefix + '-\\d+-)');
-	        var replacement = prefix + '-' + ndx + '-';
-	        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
-	        replacement));
-	        if (el.id) el.id = el.id.replace(id_regex, replacement);
-	        if (el.name) el.name = el.name.replace(id_regex, replacement);
-	    }
+		var val = $("#id_hit-INITIAL_FORMS").val();
+		var val2 = $("#id_pitch-INITIAL_FORMS").val();
+		var k = 9 - parseInt(val);
+		var pitch_initial = parseInt(val2)+1;
+		var hit_initial = parseInt(val)+k;
 
-	    // function deleteForm(btn, prefix) {
-	    //     var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-	    //     if (formCount > 1) {
-	    //         // Delete the item/form
-	    //         $(btn).parents('.item').remove();
-	    //         var forms = $('.item'); // Get all the forms  
-	    //         // Update the total number of forms (1 less than before)
-	    //         $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
-	    //         var i = 0;
-	    //         // Go through the forms and set their indices, names and IDs
-	    //         for (formCount = forms.length; i < formCount; i++) {
-	    //             $(forms.get(i)).children().children().each(function () {
-	    //                 if ($(this).attr('type') == 'text') updateElementIndex(this, prefix, i);
-	    //             });
-	    //         }
-	    //     } // End if
-	    //     else {
-	    //         alert("You have to enter at least one todo item!");
-	    //     }
-	    //     return false;
-	    // }
+		$('#hitter_tab tbody tr').hide();
+		$("#hitter_tab tbody tr:lt(" + hit_initial + ")").show();
 
-	    function addHitForm(btn, prefix) {
-	        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-	        // You can only submit a maximum of 10 todo items 
-	        if (formCount < 13) {
-	            // Clone a form (without event handlers) from the first form
-	            var row = $(".hitter_body").children('tr:first').clone(false).get(0);
-	            // Insert it after the last form
-	            $(row).removeAttr('id').hide().insertAfter("#hitter_tab tr:last").slideDown(300);
+		var j = hit_initial+1;
+		$('#add_hit').click(function (){
+			$("#hitter_tab tbody tr:lt(" + j + ")").show();
+			j = j + 1;
+		});
 
-	            // Remove the bits we don't want in the new row/form
-	            // e.g. error messages
-	            // $(".errorlist", row).remove();
-	            // $(row).children().removeClass("error");
+		$('#pitcher_tab tbody tr').hide();
+		$("#pitcher_tab tbody tr:lt(" + pitch_initial + ")").show();
 
-	            // Relabel or rename all the relevant bits
-	            $(row).children().children().each(function () {
-	                updateElementIndex(this, prefix, formCount);
-	                $(this).val("");
-	            });
+		var i = pitch_initial+1;
+		$('#add_pitch').click(function (){
+			$("#pitcher_tab tbody tr:lt(" + i + ")").show();
+			i = i + 1;
+		});
 
-	            // Add an event handler for the delete item/form link 
-	            // $(row).find(".delete").click(function () {
-	            //     return deleteForm(this, prefix);
-	            // });
-	            // Update the total form count
-	            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
-	        } // End if
-	        else {
-	            alert("Sorry, you can only enter a maximum of ten items.");
-	        }
-	        return false;
-	    }
-
-	   	function addPitchForm(btn, prefix) {
-	        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-	        // You can only submit a maximum of 10 todo items 
-	        if (formCount < 6) {
-	            // Clone a form (without event handlers) from the first form
-	            var row = $(".pitcher_body").children('tr:first').clone(false).get(0);
-	            // Insert it after the last form
-	            $(row).removeAttr('id').hide().insertAfter("#pitcher_tab tr:last").slideDown(300);
-
-	            // Remove the bits we don't want in the new row/form
-	            // e.g. error messages
-	            // $(".errorlist", row).remove();
-	            // $(row).children().removeClass("error");
-
-	            // Relabel or rename all the relevant bits
-	            $(row).children().children().each(function () {
-	                updateElementIndex(this, prefix, formCount);
-	                $(this).val("");
-	            });
-
-	            // Add an event handler for the delete item/form link 
-	            // $(row).find(".delete").click(function () {
-	            //     return deleteForm(this, prefix);
-	            // });
-	            // Update the total form count
-	            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
-	        } // End if
-	        else {
-	            alert("Sorry, you can only enter a maximum of ten items.");
-	        }
-	        return false;
-	    }
-	    // Register the click event handlers
-	    $("#add_hit").click(function () {
-	        return addHitForm(this, "hit");
-	    });
-	   	$("#add_pitch").click(function () {
-	        return addPitchForm(this, "pitch");
-	    });
-
-	    // $(".delete").click(function () {
-	    //     return deleteForm(this, "form");
-	    // });
 	});
 </script>
 {% endblock %}
