@@ -40,7 +40,7 @@
                 <h3 class="box-title">Change Password</h3>
             </div>
             <div class="box-body" style="display: block;">
-              <form role="form" action="{% url 'change_password' %}" method="post">
+              <form id="change_form" role="form" action="{% url 'change_password' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                   <input id="id_old_password" class="form-control" name="old_password" type="password" placeholder="Old Password">
@@ -124,6 +124,47 @@
             }
           });
       };
+    });
+
+    $(document).ready(function() {
+        $("#change_form").bootstrapValidator({
+            feedbackIcons: {
+              valid: 'fa fa-check',
+              invalid: 'fa fa-times',
+              validating: 'fa fa-refresh'
+            },
+            fields: {
+              old_password: {
+                validators: {
+                  notEmpty: {
+                    message: 'Old Password is required'
+                  },
+                }
+              },
+              new_password1: {
+                validators: {
+                  notEmpty: {
+                    message: 'Password is required'
+                  },
+                  identical: {
+                    field: 'new_password2',
+                      message: 'Passwords do not match'
+                  },
+                }
+              },
+              new_password2: {
+                validators: {
+                  notEmpty: {
+                    message: 'Password Confirmation is required'
+                  },
+                  identical: {
+                    field: 'new_password1',
+                      message: 'Passwords do not match'
+                  },
+                }
+              },
+            }
+        });
     });
 </script>
 {% endblock %}
