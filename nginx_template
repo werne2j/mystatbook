@@ -1,10 +1,9 @@
 upstream mystatbook_server {
-    server unix:/tmp/mystatbook.sock fail_timeout=0;
+	server unix:/tmp/mystatbook.sock fail_timeout=0;
 }
 
 server {
 	listen 80;
-
 
 	access_log /var/log/nginx/mystatbook.access.log;
 	error_log /var/log/nginx/mystatbook.error.log;
