@@ -4,7 +4,7 @@ upstream mystatbook_server {
 
 server {
 	listen 80;
-
+	server_name mystatbook.com;
 	access_log /var/log/nginx/mystatbook.access.log;
 	error_log /var/log/nginx/mystatbook.error.log;
 
