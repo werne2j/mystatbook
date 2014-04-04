@@ -11,6 +11,9 @@ server {
 	location ^~ /static/ {
 		alias /opt/static/mystatbook/;
 	}
+	location ^~ /media/ {
+		alias /opt/media/mystatbook/;
+	}
 
 	location / {
 		proxy_set_header X-Forwarded-Proto $scheme;
