@@ -136,9 +136,12 @@
 	$(document).ready(function () {
 		var val = $("#id_hit-INITIAL_FORMS").val();
 		var val2 = $("#id_pitch-INITIAL_FORMS").val();
-		var k = 9 - parseInt(val);
+		if (val < 9){
+			hit_initial = 9;
+		}else{
+			hit_initial = parseInt(val)+1;
+		}
 		var pitch_initial = parseInt(val2)+1;
-		var hit_initial = parseInt(val)+k;
 
 		$('#hitter_tab tbody tr').hide();
 		$("#hitter_tab tbody tr:lt(" + hit_initial + ")").show();
