@@ -2,3 +2,4 @@
 .DS_STORE
 vagrant-expert
 media/
+/static/
