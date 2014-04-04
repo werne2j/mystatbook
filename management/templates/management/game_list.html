@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block extrastyle %}
+<link rel="stylesheet" href="{% static 'datepicker/css/datepicker.css' %}" />
 <style>
 	#save_game{
 		padding: 2px 12px;
@@ -112,6 +113,7 @@
 
 {% block extrascript %}
 <script src="{% static 'js/tablesort.min.js' %}"></script>
+<script src="{% static 'datepicker/js/bootstrap-datepicker.js' %}"></script>
 <script>
 	new Tablesort(document.getElementById('game_list'));
 
