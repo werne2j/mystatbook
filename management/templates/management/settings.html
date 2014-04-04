@@ -86,7 +86,7 @@
               {{form.id}}
               {{ form.coach }}
               {{ form.name | bootstrap }}
-              {% if form.instance.logo %}<img src="{{ form.instance.logo.url}}" />{% endif %}
+              {% if form.instance.logo %}<img src="{{ form.instance.logo.url}}" height="200px" width="200px" />{% endif %}
               {{ form.logo | bootstrap }}
               <button type="submit" class="btn btn-success">Save</button>
               <button type="button" data-pk="{{form.id.value}}" class="btn btn-danger pull-right delete_team">Delete Team</button>
