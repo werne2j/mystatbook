@@ -10,6 +10,8 @@ CLASS_STANDINGS = (('Fr', 'Freshman'), ('So', 'Sophomore'), (
 
 HAND = (('L', 'Left'), ('R', 'Right'))
 
+BAT = (('L', 'Left'), ('R', 'Right'), ('S', 'Switch'))
+
 INNINGS = ((0, 0), (1, 1), (2, 2))
 
 # Create your models here.
@@ -50,7 +52,7 @@ class Player(models.Model):
 	position = models.ManyToManyField('Position')
 	class_standing = models.CharField(max_length=50, choices=CLASS_STANDINGS, blank=True)
 	throws = models.CharField(max_length=50, choices=HAND, null=True)
-	hits = models.CharField(max_length=50, choices=HAND, null=True)
+	hits = models.CharField(max_length=50, choices=BAT, null=True)
 
 	def __unicode__(self):
 		return u'{first} {last}'.format(first=self.first_name, last=self.last_name)
