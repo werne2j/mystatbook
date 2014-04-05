@@ -353,10 +353,13 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         if HitterStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
             totals['plate_apperances'] = totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']
             totals['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), hitterstats__isnull=True).count()
-            totals['average'] = round(float(totals['hits']) / float(totals['atbats']),3)
-            totals['onbase'] = round(float(totals['hits'] + totals['walks'] + totals['hbp']) / float(totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']),3)
+            avg = float(totals['hits']) / float(totals['atbats'])
+            totals['average'] = ("%.3f" % avg)
+            obp = float(totals['hits'] + totals['walks'] + totals['hbp']) / float(totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice'])
+            totals['onbase'] = ("%.3f" % obp)
             totals['single'] = totals['hits']-(totals['doubles']+totals['triples']+totals['hr'])
-            totals['slugging'] = round(float(totals['single']+(2*totals['doubles'])+(3*totals['triples'])+(4*totals['hr']))/totals['atbats'],3)
+            slugging = float(totals['single']+(2*totals['doubles'])+(3*totals['triples'])+(4*totals['hr']))/totals['atbats']
+            totals['slugging'] = ("%.3f" % slugging)
         else:
             totals = 0
 
@@ -366,7 +369,8 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
         if PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
             pitch['innings'] = str(((pitch['full']*3)+pitch['part']) / 3) + "." + str(((pitch['full']*3)+pitch['part']) % 3)
-            pitch['era'] = round(float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0 ,2)
+            era = float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0
+            pitch['era'] = ("%.2f" % era)
             pitch['games'] = Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
         else: 
             pitch = 0
