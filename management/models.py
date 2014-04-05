@@ -98,7 +98,10 @@ class Player(models.Model):
 		a =  float(b.values()[0])
 		f = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
 		h =  float(f.values()[0])
-		avg = h/a
+		try:
+			avg = h/a 
+		except ZeroDivisionError:
+			avg = 0
 		average = ("%.3f" % avg)
 		return average
 
@@ -116,7 +119,10 @@ class Player(models.Model):
 
 		t = h+bb+hbp
 		b = ab+bb+hbp+sf
-		o = t/b
+		try:
+			o = t/b
+		except ZeroDivisionError:
+			o = 0
 		obp = ("%.3f" % o)
 
 		return obp
@@ -135,7 +141,10 @@ class Player(models.Model):
 
 		s = h - (d+t+hr)
 		top = s + (2*d) + (3*t) + (4*hr)
-		slg = top/a
+		try:
+			slg = top/a
+		except ZeroDivisionError:
+			slg = 0
 		slgp = ("%.3f" % slg)
 
 		return slgp

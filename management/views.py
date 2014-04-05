@@ -341,7 +341,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         batters = []
         pitchers = []
         for player in players:
-            if player.plate_apperances() > 0:
+            if player.hit_totals().get('game__count') > 0:
                 batters.append(player)
             if player.pitch_totals().get('full_innings__sum') > 0:
                 pitchers.append(player)
