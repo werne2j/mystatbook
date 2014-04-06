@@ -343,7 +343,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         for player in players:
             if player.hit_totals().get('game__count') > 0:
                 batters.append(player)
-            if player.pitch_totals().get('full_innings__sum') > 0:
+            if player.pitch_totals().get('game__count') > 0:
                 pitchers.append(player)
 
         totals = HitterStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(atbats=Sum('at_bats'),
@@ -363,7 +363,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             totals = 0
 
-        pitch = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(starts=Count('starting_pitcher'), full=Sum('full_innings'),part=Sum('part_innings'),
+        pitch = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(full=Sum('full_innings'),part=Sum('part_innings'),
             hits=Sum('hits_allowed'),runs=Sum('runs_allowed'), earned=Sum('earned_runs'), walks=Sum('walks_allowed'), k=Sum('strikeout_amount'),wp=Sum('wild_pitches'),
             hbp=Sum('hit_by_pitch'), w=Sum('win'), l=Sum('loss'), sv=Sum('sv'))
 
@@ -372,6 +372,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             era = float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0
             pitch['era'] = ("%.2f" % era)
             pitch['games'] = Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
+            pitch['starts'] = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).filter(starting_pitcher=True).count()
         else: 
             pitch = 0
 

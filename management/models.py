@@ -68,6 +68,9 @@ class Player(models.Model):
 			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
 
 
+	def starts(self):
+		return PitcherStats.objects.filter(player=self).filter(starting_pitcher=True).count()
+
 	def innings(self):
 		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0])
