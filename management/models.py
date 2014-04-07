@@ -62,8 +62,18 @@ class Player(models.Model):
 			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
 
+	def conf_hit_totals(self):
+		return HitterStats.objects.filter(player=self, game__conference=True).aggregate(Count("game"), Sum("at_bats"),
+			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
+			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
+
 	def pitch_totals(self):
 		return PitcherStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
+			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
+			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
+
+	def conf_pitch_totals(self):
+		return PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
 			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
 			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
 
@@ -71,10 +81,24 @@ class Player(models.Model):
 	def starts(self):
 		return PitcherStats.objects.filter(player=self).filter(starting_pitcher=True).count()
 
+	def conf_starts(self):
+		return PitcherStats.objects.filter(player=self, game__conference=True).filter(starting_pitcher=True).count()
+
 	def innings(self):
 		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0])
 		p = PitcherStats.objects.filter(player=self).aggregate(Sum("part_innings"))
+		pi = float(p.values()[0])
+
+		ti = int(((fi*3) + pi) / 3)
+		ri = int(((fi*3) + pi) % 3)
+
+		return str(ti) + "." + str(ri)
+
+	def conf_innings(self):
+		i = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("full_innings"))
+		fi = float(i.values()[0])
+		p = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("part_innings"))
 		pi = float(p.values()[0])
 
 		ti = int(((fi*3) + pi) / 3)
@@ -96,10 +120,36 @@ class Player(models.Model):
 
 		return pa
 
+	def conf_plate_apperances(self):
+		a = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+		ab = a.values()[0] or 0
+		w = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("walks"))
+		bb = w.values()[0] or 0
+		h = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hbp"))
+		hp = h.values()[0] or 0
+		s = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("sacrafice"))
+		sf = s.values()[0] or 0
+
+		pa = ab + bb + hp + sf
+
+		return pa
+
 	def average(self):
 		b = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
 		a =  float(b.values()[0])
 		f = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
+		h =  float(f.values()[0])
+		try:
+			avg = h/a 
+		except ZeroDivisionError:
+			avg = 0
+		average = ("%.3f" % avg)
+		return average
+
+	def conf_average(self):
+		b = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+		a =  float(b.values()[0])
+		f = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hits"))
 		h =  float(f.values()[0])
 		try:
 			avg = h/a 
@@ -118,6 +168,28 @@ class Player(models.Model):
 		d = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
 		ab = float(d.values()[0])
 		e = HitterStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		sf = float(e.values()[0])
+
+		t = h+bb+hbp
+		b = ab+bb+hbp+sf
+		try:
+			o = t/b
+		except ZeroDivisionError:
+			o = 0
+		obp = ("%.3f" % o)
+
+		return obp
+
+	def conf_on_base(self):
+		a = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hits"))
+		h = float(a.values()[0])
+		b = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("walks"))
+		bb = float(b.values()[0])
+		c = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hbp"))
+		hbp = float(c.values()[0])
+		d = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+		ab = float(d.values()[0])
+		e = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("sacrafice"))
 		sf = float(e.values()[0])
 
 		t = h+bb+hbp
@@ -152,10 +224,41 @@ class Player(models.Model):
 
 		return slgp
 
+	def conf_slug(self):
+		ab = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+		a = float(ab.values()[0])
+		hits = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hits"))
+		h = float(hits.values()[0])
+		doub = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("doubles"))
+		d = float(doub.values()[0])
+		trip = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("triples"))
+		t = float(trip.values()[0])
+		homerun = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hr"))
+		hr = float(homerun.values()[0])
+
+		s = h - (d+t+hr)
+		top = s + (2*d) + (3*t) + (4*hr)
+		try:
+			slg = top/a
+		except ZeroDivisionError:
+			slg = 0
+		slgp = ("%.3f" % slg)
+
+		return slgp
+
 	def era(self):
 		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
 		ip = float(i.values()[0]) or 0
 		r = PitcherStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
+		er = float(r.values()[0]) or 0
+
+		era = (er / ip) * 9
+		return ("%.2f" % era)
+
+	def conf_era(self):
+		i = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("full_innings"))
+		ip = float(i.values()[0]) or 0
+		r = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
 		era = (er / ip) * 9

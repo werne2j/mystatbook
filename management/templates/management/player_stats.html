@@ -18,139 +18,279 @@
 {% endblock %}
 
 {% block content %}
-<div class="tab-pane" id="stats">
-	<table class="table table-bordered table-striped" id="hitting_table">
-		<h3>Hitting Stats</h3>
-		<thead>
-			<tr class="text-center title">
-				<th class="text-center">Player</th>
-				<th class="text-center">G</th>
-				<th class="text-center">PA</th>
-				<th class="text-center">AB</th>
-				<th class="text-center">R</th>
-				<th class="text-center">H</th>
-				<th class="text-center">2B</th>
-				<th class="text-center">3B</th>
-				<th class="text-center">HR</th>
-				<th class="text-center">RBI</th>
-				<th class="text-center">BB</th>
-				<th class="text-center">HBP</th>
-				<th class="text-center">SO</th>
-				<th class="text-center">SF</th>
-				<th class="text-center">AVG</th>
-				<th class="text-center">OBP</th>
-				<th class="text-center">SLG</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for b in batters %}
-				<tr>
-					<th class="text-center hit_stat">{{b.first_name}} {{b.last_name}}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.game__count}}</th>
-					<th class="text-center hit_stat">{{b.plate_apperances | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.at_bats__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.runs__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.hits__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.doubles__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.triples__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.hr__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.rbi__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.walks__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.hbp__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.strikeouts__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.hit_totals.sacrafice__sum | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.average | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.on_base | default:0 }}</th>
-					<th class="text-center hit_stat">{{b.slug | default:0 }}</th>
-				</tr>
-			{% endfor %}
-		</tbody>
-		<tfoot>
-				<tr class="text-center totals">
-					<th class="text-center">Totals</th>
-					<th class="text-center totals">{{totals.games}}</th>
-					<th class="text-center totals">{{totals.plate_apperances}}</th>
-					<th class="text-center totals">{{totals.atbats}}</th>
-					<th class="text-center totals">{{totals.runs}}</th>
-					<th class="text-center totals">{{totals.hits}}</th>
-					<th class="text-center totals">{{totals.doubles}}</th>
-					<th class="text-center totals">{{totals.triples}}</th>
-					<th class="text-center totals">{{totals.hr}}</th>
-					<th class="text-center totals">{{totals.rbi}}</th>
-					<th class="text-center totals">{{totals.walks}}</th>
-					<th class="text-center totals">{{totals.hbp}}</th>
-					<th class="text-center totals">{{totals.strikeouts}}</th>
-					<th class="text-center totals">{{totals.sacrafice}}</th>
-					<th class="text-center totals">{{totals.average}}</th>
-					<th class="text-center totals">{{totals.onbase}}</th>
-					<th class="text-center totals">{{totals.slugging}}</th>
-				</tr>
-		</tfoot>
-	</table>
+<ul class="nav nav-pills">
+  <li class="active"><a href="#stats" data-toggle="tab">Overall Statistics</a></li>
+  <li><a href="#conference" data-toggle="tab">Conference Statistics</a></li>
+</ul>
 
-	<table class="table table-bordered table-striped" id="pitching_table">
-		<h3>Pitching Stats</h3>
-		<thead>
-			<tr class="text-center">
-				<th class="text-center">Player</th>
-				<th class="text-center">GP</th>
-				<th class="text-center">GS</th>
-				<th class="text-center">IP</th>
-				<th class="text-center">H</th>
-				<th class="text-center">R</th>
-				<th class="text-center">ER</th>
-				<th class="text-center">BB</th>
-				<th class="text-center">K</th>
-				<th class="text-center">WP</th>
-				<th class="text-center">HBP</th>
-				<th class="text-center">W</th>
-				<th class="text-center">L</th>
-				<th class="text-center">SV</th>
-				<th class="text-center">ERA</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for p in pitchers %}
-				<tr>
-					<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
-					<th class="text-center">{{p.pitch_totals.game__count}}</th>
-					<th class="text-center">{{p.starts}}</th>
-					<th class="text-center">{{p.innings}}</th>
-					<th class="text-center">{{p.pitch_totals.hits_allowed__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.runs_allowed__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.earned_runs__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.walks_allowed__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.strikeout_amount__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.wild_pitches__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.hit_by_pitch__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.win__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.loss__sum}}</th>
-					<th class="text-center">{{p.pitch_totals.sv__sum}}</th>
-					<th class="text-center">{{p.era}}</th>
+<div id='content' class="tab-content">
+	<div class="tab-pane active" id="stats">
+		<table class="table table-bordered table-striped" id="hitting_table">
+			<h3>Hitting Stats</h3>
+			<thead>
+				<tr class="text-center title">
+					<th class="text-center">Player</th>
+					<th class="text-center">G</th>
+					<th class="text-center">PA</th>
+					<th class="text-center">AB</th>
+					<th class="text-center">R</th>
+					<th class="text-center">H</th>
+					<th class="text-center">2B</th>
+					<th class="text-center">3B</th>
+					<th class="text-center">HR</th>
+					<th class="text-center">RBI</th>
+					<th class="text-center">BB</th>
+					<th class="text-center">HBP</th>
+					<th class="text-center">SO</th>
+					<th class="text-center">SF</th>
+					<th class="text-center">AVG</th>
+					<th class="text-center">OBP</th>
+					<th class="text-center">SLG</th>
 				</tr>
-			{% endfor %}
-		</tbody>
-		<tfoot>
+			</thead>
+			<tbody>
+				{% for b in batters %}
+					<tr>
+						<th class="text-center hit_stat">{{b.first_name}} {{b.last_name}}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.game__count}}</th>
+						<th class="text-center hit_stat">{{b.plate_apperances | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.at_bats__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.runs__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.hits__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.doubles__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.triples__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.hr__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.rbi__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.walks__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.hbp__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.strikeouts__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.hit_totals.sacrafice__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.average | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.on_base | default:0 }}</th>
+						<th class="text-center hit_stat">{{b.slug | default:0 }}</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+					<tr class="text-center totals">
+						<th class="text-center">Totals</th>
+						<th class="text-center totals">{{totals.games}}</th>
+						<th class="text-center totals">{{totals.plate_apperances}}</th>
+						<th class="text-center totals">{{totals.atbats}}</th>
+						<th class="text-center totals">{{totals.runs}}</th>
+						<th class="text-center totals">{{totals.hits}}</th>
+						<th class="text-center totals">{{totals.doubles}}</th>
+						<th class="text-center totals">{{totals.triples}}</th>
+						<th class="text-center totals">{{totals.hr}}</th>
+						<th class="text-center totals">{{totals.rbi}}</th>
+						<th class="text-center totals">{{totals.walks}}</th>
+						<th class="text-center totals">{{totals.hbp}}</th>
+						<th class="text-center totals">{{totals.strikeouts}}</th>
+						<th class="text-center totals">{{totals.sacrafice}}</th>
+						<th class="text-center totals">{{totals.average}}</th>
+						<th class="text-center totals">{{totals.onbase}}</th>
+						<th class="text-center totals">{{totals.slugging}}</th>
+					</tr>
+			</tfoot>
+		</table>
+
+		<table class="table table-bordered table-striped" id="pitching_table">
+			<h3>Pitching Stats</h3>
+			<thead>
 				<tr class="text-center">
-					<th class="text-center">Totals</th>
-					<th class="text-center">{{pitch.games}}</th>
-					<th class="text-center">{{pitch.starts}}</th>
-					<th class="text-center">{{pitch.innings}}</th>
-					<th class="text-center">{{pitch.hits}}</th>
-					<th class="text-center">{{pitch.runs}}</th>
-					<th class="text-center">{{pitch.earned}}</th>
-					<th class="text-center">{{pitch.walks}}</th>
-					<th class="text-center">{{pitch.k}}</th>
-					<th class="text-center">{{pitch.wp}}</th>
-					<th class="text-center">{{pitch.hbp}}</th>
-					<th class="text-center">{{pitch.w}}</th>
-					<th class="text-center">{{pitch.l}}</th>
-					<th class="text-center">{{pitch.sv}}</th>
-					<th class="text-center">{{pitch.era}}</th>
+					<th class="text-center">Player</th>
+					<th class="text-center">GP</th>
+					<th class="text-center">GS</th>
+					<th class="text-center">IP</th>
+					<th class="text-center">H</th>
+					<th class="text-center">R</th>
+					<th class="text-center">ER</th>
+					<th class="text-center">BB</th>
+					<th class="text-center">K</th>
+					<th class="text-center">WP</th>
+					<th class="text-center">HBP</th>
+					<th class="text-center">W</th>
+					<th class="text-center">L</th>
+					<th class="text-center">SV</th>
+					<th class="text-center">ERA</th>
 				</tr>
-		</tfoot>
-	</table>
-</div>
+			</thead>
+			<tbody>
+				{% for p in pitchers %}
+					<tr>
+						<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
+						<th class="text-center">{{p.pitch_totals.game__count}}</th>
+						<th class="text-center">{{p.starts}}</th>
+						<th class="text-center">{{p.innings}}</th>
+						<th class="text-center">{{p.pitch_totals.hits_allowed__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.runs_allowed__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.earned_runs__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.walks_allowed__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.strikeout_amount__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.wild_pitches__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.hit_by_pitch__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.win__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.loss__sum}}</th>
+						<th class="text-center">{{p.pitch_totals.sv__sum}}</th>
+						<th class="text-center">{{p.era}}</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+					<tr class="text-center">
+						<th class="text-center">Totals</th>
+						<th class="text-center">{{pitch.games}}</th>
+						<th class="text-center">{{pitch.starts}}</th>
+						<th class="text-center">{{pitch.innings}}</th>
+						<th class="text-center">{{pitch.hits}}</th>
+						<th class="text-center">{{pitch.runs}}</th>
+						<th class="text-center">{{pitch.earned}}</th>
+						<th class="text-center">{{pitch.walks}}</th>
+						<th class="text-center">{{pitch.k}}</th>
+						<th class="text-center">{{pitch.wp}}</th>
+						<th class="text-center">{{pitch.hbp}}</th>
+						<th class="text-center">{{pitch.w}}</th>
+						<th class="text-center">{{pitch.l}}</th>
+						<th class="text-center">{{pitch.sv}}</th>
+						<th class="text-center">{{pitch.era}}</th>
+					</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="tab-pane" id="conference">
+		<table class="table table-bordered table-striped" id="conf_hitting_table">
+			<h3>Hitting Stats</h3>
+			<thead>
+				<tr class="text-center title">
+					<th class="text-center">Player</th>
+					<th class="text-center">G</th>
+					<th class="text-center">PA</th>
+					<th class="text-center">AB</th>
+					<th class="text-center">R</th>
+					<th class="text-center">H</th>
+					<th class="text-center">2B</th>
+					<th class="text-center">3B</th>
+					<th class="text-center">HR</th>
+					<th class="text-center">RBI</th>
+					<th class="text-center">BB</th>
+					<th class="text-center">HBP</th>
+					<th class="text-center">SO</th>
+					<th class="text-center">SF</th>
+					<th class="text-center">AVG</th>
+					<th class="text-center">OBP</th>
+					<th class="text-center">SLG</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for cb in conf_batters %}
+					<tr>
+						<th class="text-center hit_stat">{{cb.first_name}} {{cb.last_name}}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.game__count}}</th>
+						<th class="text-center hit_stat">{{cb.conf_plate_apperances | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.at_bats__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.runs__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.hits__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.doubles__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.triples__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.hr__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.rbi__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.walks__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.hbp__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.strikeouts__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_hit_totals.sacrafice__sum | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_average | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_on_base | default:0 }}</th>
+						<th class="text-center hit_stat">{{cb.conf_slug | default:0 }}</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+					<tr class="text-center totals">
+						<th class="text-center">Totals</th>
+						<th class="text-center totals">{{conf_totals.games | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.plate_apperances | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.atbats | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.runs | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.hits | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.doubles | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.triples | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.hr | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.rbi | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.walks | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.hbp | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.strikeouts | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.sacrafice | default:0 }}</th>
+						<th class="text-center totals">{{conf_totals.average | default:'.000' }}</th>
+						<th class="text-center totals">{{conf_totals.onbase | default:'.000' }}</th>
+						<th class="text-center totals">{{conf_totals.slugging | default:'.000' }}</th>
+					</tr>
+			</tfoot>
+		</table>
+
+		<table class="table table-bordered table-striped" id="conf_pitching_table">
+			<h3>Pitching Stats</h3>
+			<thead>
+				<tr class="text-center">
+					<th class="text-center">Player</th>
+					<th class="text-center">GP</th>
+					<th class="text-center">GS</th>
+					<th class="text-center">IP</th>
+					<th class="text-center">H</th>
+					<th class="text-center">R</th>
+					<th class="text-center">ER</th>
+					<th class="text-center">BB</th>
+					<th class="text-center">K</th>
+					<th class="text-center">WP</th>
+					<th class="text-center">HBP</th>
+					<th class="text-center">W</th>
+					<th class="text-center">L</th>
+					<th class="text-center">SV</th>
+					<th class="text-center">ERA</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for cp in conf_pitchers %}
+					<tr>
+						<th class="text-center">{{cp.first_name}} {{cp.last_name}}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.game__count | default:0 }}</th>
+						<th class="text-center">{{cp.conf_starts | default:0 }}</th>
+						<th class="text-center">{{cp.conf_innings | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.hits_allowed__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.runs_allowed__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.earned_runs__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.walks_allowed__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.strikeout_amount__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.wild_pitches__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.hit_by_pitch__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.win__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.loss__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_pitch_totals.sv__sum | default:0 }}</th>
+						<th class="text-center">{{cp.conf_era | default:0 }}</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+					<tr class="text-center">
+						<th class="text-center">Totals</th>
+						<th class="text-center">{{conf_pitch.games | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.starts | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.innings | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.hits | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.runs | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.earned | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.walks | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.k | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.wp | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.hbp | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.w | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.l | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.sv | default:0 }}</th>
+						<th class="text-center">{{conf_pitch.era | default:'0.00' }}</th>
+					</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>    
 <a href="javascript:window.print()"><button id="print-button" class="btn btn-primary"><i class="fa fa-print"></i> Print</button></a>
 {% endblock %}
 
