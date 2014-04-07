@@ -401,6 +401,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             era = float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0
             pitch['era'] = ("%.2f" % era)
             pitch['games'] = Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
+            pitch['starts'] = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).filter(starting_pitcher=True).count()
         else: 
             pitch = 0
 
@@ -409,6 +410,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             era = float(conf_pitch['earned']) / (conf_pitch['full']+(conf_pitch['part']/3.0)) * 9.0
             conf_pitch['era'] = ("%.2f" % era)
             conf_pitch['games'] = Game.objects.filter(season__team__coach=self.request.user,season__team__name=self.kwargs.get('name'),conference=True).count() - Game.objects.filter(season__team__coach=self.request.user, season__team__name=self.kwargs.get('name'), conference=True, pitcherstats__isnull=True).count()
+            conf_pitch['starts'] = PitcherStats.objects.filter(player__season__team__coach=self.request.user, player__season__team__name=self.kwargs.get("name"),player__season__year=self.kwargs.get('year'), game__conference=True, starting_pitcher=True).count()
         else: 
             conf_pitch = 0
 
