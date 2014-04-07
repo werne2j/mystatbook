@@ -23,6 +23,7 @@ def logout_page(request):
     return HttpResponseRedirect('/')
 
 def login_page(request):
+    message = None
     if request.POST:
         logout(request)
         username = request.POST['username']
@@ -35,12 +36,13 @@ def login_page(request):
                 # team = Team.objects.filter(coach__username=username).order_by('-season__date_added')[0]
                 # season = Season.objects.filter(team__coach__username=username, team=team).order_by('date_added')[0]
                 return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': username}))
-
+        else:
+            message =  "Invalid Username and/or Password"
     else:
         if request.user.is_authenticated:
             if request.user.is_superuser:
                 return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': request.user.username }))
-    return render_to_response('management/login.html', {}, context_instance=RequestContext(request))
+    return render_to_response('management/login.html', { 'message': message }, context_instance=RequestContext(request))
 
 
 @sensitive_post_parameters()
