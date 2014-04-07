@@ -5,7 +5,7 @@
 {% load i18n %}
 
 {% block extrastyle %}
-<style>
+<style type='text/css'>
   #wrapper{
     padding-right: 225px;
   }
@@ -101,8 +101,8 @@
 {% endblock %}
 
 {% block extrascript %}
-<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
-<script>
+<script type='text/javascript' src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script type='text/javascript'>
     $("#id_coach").hide();
     $("#id_coach").val({{user.pk}});
 

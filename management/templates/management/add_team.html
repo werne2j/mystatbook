@@ -4,8 +4,8 @@
 {% load i18n %}
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
-<style>
+<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}" type='text/css'/>
+<style type='text/css'>
   #teamform{
     width: 300px;
     margin: 0 auto;
@@ -108,8 +108,8 @@
 {% endblock %}
 
 {% block extrascript %}
-<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
-<script>
+<script type='text/javascript' src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script type='text/javascript'>
     $("#id_coach").hide();
     $("#id_coach").val({{user.pk}});
 

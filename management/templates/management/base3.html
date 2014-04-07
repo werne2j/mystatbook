@@ -11,15 +11,15 @@
         <title>MyStatBook</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet">
+        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet" type='text/css' />
 
         <!-- Add custom CSS here -->
-        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
-        <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}">
-        <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}">
-        <link href='//fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type='text/css'/>
+        <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}" type='text/css'/>
+        <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}" type='text/css'/>
+        <link href='//fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'/>
 
-        <style>
+        <style type='text/css' >
         html,
         body {
           font-family: 'Lato', sans-serif;
@@ -42,9 +42,9 @@
         {% block content %}{% endblock %}
 
         <!-- JavaScript -->
-        <script src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
-        <script src="{% static 'js/jquery-ui.js' %}"></script>
-        <script src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
+        <script type='text/javascript' src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
+        <script type='text/javascript' src="{% static 'js/jquery-ui.js' %}"></script>
+        <script type='text/javascript' src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
         {% block extrascript %}{% endblock %}
     </body>
 </html>

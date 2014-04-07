@@ -107,7 +107,7 @@
 {% endblock %}
 
 {% block extrascript %}
-<script>
+<script type="text/javascript">
 	$(window).bind('beforeunload', function(){
 		if ($('#saveWarning').css('display') == 'block'){
 	  		return 'There are unsaved changes on your Depth Chart.';

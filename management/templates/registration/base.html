@@ -12,14 +12,14 @@
         <title>{% block title %}{% endblock %}</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet">
+        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet" type='text/css'/>
 
         <!-- Add custom CSS here -->
-        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
-        <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}">
-        <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type='text/css'/>
+        <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}" type='text/css'/>
+        <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}" type='text/css'/>
 
-        <link rel="stylesheet" href="{% static 'css/statbook.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/statbook.css' %}" type='text/css'/>
 
         {% block extrastyle %}{% endblock %}
     </head>
@@ -48,9 +48,9 @@
         </div><!-- /#wrapper -->
 
         <!-- JavaScript -->
-        <script src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
-        <script src="{% static 'js/jquery-ui.js' %}"></script>
-        <script src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
+        <script type='text/javascript' src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
+        <script type='text/javascript' src="{% static 'js/jquery-ui.js' %}"></script>
+        <script type='text/javascript' src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
         {% block extrascript %}{% endblock %}
     </body>
 </html>

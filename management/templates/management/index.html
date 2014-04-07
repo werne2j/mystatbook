@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block extrastyle %}
-<style>
+<style type='text/css'>
 body{
 	background-color: #E4E4E4;
 }
@@ -240,8 +240,8 @@ min-height: 21.5em;
 {% endblock %}
 
 {% block extrascript %}
-<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
-<script>
+<script type='text/javascript' src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script type='text/javascript'>
     $("#id_coach").hide();
     $("#id_coach").val({{user.pk}});
 

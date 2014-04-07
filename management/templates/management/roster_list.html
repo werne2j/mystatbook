@@ -4,8 +4,8 @@
 {% load i18n %}
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static 'chosen_v1.1.0/chosen.css' %}">
-<style>
+<link rel="stylesheet" href="{% static 'chosen_v1.1.0/chosen.css' %}" type='text/css'>
+<style type='text/css'>
 	#save_player{
 		padding: 2px 12px;
 	}
@@ -113,9 +113,9 @@
 {% endblock %}
 
 {% block extrascript %}
-<script src="{% static 'chosen_v1.1.0/chosen.jquery.js' %}"></script>
-<script src="{% static 'js/tablesort.min.js' %}"></script>
-<script>
+<script type='text/javascript' src="{% static 'chosen_v1.1.0/chosen.jquery.js' %}"></script>
+<script type='text/javascript' src="{% static 'js/tablesort.min.js' %}"></script>
+<script type='text/javascript'>
 	new Tablesort(document.getElementById('player_list'));
 
 	$("#id_position").chosen({width: "140px", placeholder_text_multiple: "Positions"});

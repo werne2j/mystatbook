@@ -4,8 +4,8 @@
 {% block title %}Sign In{% endblock %}
 
 {% block extrastyle %}
-<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}">
-<style>
+<link rel="stylesheet" href="{% static 'validate/css/bootstrapValidator.min.css' %}" type='text/css'/>
+<style type='text/css'>
   #logform{
     width: 250px;
     margin: 0 auto;
@@ -53,8 +53,8 @@
 {% endblock %}
 
 {% block extrascript %}
-<script type="text/javascript" src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
-<script>
+<script type='text/javascript' src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
+<script type='text/javascript'>
 $(document).ready(function() {
       $("#logform").bootstrapValidator({
         feedbackIcons: {

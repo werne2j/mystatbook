@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block extrastyle %}
-<style>
+<style type='text/css'>
 	#hitting_table{
 		margin-bottom: 20px;
 	}
@@ -295,8 +295,8 @@
 {% endblock %}
 
 {% block extrascript %}
-<script src="{% static 'js/tablesort.min.js' %}"></script>
-<script>
+<script type='text/javascript' src="{% static 'js/tablesort.min.js' %}"></script>
+<script type='text/javascript'>
 	$(document).ready(function(){
 		new Tablesort(document.getElementById('hitting_table'));
 		new Tablesort(document.getElementById('pitching_table'));
