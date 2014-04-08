@@ -421,7 +421,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['pitch'] = pitch
         context['conf_pitch'] = conf_pitch
         context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
-        context['pitchers'] = sorted(pitchers, key=lambda x: x.era())
+        context['pitchers'] = sorted(pitchers, key=lambda x: float(x.era()))
         context['conf_batters'] = sorted(conf_batters, key=lambda x: x.average(), reverse=True)
         context['conf_pitchers'] = sorted(conf_pitchers, key=lambda x: x.era())
         context['teams'] = Team.objects.filter(coach=self.request.user)
