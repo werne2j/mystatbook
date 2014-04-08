@@ -49,19 +49,19 @@
 		<tbody>
 			{% for g in games %}
 			<tr {% if g.conference %}class="bold"{% endif %}>
-				<td class="text-center">{{g.date}}</td>
-				<td class="text-center">{{g.opponent}}</td>
-				<td class="text-center">{{g.location}}</td>
-				<td class="text-center">{{g.time}}</td>
-				<td class="text-center">{% if g.doubleheader %}<i class="fa fa-check-circle"></i>{% else %}<i class="fa fa-times-circle"></i>{% endif %}</td>
-				<td class="text-center box-score"><a class="game" href="#" data-form="{% url 'game_stats' username=user name=name year=year pk=g.pk %}"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-plus"></i> Box Score</button></td>
-				<td class="text-center">
+				<th class="text-center">{{g.date}}</th>
+				<th class="text-center">{{g.opponent}}</th>
+				<th class="text-center">{{g.location}}</th>
+				<th class="text-center">{{g.time}}</th>
+				<th class="text-center">{% if g.doubleheader %}<i class="fa fa-check-circle"></i>{% else %}<i class="fa fa-times-circle"></i>{% endif %}</th>
+				<th class="text-center box-score"><a class="game" href="#" data-form="{% url 'game_stats' username=user name=name year=year pk=g.pk %}"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-plus"></i> Box Score</button></th>
+				<th class="text-center">
 					<form action="" class="delete_form" method=post>
 						{% csrf_token %}
 						<input type="hidden" value="{{g.id}}" name="delete">
 						<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
 					</form>
-				</td>
+				</th>
 			</tr>
 			{% endfor %}
 		</tbody>

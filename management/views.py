@@ -226,8 +226,8 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['avgLeaders'] = sorted(batters, key=lambda x: x.average(), reverse=True)[:5]
         context['obpLeaders'] = sorted(batters, key=lambda x: x.on_base(), reverse=True)[:5]
         context['slugLeaders'] = sorted(batters, key=lambda x: x.slug(), reverse=True)[:5]
-        context['eraLeaders'] = sorted(pitchers, key=lambda x: x.era())[:5]
-        context['innLeaders'] = sorted(pitchers, key=lambda x: x.innings(), reverse=True)[:5]
+        context['eraLeaders'] = sorted(pitchers, key=lambda x: float(x.era()))[:5]
+        context['innLeaders'] = sorted(pitchers, key=lambda x: float(x.innings()), reverse=True)[:5]
         context['winLeaders'] = sorted(pitchers, key=lambda x: x.pitch_totals()['win__sum'], reverse=True)[:5]
         context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)

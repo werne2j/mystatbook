@@ -48,12 +48,12 @@
 		<tbody>
 			{% for p in players %}
 			<tr>
-				<td class="text-center">{{p.last_name}}</td>
-				<td class="text-center">{{p.first_name}}</td>
-				<td class="text-center">{{p.position.all|join:" / " }}</td>
-				<td class="text-center">{{p.class_standing}}</td>
-				<td class="text-center">{{p.throws}}/{{p.hits}}</td>
-				<td class="text-center">
+				<th class="text-center">{{p.last_name}}</th>
+				<th class="text-center">{{p.first_name}}</th>
+				<th class="text-center">{{p.position.all|join:" / " }}</th>
+				<th class="text-center">{{p.class_standing}}</th>
+				<th class="text-center">{{p.throws}}/{{p.hits}}</th>
+				<th class="text-center">
 					<form action="" class="delete_form" method=post>
 						{% csrf_token %}
 						<input type="hidden" value="{{p.id}}" name="delete">
