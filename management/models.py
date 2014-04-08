@@ -248,25 +248,37 @@ class Player(models.Model):
 
 	def era(self):
 		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
-		ip = float(i.values()[0]) or 0
+		fi = float(i.values()[0]) or 0
+		p = PitcherStats.objects.filter(player=self).aggregate(Sum("part_innings"))
+		pi = float(p.values()[0]) or 0
+
+		ti = float(((fi*3) + pi) / 3)
+
 		r = PitcherStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
 		try:
-			era = (er / ip) * 9
+			era = (er / ti) * 9
 		except ZeroDivisionError:
 			era = 0
 		return ("%.2f" % era)
 
 	def conf_era(self):
 		i = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("full_innings"))
-		ip = float(i.values()[0]) or 0
+		fi = float(i.values()[0]) or 0
+		p = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("part_innings"))
+		pi = float(p.values()[0]) or 0
+
+		ti = float(((fi*3) + pi) / 3)
+
 		r = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
-		era = (er / ip) * 9
+		try:
+			era = (er / ti) * 9
+		except ZeroDivisionError:
+			era = 0
 		return ("%.2f" % era)
-
 
 class Game(models.Model):
 	season = models.ForeignKey('Season', null=True)
