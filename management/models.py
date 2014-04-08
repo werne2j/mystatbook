@@ -252,7 +252,10 @@ class Player(models.Model):
 		r = PitcherStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
-		era = (er / ip) * 9
+		try:
+			era = (er / ip) * 9
+		except ZeroDivisionError:
+			era = 0
 		return ("%.2f" % era)
 
 	def conf_era(self):
