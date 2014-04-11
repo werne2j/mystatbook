@@ -1,0 +1,222 @@
+{% extends "management/season_detail.html" %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+{% load i18n %}
+
+{% block extrastyle %}
+<style type="text/css">
+.col-md-12{
+	padding-left: 0;
+}
+</style>
+{% endblock %}
+
+{% block header %}
+<h1>{{player.first_name}} {{player.last_name}} <small>{{player.season.team}}</small></h1>
+{% endblock %}
+
+{% block content %}
+<div class="well col-md-3">
+	<h5>Positions: 
+		{% for p in player.position.all %}
+			{{ p }}
+		{% endfor %}
+	</h5>
+	<h5>Class: {{player.class_standing}}</h5>
+	<h5>Throws/Bats: {{player.throws}}/{{player.hits}}</h5>
+</div>
+
+<div class="col-md-12">
+	<ul class="nav nav-pills">
+	  <li class="active"><a href="#totals" data-toggle="tab">Season Statistics</a></li>
+	  <li><a href="#log" data-toggle="tab">Game Logs</a></li>
+	</ul>
+
+	<div id='content' class="tab-content">
+		<div class="tab-pane active" id="totals">
+			{% if totals.games > 0 %}
+			<table class="table table-bordered table-striped" id="hitting_table">
+				<h3>Hitting Stats</h3>
+				<thead>
+					<tr class="text-center title">
+						<th class="text-center">Year</th>
+						<th class="text-center">G</th>
+						<th class="text-center">PA</th>
+						<th class="text-center">AB</th>
+						<th class="text-center">R</th>
+						<th class="text-center">H</th>
+						<th class="text-center">2B</th>
+						<th class="text-center">3B</th>
+						<th class="text-center">HR</th>
+						<th class="text-center">RBI</th>
+						<th class="text-center">BB</th>
+						<th class="text-center">HBP</th>
+						<th class="text-center">SO</th>
+						<th class="text-center">SF</th>
+						<th class="text-center">AVG</th>
+						<th class="text-center">OBP</th>
+						<th class="text-center">SLG</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="text-center totals">
+						<th class="text-center totals">{{player.season.year}}</th>
+						<th class="text-center totals">{{totals.games | default:0 }}</th>
+						<th class="text-center totals">{{totals.plate_apperances | default:0 }}</th>
+						<th class="text-center totals">{{totals.atbats | default:0 }}</th>
+						<th class="text-center totals">{{totals.runs | default:0 }}</th>
+						<th class="text-center totals">{{totals.hits | default:0 }}</th>
+						<th class="text-center totals">{{totals.doubles | default:0 }}</th>
+						<th class="text-center totals">{{totals.triples | default:0 }}</th>
+						<th class="text-center totals">{{totals.hr | default:0 }}</th>
+						<th class="text-center totals">{{totals.rbi | default:0 }}</th>
+						<th class="text-center totals">{{totals.walks | default:0 }}</th>
+						<th class="text-center totals">{{totals.hbp | default:0 }}</th>
+						<th class="text-center totals">{{totals.strikeouts | default:0 }}</th>
+						<th class="text-center totals">{{totals.sacrafice | default:0 }}</th>
+						<th class="text-center totals">{{totals.average | default:0 }}</th>
+						<th class="text-center totals">{{totals.onbase | default:0 }}</th>
+						<th class="text-center totals">{{totals.slugging | default:0 }}</th>
+					</tr>
+				</tbody>
+			</table>
+			{% endif %}
+			{% if pitch.games > 0 %}
+			<table class="table table-bordered table-striped" id="pitching_table">
+				<h3>Pitching Stats</h3>
+				<thead>
+					<tr class="text-center">
+						<th class="text-center">Year</th>
+						<th class="text-center">GP</th>
+						<th class="text-center">GS</th>
+						<th class="text-center">IP</th>
+						<th class="text-center">H</th>
+						<th class="text-center">R</th>
+						<th class="text-center">ER</th>
+						<th class="text-center">BB</th>
+						<th class="text-center">K</th>
+						<th class="text-center">WP</th>
+						<th class="text-center">HBP</th>
+						<th class="text-center">W</th>
+						<th class="text-center">L</th>
+						<th class="text-center">SV</th>
+						<th class="text-center">ERA</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="text-center">
+						<th class="text-center totals">{{player.season.year}}</th>
+						<th class="text-center">{{pitch.games | default:0 }}</th>
+						<th class="text-center">{{pitch.starts | default:0 }}</th>
+						<th class="text-center">{{pitch.innings | default:0 }}</th>
+						<th class="text-center">{{pitch.hits | default:0 }}</th>
+						<th class="text-center">{{pitch.runs | default:0 }}</th>
+						<th class="text-center">{{pitch.earned | default:0 }}</th>
+						<th class="text-center">{{pitch.walks | default:0 }}</th>
+						<th class="text-center">{{pitch.k | default:0 }}</th>
+						<th class="text-center">{{pitch.wp | default:0 }}</th>
+						<th class="text-center">{{pitch.hbp | default:0 }}</th>
+						<th class="text-center">{{pitch.w | default:0 }}</th>
+						<th class="text-center">{{pitch.l | default:0 }}</th>
+						<th class="text-center">{{pitch.sv | default:0 }}</th>
+						<th class="text-center">{{pitch.era | default:0 }}</th>
+					</tr>
+				</tbody>
+			</table>
+			{% endif %}
+		</div>
+
+		<div class="tab-pane" id="log">
+			<h3>{{player.season.year}}</h3>
+			{% if hit_games %}
+			<table class="table table-bordered">
+				<h4>Hitting Log</h4>
+				<thead>
+					<tr>
+						<th class="text-center">Date</th>
+						<th class="text-center">Opponent</th>
+						<th class="text-center">AB</th>
+						<th class="text-center">R</th>
+						<th class="text-center">H</th>
+						<th class="text-center">2B</th>
+						<th class="text-center">3B</th>
+						<th class="text-center">HR</th>
+						<th class="text-center">RBI</th>
+						<th class="text-center">BB</th>
+						<th class="text-center">HBP</th>
+						<th class="text-center">S</th>
+						<th class="text-center">SO</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for g in hit_games %}
+					<tr>
+						<th class="text-center">{{g.game.date}}</th>
+						<th class="text-center">{{g.game.opponent}}</th>
+						<th class="text-center">{{g.at_bats}}</th>
+						<th class="text-center">{{g.runs}}</th>
+						<th class="text-center">{{g.hits}}</th>
+						<th class="text-center">{{g.doubles}}</th>
+						<th class="text-center">{{g.triples}}</th>
+						<th class="text-center">{{g.hr}}</th>
+						<th class="text-center">{{g.rbi}}</th>
+						<th class="text-center">{{g.walks}}</th>
+						<th class="text-center">{{g.hbp}}</th>
+						<th class="text-center">{{g.sacrafice}}</th>
+						<th class="text-center">{{g.strikeouts}}</th>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif %}
+
+			{% if pitch_games %}
+			<table class="table table-bordered">
+				<h4>Pitching Log</h4>
+				<thead>
+					<tr>
+						<th class="text-center">Date</th>
+						<th class="text-center">Opponent</th>
+						<th class="text-center">GS</th>
+						<th class="text-center">IP</th>
+						<th class="text-center">H</th>
+						<th class="text-center">R</th>
+						<th class="text-center">ER</th>
+						<th class="text-center">BB</th>
+						<th class="text-center">K</th>
+						<th class="text-center">WP</th>
+						<th class="text-center">HBP</th>
+						<th class="text-center">W</th>
+						<th class="text-center">L</th>
+						<th class="text-center">SV</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for g in pitch_games %}
+					<tr>
+						<th class="text-center">{{g.game.date}}</th>
+						<th class="text-center">{{g.game.opponent}}</th>
+						<th class="text-center">{{g.starting_pitcher}}</th>
+						<th class="text-center">{{g.full_innings}}.{{g.part_innings}}</th>
+						<th class="text-center">{{g.hits_allowed}}</th>
+						<th class="text-center">{{g.runs_allowed}}</th>
+						<th class="text-center">{{g.earned_runs}}</th>
+						<th class="text-center">{{g.walks_allowed}}</th>
+						<th class="text-center">{{g.strikeout_amount}}</th>
+						<th class="text-center">{{g.wild_pitches}}</th>
+						<th class="text-center">{{g.hit_by_pitch}}</th>
+						<th class="text-center">{{g.win}}</th>
+						<th class="text-center">{{g.loss}}</th>
+						<th class="text-center">{{g.sv}}</th>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extrascript %}
+{% endblock %}

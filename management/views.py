@@ -32,9 +32,6 @@ def login_page(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                # Redirect to a success page.
-                # team = Team.objects.filter(coach__username=username).order_by('-season__date_added')[0]
-                # season = Season.objects.filter(team__coach__username=username, team=team).order_by('date_added')[0]
                 return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': username}))
         else:
             message =  "Invalid Username and/or Password"
@@ -233,6 +230,69 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
         context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
+
+        return context
+
+class PlayerDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    template_name = 'management/player_detail.html'
+
+    login_url = '/login/'
+
+    def test_func(self, user):
+        if self.kwargs['username'] != user.username:
+            raise Http404
+        else:
+            return True
+
+    def get_context_data(self, **kwargs):
+        context = super(PlayerDetail, self).get_context_data(**kwargs)
+
+        totals = HitterStats.objects.filter(player__pk=self.kwargs.get('id')).aggregate(games=Count("game"),atbats=Sum('at_bats'),
+            hits=Sum('hits'), runs=Sum('runs'), doubles=Sum('doubles'), triples=Sum('triples'), hr=Sum('hr'), rbi=Sum('rbi'),
+            walks=Sum('walks'), hbp=Sum('hbp'), strikeouts=Sum('strikeouts'), sacrafice=Sum('sacrafice'))
+
+        if HitterStats.objects.filter(player__pk=self.kwargs.get('id')):
+            totals['plate_apperances'] = totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']
+            totals['single'] = totals['hits']-(totals['doubles']+totals['triples']+totals['hr'])
+
+            try:
+                avg = float(totals['hits']) / float(totals['atbats'])
+            except ZeroDivisionError:
+                avg = 0
+            totals['average'] = ("%.3f" % avg)
+
+            try:
+                obp = float(totals['hits'] + totals['walks'] + totals['hbp']) / float(totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice'])
+            except ZeroDivisionError:
+                obp = 0
+            totals['onbase'] = ("%.3f" % obp)
+
+            try:
+                slugging = float(totals['single']+(2*totals['doubles'])+(3*totals['triples'])+(4*totals['hr']))/totals['atbats']
+            except ZeroDivisionError:
+                slugging = 0
+            totals['slugging'] = ("%.3f" % slugging)
+        else:
+            totals = 0
+
+        pitch = PitcherStats.objects.filter(player__pk=self.kwargs.get('id')).aggregate(games=Count('game'),full=Sum('full_innings'),part=Sum('part_innings'),
+            hits=Sum('hits_allowed'),runs=Sum('runs_allowed'), earned=Sum('earned_runs'), walks=Sum('walks_allowed'), k=Sum('strikeout_amount'),wp=Sum('wild_pitches'),
+            hbp=Sum('hit_by_pitch'), w=Sum('win'), l=Sum('loss'), sv=Sum('sv'))
+
+        if PitcherStats.objects.filter(player__pk=self.kwargs.get('id')):
+            pitch['innings'] = str(((pitch['full']*3)+pitch['part']) / 3) + "." + str(((pitch['full']*3)+pitch['part']) % 3)
+            era = float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0
+            pitch['era'] = ("%.2f" % era)
+            pitch['starts'] = PitcherStats.objects.filter(player__pk=self.kwargs.get('id'), starting_pitcher=True).count()
+        else: 
+            pitch = 0
+
+        context['totals'] = totals
+        context['pitch'] = pitch
+        context['teams'] = Team.objects.filter(coach=self.request.user)
+        context['player'] = Player.objects.get(pk=self.kwargs.get('id'))
+        context['hit_games'] = HitterStats.objects.filter(player__pk=self.kwargs.get('id'))
+        context['pitch_games'] = PitcherStats.objects.filter(player__pk=self.kwargs.get('id'))
 
         return context
 

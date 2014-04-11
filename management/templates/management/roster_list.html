@@ -48,7 +48,7 @@
 		<tbody>
 			{% for p in players %}
 			<tr>
-				<th class="text-center">{{p.last_name}}</th>
+				<th class="text-center"><a href="{% url 'player_detail' username=user.username name=name year=year id=p.id %}">{{p.last_name}}</a></th>
 				<th class="text-center">{{p.first_name}}</th>
 				<th class="text-center">{{p.position.all|join:" / " }}</th>
 				<th class="text-center">{{p.class_standing}}</th>
