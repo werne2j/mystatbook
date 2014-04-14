@@ -330,6 +330,7 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['form'] = player_form
         context['team'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
         context['players'] = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('last_name')
+        context['all_players'] = Player.objects.filter(season__team__coach=self.request.user, season__team__name=self.kwargs.get("name")).order_by('last_name')
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
 

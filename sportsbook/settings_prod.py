@@ -45,7 +45,3 @@ MEDIA_ROOT = '/opt/media/mystatbook'
 # EMAIL_PORT= 1023
 # EMAIL_HOST_USER='username'
 # EMAIL_HOST_PASSWORD='password'
-TIME_INPUT_FORMATS = (
-    '%I%p',
-    '%I %p',
-)
