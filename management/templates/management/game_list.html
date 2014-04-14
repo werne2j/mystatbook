@@ -151,28 +151,6 @@
 		});
 	});
 
-	$('.delete_form').submit(function (e) {
-		$.ajax({
-			type: 'post',
-			url : "{% url 'game_list' username=user name=name year=year %}",
-			data : $(this).serialize(),
-			success: function(data){
-				$('#schedule').html(data);
-			}
-		});
-	});
-
-	$('.add_game').submit(function (e) {
-		$.ajax({
-			type: 'post',
-			url : "{% url 'game_list' username=user name=name year=year %}",
-			data : $(this).serialize(),
-			success: function(data){
-				$('#schedule').html(data);
-			}
-		});
-	});
-
 	$(".bold").css({'font-weight':'bold'});
 	$(".fa-times-circle").css({'color':'red'});
 	$(".fa-check-circle").css({'color':'green'});
