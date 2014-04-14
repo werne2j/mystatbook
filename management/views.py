@@ -368,7 +368,7 @@ class GameList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
                 game_form2.save()
                 return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
-                print "errors"
+                print game_form.errors
         return HttpResponseRedirect(reverse('game_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
     def get_context_data(self, **kwargs):

@@ -77,4 +77,6 @@ USE_TZ = True
 TIME_INPUT_FORMATS = (
     '%I%p',
     '%I %p',
+    '%I:%M %p',
+    '%I:%M'
 )
