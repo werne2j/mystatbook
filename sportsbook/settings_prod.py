@@ -39,9 +39,3 @@ MEDIA_URL='/media/'
 
 MEDIA_ROOT = '/opt/media/mystatbook'
 
-# # Registration
-# ACCOUNT_ACTIVATION_DAYS=7
-# EMAIL_HOST='localhost'
-# EMAIL_PORT= 1023
-# EMAIL_HOST_USER='username'
-# EMAIL_HOST_PASSWORD='password'
