@@ -16,19 +16,42 @@
   .btn-success{
     margin-top: 0px;
   }
+   .panel{
+    border: 1px solid #eee;
+  }
+  .panel-title{
+    font-size: 2.8rem;
+    color: white;
+  }
+  .panel-default > .panel-heading{
+    background-color: #3498db;
+  }
+  .panel-default > .panel-body{
+    background-color: #eee;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-    <form id="seasonform" class="form-signin" action="{% url 'add_season' username=user.username name=name %}" role="form" method="post">
-        <h1>Add Season</h1>
-        {% csrf_token %}
-        {% if next %}
-            <input type="hidden" name="next" value="{{ next }}" />
-        {% endif %}
-        {{ form | as_bootstrap }}
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
+<div class="container">
+  <div class="col-md-6 col-md-offset-3" id="team_form">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">Add Season</h2>
+      </div>
+      <div class="panel-body">
+        <form id="seasonform" class="form-signin" action="{% url 'add_season' username=user.username name=name %}" role="form" method="post">
+            {% csrf_token %}
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+            {{ form | as_bootstrap }}
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extrascript %}
