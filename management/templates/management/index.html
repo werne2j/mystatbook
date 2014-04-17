@@ -190,9 +190,9 @@ min-height: 21.5em;
     			  </div>
     				<div class="back face center">
               <h3 class="text-center" id="seasons">Seasons</h3>
-              <div class="text-center">
+              <div>
       				  {% for s in t.season_set.all %}
-                  {{s.year}} 
+                  {{s.year}}<br>
                 {% endfor %}
               </div>
     				</div>

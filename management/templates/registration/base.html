@@ -20,7 +20,15 @@
         <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}" type='text/css'/>
 
         <link rel="stylesheet" href="{% static 'css/statbook.css' %}" type='text/css'/>
-
+        <link href='//fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'/>
+        <style type='text/css' >
+        html,
+        body {
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-style: bold;
+        }
+        </style>
         {% block extrastyle %}{% endblock %}
     </head>
     {% load i18n %}
