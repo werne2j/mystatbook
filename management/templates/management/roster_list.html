@@ -30,6 +30,9 @@
     .player_select{
     	padding-left:0;
     }
+    .clickableRow{
+    	cursor: pointer;
+    }
 </style>
 {% endblock %}
 {% block header %}
@@ -38,7 +41,7 @@
 
 {% block content %}
 <div id="#roster">
-	<table class="table table-bordered table-striped tablesorter" id="player_list">
+	<table class="table table-bordered table-hover tablesorter" id="player_list">
 		<thead>
 			<tr class="text-center">
 				<th class="text-center">Last Name</th>
@@ -51,8 +54,8 @@
 		</thead>
 		<tbody>
 			{% for p in players %}
-			<tr>
-				<th class="text-center"><a href="{% url 'player_detail' username=user.username name=name year=year id=p.id %}">{{p.last_name}}</a></th>
+			<tr class='clickableRow' a href="{% url 'player_detail' username=user.username name=name year=year id=p.id %}">
+				<th class="text-center">{{p.last_name}}</th>
 				<th class="text-center">{{p.first_name}}</th>
 				<th class="text-center">{{p.position.all|join:" / " }}</th>
 				<th class="text-center">{{p.class_standing}}</th>
@@ -153,6 +156,12 @@
 		var hand = document.getElementById('id_throws');
 		hand.value = parts[4];
 		console.log(parts);
-	})
+	});
+
+	jQuery(document).ready(function($) {
+      $(".clickableRow").click(function() {
+            window.document.location = $(this).attr("href");
+     });
+});
 </script>
 {% endblock %}
