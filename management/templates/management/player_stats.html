@@ -10,7 +10,10 @@
 	@media print {
        #print-button {display: none;}
         @page { size: landscape; }
-   }
+   	}
+    .clickableRow{
+    	cursor: pointer;
+    }
 </style>
 {% endblock %}
 {% block header %}
@@ -25,7 +28,7 @@
 
 <div id='content' class="tab-content">
 	<div class="tab-pane active" id="stats">
-		<table class="table table-bordered table-striped" id="hitting_table">
+		<table class="table table-bordered table-hover" id="hitting_table">
 			<h3>Hitting Stats</h3>
 			<thead>
 				<tr class="text-center title">
@@ -50,7 +53,7 @@
 			</thead>
 			<tbody>
 				{% for b in batters %}
-					<tr>
+					<tr class='clickableRow' a href="{% url 'player_detail' username=user.username name=name year=year id=b.id %}">
 						<th class="text-center hit_stat">{{b.first_name}} {{b.last_name}}</th>
 						<th class="text-center hit_stat">{{b.hit_totals.game__count}}</th>
 						<th class="text-center hit_stat">{{b.plate_apperances | default:0 }}</th>
@@ -94,7 +97,7 @@
 			</tfoot>
 		</table>
 
-		<table class="table table-bordered table-striped" id="pitching_table">
+		<table class="table table-bordered table-hover" id="pitching_table">
 			<h3>Pitching Stats</h3>
 			<thead>
 				<tr class="text-center">
@@ -117,7 +120,7 @@
 			</thead>
 			<tbody>
 				{% for p in pitchers %}
-					<tr>
+					<tr class='clickableRow' a href="{% url 'player_detail' username=user.username name=name year=year id=p.id %}">
 						<th class="text-center">{{p.first_name}} {{p.last_name}}</th>
 						<th class="text-center">{{p.pitch_totals.game__count}}</th>
 						<th class="text-center">{{p.starts}}</th>
@@ -158,7 +161,7 @@
 		</table>
 	</div>
 	<div class="tab-pane" id="conference">
-		<table class="table table-bordered table-striped" id="conf_hitting_table">
+		<table class="table table-bordered table-hover" id="conf_hitting_table">
 			<h3>Hitting Stats</h3>
 			<thead>
 				<tr class="text-center title">
@@ -183,7 +186,7 @@
 			</thead>
 			<tbody>
 				{% for cb in conf_batters %}
-					<tr>
+					<tr class='clickableRow' a href="{% url 'player_detail' username=user.username name=name year=year id=cb.id %}">
 						<th class="text-center hit_stat">{{cb.first_name}} {{cb.last_name}}</th>
 						<th class="text-center hit_stat">{{cb.conf_hit_totals.game__count}}</th>
 						<th class="text-center hit_stat">{{cb.conf_plate_apperances | default:0 }}</th>
@@ -227,7 +230,7 @@
 			</tfoot>
 		</table>
 
-		<table class="table table-bordered table-striped" id="conf_pitching_table">
+		<table class="table table-bordered table-hover" id="conf_pitching_table">
 			<h3>Pitching Stats</h3>
 			<thead>
 				<tr class="text-center">
@@ -250,7 +253,7 @@
 			</thead>
 			<tbody>
 				{% for cp in conf_pitchers %}
-					<tr>
+					<tr class='clickableRow' a href="{% url 'player_detail' username=user.username name=name year=year id=cp.id %}">
 						<th class="text-center">{{cp.first_name}} {{cp.last_name}}</th>
 						<th class="text-center">{{cp.conf_pitch_totals.game__count | default:0 }}</th>
 						<th class="text-center">{{cp.conf_starts | default:0 }}</th>
@@ -300,6 +303,10 @@
 	$(document).ready(function(){
 		new Tablesort(document.getElementById('hitting_table'));
 		new Tablesort(document.getElementById('pitching_table'));
+
+		$(".clickableRow").click(function() {
+	        window.document.location = $(this).attr("href");
+	    });
 	});
 </script>
 {% endblock %}
