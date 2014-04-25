@@ -77,22 +77,22 @@
 			<tfoot>
 					<tr class="text-center totals">
 						<th class="text-center">Totals</th>
-						<th class="text-center totals">{{totals.games}}</th>
-						<th class="text-center totals">{{totals.plate_apperances}}</th>
-						<th class="text-center totals">{{totals.atbats}}</th>
-						<th class="text-center totals">{{totals.runs}}</th>
-						<th class="text-center totals">{{totals.hits}}</th>
-						<th class="text-center totals">{{totals.doubles}}</th>
-						<th class="text-center totals">{{totals.triples}}</th>
-						<th class="text-center totals">{{totals.hr}}</th>
-						<th class="text-center totals">{{totals.rbi}}</th>
-						<th class="text-center totals">{{totals.walks}}</th>
-						<th class="text-center totals">{{totals.hbp}}</th>
-						<th class="text-center totals">{{totals.strikeouts}}</th>
-						<th class="text-center totals">{{totals.sacrafice}}</th>
-						<th class="text-center totals">{{totals.average}}</th>
-						<th class="text-center totals">{{totals.onbase}}</th>
-						<th class="text-center totals">{{totals.slugging}}</th>
+						<th class="text-center totals">{{totals.games | default:0 }}</th>
+						<th class="text-center totals">{{totals.plate_apperances | default:0 }}</th>
+						<th class="text-center totals">{{totals.atbats | default:0 }}</th>
+						<th class="text-center totals">{{totals.runs | default:0 }}</th>
+						<th class="text-center totals">{{totals.hits | default:0 }}</th>
+						<th class="text-center totals">{{totals.doubles | default:0 }}</th>
+						<th class="text-center totals">{{totals.triples | default:0 }}</th>
+						<th class="text-center totals">{{totals.hr | default:0 }}</th>
+						<th class="text-center totals">{{totals.rbi | default:0 }}</th>
+						<th class="text-center totals">{{totals.walks | default:0 }}</th>
+						<th class="text-center totals">{{totals.hbp | default:0 }}</th>
+						<th class="text-center totals">{{totals.strikeouts | default:0 }}</th>
+						<th class="text-center totals">{{totals.sacrafice | default:0 }}</th>
+						<th class="text-center totals">{{totals.average | default:0 }}</th>
+						<th class="text-center totals">{{totals.onbase | default:0 }}</th>
+						<th class="text-center totals">{{totals.slugging | default:0 }}</th>
 					</tr>
 			</tfoot>
 		</table>
@@ -142,20 +142,20 @@
 			<tfoot>
 					<tr class="text-center">
 						<th class="text-center">Totals</th>
-						<th class="text-center">{{pitch.games}}</th>
-						<th class="text-center">{{pitch.starts}}</th>
-						<th class="text-center">{{pitch.innings}}</th>
-						<th class="text-center">{{pitch.hits}}</th>
-						<th class="text-center">{{pitch.runs}}</th>
-						<th class="text-center">{{pitch.earned}}</th>
-						<th class="text-center">{{pitch.walks}}</th>
-						<th class="text-center">{{pitch.k}}</th>
-						<th class="text-center">{{pitch.wp}}</th>
-						<th class="text-center">{{pitch.hbp}}</th>
-						<th class="text-center">{{pitch.w}}</th>
-						<th class="text-center">{{pitch.l}}</th>
-						<th class="text-center">{{pitch.sv}}</th>
-						<th class="text-center">{{pitch.era}}</th>
+						<th class="text-center">{{pitch.games | default:0 }}</th>
+						<th class="text-center">{{pitch.starts | default:0 }}</th>
+						<th class="text-center">{{pitch.innings | default:0 }}</th>
+						<th class="text-center">{{pitch.hits | default:0 }}</th>
+						<th class="text-center">{{pitch.runs | default:0 }}</th>
+						<th class="text-center">{{pitch.earned | default:0 }}</th>
+						<th class="text-center">{{pitch.walks | default:0 }}</th>
+						<th class="text-center">{{pitch.k | default:0 }}</th>
+						<th class="text-center">{{pitch.wp | default:0 }}</th>
+						<th class="text-center">{{pitch.hbp | default:0 }}</th>
+						<th class="text-center">{{pitch.w | default:0 }}</th>
+						<th class="text-center">{{pitch.l | default:0 }}</th>
+						<th class="text-center">{{pitch.sv | default:0 }}</th>
+						<th class="text-center">{{pitch.era | default:0 }}</th>
 					</tr>
 			</tfoot>
 		</table>
