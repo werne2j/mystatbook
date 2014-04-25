@@ -9,7 +9,7 @@ class SeasonAdmin(admin.ModelAdmin):
 	list_display = ('team','year', 'date_added')
 
 class PlayerAdmin(admin.ModelAdmin):
-	list_display = ('season', 'first_name', 'last_name', 'class_standing', 'throws', 'hits')
+	list_display = ('first_name', 'last_name', 'class_standing', 'throws', 'hits')
 
 class PositionAdmin(admin.ModelAdmin):
 	list_display = ('position',)

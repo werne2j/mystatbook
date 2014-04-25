@@ -35,51 +35,55 @@
 	<div id='content' class="tab-content">
 		<div class="tab-pane active" id="totals">
 			{% if totals.games > 0 %}
-			<table class="table table-bordered table-striped" id="hitting_table">
-				<h3>Hitting Stats</h3>
-				<thead>
-					<tr class="text-center title">
-						<th class="text-center">Year</th>
-						<th class="text-center">G</th>
-						<th class="text-center">PA</th>
-						<th class="text-center">AB</th>
-						<th class="text-center">R</th>
-						<th class="text-center">H</th>
-						<th class="text-center">2B</th>
-						<th class="text-center">3B</th>
-						<th class="text-center">HR</th>
-						<th class="text-center">RBI</th>
-						<th class="text-center">BB</th>
-						<th class="text-center">HBP</th>
-						<th class="text-center">SO</th>
-						<th class="text-center">SF</th>
-						<th class="text-center">AVG</th>
-						<th class="text-center">OBP</th>
-						<th class="text-center">SLG</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="text-center totals">
-						<th class="text-center totals">{{player.season.year}}</th>
-						<th class="text-center totals">{{totals.games | default:0 }}</th>
-						<th class="text-center totals">{{totals.plate_apperances | default:0 }}</th>
-						<th class="text-center totals">{{totals.atbats | default:0 }}</th>
-						<th class="text-center totals">{{totals.runs | default:0 }}</th>
-						<th class="text-center totals">{{totals.hits | default:0 }}</th>
-						<th class="text-center totals">{{totals.doubles | default:0 }}</th>
-						<th class="text-center totals">{{totals.triples | default:0 }}</th>
-						<th class="text-center totals">{{totals.hr | default:0 }}</th>
-						<th class="text-center totals">{{totals.rbi | default:0 }}</th>
-						<th class="text-center totals">{{totals.walks | default:0 }}</th>
-						<th class="text-center totals">{{totals.hbp | default:0 }}</th>
-						<th class="text-center totals">{{totals.strikeouts | default:0 }}</th>
-						<th class="text-center totals">{{totals.sacrafice | default:0 }}</th>
-						<th class="text-center totals">{{totals.average | default:0 }}</th>
-						<th class="text-center totals">{{totals.onbase | default:0 }}</th>
-						<th class="text-center totals">{{totals.slugging | default:0 }}</th>
-					</tr>
-				</tbody>
-			</table>
+
+				{% for s in player.season.all %}
+					<table class="table table-bordered table-striped" id="hitting_table">
+						<h3>Hitting Stats</h3>
+						<thead>
+							<tr class="text-center title">
+								<th class="text-center">Year</th>
+								<th class="text-center">G</th>
+								<th class="text-center">PA</th>
+								<th class="text-center">AB</th>
+								<th class="text-center">R</th>
+								<th class="text-center">H</th>
+								<th class="text-center">2B</th>
+								<th class="text-center">3B</th>
+								<th class="text-center">HR</th>
+								<th class="text-center">RBI</th>
+								<th class="text-center">BB</th>
+								<th class="text-center">HBP</th>
+								<th class="text-center">SO</th>
+								<th class="text-center">SF</th>
+								<th class="text-center">AVG</th>
+								<th class="text-center">OBP</th>
+								<th class="text-center">SLG</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="text-center totals">
+								<th class="text-center totals">{{s.year}}</th>
+								<th class="text-center totals">{{totals.games | default:0 }}</th>
+								<th class="text-center totals">{{totals.plate_apperances | default:0 }}</th>
+								<th class="text-center totals">{{totals.atbats | default:0 }}</th>
+								<th class="text-center totals">{{totals.runs | default:0 }}</th>
+								<th class="text-center totals">{{totals.hits | default:0 }}</th>
+								<th class="text-center totals">{{totals.doubles | default:0 }}</th>
+								<th class="text-center totals">{{totals.triples | default:0 }}</th>
+								<th class="text-center totals">{{totals.hr | default:0 }}</th>
+								<th class="text-center totals">{{totals.rbi | default:0 }}</th>
+								<th class="text-center totals">{{totals.walks | default:0 }}</th>
+								<th class="text-center totals">{{totals.hbp | default:0 }}</th>
+								<th class="text-center totals">{{totals.strikeouts | default:0 }}</th>
+								<th class="text-center totals">{{totals.sacrafice | default:0 }}</th>
+								<th class="text-center totals">{{totals.average | default:0 }}</th>
+								<th class="text-center totals">{{totals.onbase | default:0 }}</th>
+								<th class="text-center totals">{{totals.slugging | default:0 }}</th>
+							</tr>
+						</tbody>
+					</table>
+				{% endfor %}
+
 			{% endif %}
 			{% if pitch.games > 0 %}
 			<table class="table table-bordered table-striped" id="pitching_table">

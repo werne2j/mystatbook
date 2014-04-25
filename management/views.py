@@ -1,3 +1,4 @@
+import operator
 from django.shortcuts import render_to_response, render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -215,17 +216,17 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         batters = []
         pitchers = []
         for player in players:
-            if player.plate_apperances() > 0:
+            if player.plate_apperances(year=self.kwargs.get("year")) > 0:
                 batters.append(player)
-            if player.pitch_totals().get('full_innings__sum') > 0:
+            if player.pitch_totals(year=self.kwargs.get("year")).get('full_innings__sum') > 0:
                 pitchers.append(player)
 
-        context['avgLeaders'] = sorted(batters, key=lambda x: x.average(), reverse=True)[:5]
-        context['obpLeaders'] = sorted(batters, key=lambda x: x.on_base(), reverse=True)[:5]
-        context['slugLeaders'] = sorted(batters, key=lambda x: x.slug(), reverse=True)[:5]
-        context['eraLeaders'] = sorted(pitchers, key=lambda x: float(x.era()))[:5]
-        context['innLeaders'] = sorted(pitchers, key=lambda x: float(x.innings()), reverse=True)[:5]
-        context['winLeaders'] = sorted(pitchers, key=lambda x: x.pitch_totals()['win__sum'], reverse=True)[:5]
+        context['avgLeaders'] = sorted(batters, key=lambda x: x.average(year=self.kwargs.get("year")), reverse=True)[:5]
+        context['obpLeaders'] = sorted(batters, key=lambda x: x.on_base(year=self.kwargs.get("year")), reverse=True)[:5]
+        context['slugLeaders'] = sorted(batters, key=lambda x: x.slug(year=self.kwargs.get("year")), reverse=True)[:5]
+        context['eraLeaders'] = sorted(pitchers, key=lambda x: float(x.era(year=self.kwargs.get("year"))))[:5]
+        context['innLeaders'] = sorted(pitchers, key=lambda x: float(x.innings(year=self.kwargs.get("year"))), reverse=True)[:5]
+        context['winLeaders'] = sorted(pitchers, key=lambda x: x.pitch_totals(year=self.kwargs.get("year"))['win__sum'], reverse=True)[:5]
         context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
@@ -329,8 +330,8 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
         context['form'] = player_form
         context['team'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
-        context['players'] = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year")).order_by('last_name')
-        context['all_players'] = Player.objects.filter(season__team__coach=self.request.user, season__team__name=self.kwargs.get("name")).order_by('last_name')
+        context['players'] = Player.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name"),season__year=self.kwargs.get("year")).order_by('last_name')
+        context['all_players'] = Player.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name")).order_by('last_name')
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['seasons'] = Season.objects.filter(team__name=self.kwargs.get("name")).order_by("-year")
 
@@ -400,32 +401,54 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerStats, self).get_context_data(**kwargs)
 
-        players = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        players = Player.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name"), season__year=self.kwargs.get("year"))
         batters = []
         pitchers = []
         for player in players:
-            if player.hit_totals().get('game__count') > 0:
+            if player.hit_totals(year=self.kwargs.get("year")).get('game__count') > 0:
                 batters.append(player)
-            if player.pitch_totals().get('game__count') > 0:
+            if player.pitch_totals(year=self.kwargs.get("year")).get('game__count') > 0:
                 pitchers.append(player)
+
+        hitting = []
+        pitching = []
+
+        for b in batters:
+            hitting.append({'player':b, 'stats':b.hit_totals(year=self.kwargs.get("year")), 'plate_app':b.plate_apperances(year=self.kwargs.get("year")),
+                'avg':b.average(year=self.kwargs.get("year")), 'obp':b.on_base(year=self.kwargs.get("year")), 'slug':b.slug(year=self.kwargs.get("year"))})
+
+        for p in pitchers:
+            pitching.append({'player':p, 'stats':p.pitch_totals(year=self.kwargs.get("year")), 'starts':p.starts(year=self.kwargs.get("year")),
+                'inn':p.innings(year=self.kwargs.get("year")), 'era':p.era(year=self.kwargs.get("year"))})
 
         conf_batters = []
         conf_pitchers = []
         for player in players:
-            if player.conf_hit_totals().get('game__count') > 0:
+            if player.conf_hit_totals(year=self.kwargs.get("year")).get('game__count') > 0:
                 conf_batters.append(player)
-            if player.conf_pitch_totals().get('game__count') > 0:
+            if player.conf_pitch_totals(year=self.kwargs.get("year")).get('game__count') > 0:
                 conf_pitchers.append(player)
 
-        totals = HitterStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(atbats=Sum('at_bats'),
+        conf_hitting = []
+        conf_pitching = []
+
+        for cb in conf_batters:
+            conf_hitting.append({'player':cb, 'stats':cb.conf_hit_totals(year=self.kwargs.get("year")), 'plate_app':cb.conf_plate_apperances(year=self.kwargs.get("year")),
+                'avg':cb.conf_average(year=self.kwargs.get("year")), 'obp':cb.conf_on_base(year=self.kwargs.get("year")), 'slug':cb.conf_slug(year=self.kwargs.get("year"))})
+
+        for cp in conf_pitchers:
+            conf_pitching.append({'player':cp, 'stats':cp.conf_pitch_totals(year=self.kwargs.get("year")), 'starts':cp.conf_starts(year=self.kwargs.get("year")),
+                'inn':cp.conf_innings(year=self.kwargs.get("year")), 'era':cp.conf_era(year=self.kwargs.get("year"))})
+
+        totals = HitterStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"),player__season__year=self.kwargs.get('year')).aggregate(atbats=Sum('at_bats'),
             hits=Sum('hits'), runs=Sum('runs'), doubles=Sum('doubles'), triples=Sum('triples'), hr=Sum('hr'), rbi=Sum('rbi'),
             walks=Sum('walks'), hbp=Sum('hbp'), strikeouts=Sum('strikeouts'), sacrafice=Sum('sacrafice'))
 
-        conf_totals = HitterStats.objects.filter(player__season__team__coach=self.request.user, player__season__team__name=self.kwargs.get("name"),player__season__year=self.kwargs.get('year'), game__conference=True).aggregate(atbats=Sum('at_bats'),
+        conf_totals = HitterStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"),player__season__year=self.kwargs.get('year'), game__conference=True).aggregate(atbats=Sum('at_bats'),
             hits=Sum('hits'), runs=Sum('runs'), doubles=Sum('doubles'), triples=Sum('triples'), hr=Sum('hr'), rbi=Sum('rbi'),
             walks=Sum('walks'), hbp=Sum('hbp'), strikeouts=Sum('strikeouts'), sacrafice=Sum('sacrafice'))
 
-        if HitterStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
+        if HitterStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year')):
             totals['plate_apperances'] = totals['atbats']+totals['walks']+totals['hbp']+totals['sacrafice']
             totals['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'), hitterstats__isnull=True).count()
             avg = float(totals['hits']) / float(totals['atbats'])
@@ -438,7 +461,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             totals = 0
 
-        if HitterStats.objects.filter(player__season__team__coach=self.request.user, player__season__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), game__conference=True):
+        if HitterStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), game__conference=True):
             conf_totals['plate_apperances'] = conf_totals['atbats']+conf_totals['walks']+conf_totals['hbp']+conf_totals['sacrafice']
             conf_totals['games'] = Game.objects.filter(season__team__name=self.kwargs.get('name'), conference=True).count() - Game.objects.filter(season__team__name=self.kwargs.get('name'),conference=True, hitterstats__isnull=True).count()
             avg = float(conf_totals['hits']) / float(conf_totals['atbats'])
@@ -451,42 +474,42 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         else:
             conf_totals = 0
 
-        pitch = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).aggregate(full=Sum('full_innings'),part=Sum('part_innings'),
+        pitch = PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year')).aggregate(full=Sum('full_innings'),part=Sum('part_innings'),
             hits=Sum('hits_allowed'),runs=Sum('runs_allowed'), earned=Sum('earned_runs'), walks=Sum('walks_allowed'), k=Sum('strikeout_amount'),wp=Sum('wild_pitches'),
             hbp=Sum('hit_by_pitch'), w=Sum('win'), l=Sum('loss'), sv=Sum('sv'))
 
-        conf_pitch = PitcherStats.objects.filter(player__season__team__coach=self.request.user, player__season__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), game__conference=True).aggregate(full=Sum('full_innings'),part=Sum('part_innings'),
+        conf_pitch = PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), game__conference=True).aggregate(full=Sum('full_innings'),part=Sum('part_innings'),
             hits=Sum('hits_allowed'),runs=Sum('runs_allowed'), earned=Sum('earned_runs'), walks=Sum('walks_allowed'), k=Sum('strikeout_amount'),wp=Sum('wild_pitches'),
             hbp=Sum('hit_by_pitch'), w=Sum('win'), l=Sum('loss'), sv=Sum('sv'))
 
-        if PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')):
+        if PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year')):
             pitch['innings'] = str(((pitch['full']*3)+pitch['part']) / 3) + "." + str(((pitch['full']*3)+pitch['part']) % 3)
             era = float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0
             pitch['era'] = ("%.2f" % era)
             pitch['games'] = Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name')).count() - Game.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get('name'), pitcherstats__isnull=True).count()
-            pitch['starts'] = PitcherStats.objects.filter(player__season__team__coach=self.request.user).filter(player__season__team__name=self.kwargs.get("name")).filter(player__season__year=self.kwargs.get('year')).filter(starting_pitcher=True).count()
+            pitch['starts'] = PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), starting_pitcher=True).count()
         else: 
             pitch = 0
 
-        if PitcherStats.objects.filter(player__season__team__coach=self.request.user, player__season__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), game__conference=True):
+        if PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), player__season__year=self.kwargs.get('year'), game__conference=True):
             conf_pitch['innings'] = str(((conf_pitch['full']*3)+conf_pitch['part']) / 3) + "." + str(((conf_pitch['full']*3)+conf_pitch['part']) % 3)
             era = float(conf_pitch['earned']) / (conf_pitch['full']+(conf_pitch['part']/3.0)) * 9.0
             conf_pitch['era'] = ("%.2f" % era)
             conf_pitch['games'] = Game.objects.filter(season__team__coach=self.request.user,season__team__name=self.kwargs.get('name'),conference=True).count() - Game.objects.filter(season__team__coach=self.request.user, season__team__name=self.kwargs.get('name'), conference=True, pitcherstats__isnull=True).count()
-            conf_pitch['starts'] = PitcherStats.objects.filter(player__season__team__coach=self.request.user, player__season__team__name=self.kwargs.get("name"),player__season__year=self.kwargs.get('year'), game__conference=True, starting_pitcher=True).count()
+            conf_pitch['starts'] = PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"),player__season__year=self.kwargs.get('year'), game__conference=True, starting_pitcher=True).count()
         else: 
             conf_pitch = 0
 
         context['totals'] = totals
+        context['hitting'] = sorted(hitting, key=operator.itemgetter('avg'), reverse=True)
+        context['conf_hitting'] = conf_hitting
+        context['pitching'] = pitching
+        context['conf_pitching'] = conf_pitching
         context['conf_totals'] = conf_totals
         context['pitch'] = pitch
         context['conf_pitch'] = conf_pitch
-        context['batters'] = sorted(batters, key=lambda x: x.average(), reverse=True)
-        context['pitchers'] = sorted(pitchers, key=lambda x: float(x.era()))
-        context['conf_batters'] = sorted(conf_batters, key=lambda x: x.average(), reverse=True)
-        context['conf_pitchers'] = sorted(conf_pitchers, key=lambda x: x.era())
         context['teams'] = Team.objects.filter(coach=self.request.user)
-        context['seasons'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).order_by("-year")
+        context['seasons'] = Season.objects.filter(team__coach=self.request.user,team__name=self.kwargs.get("name")).order_by("-year")
 
         return context
 
@@ -527,7 +550,7 @@ class Depth_Chart(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
         context['form'] = this_form
         context['depth'] = depthchart
-        context['players'] = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        context['players'] = Player.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['seasons'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).order_by("-year")
 

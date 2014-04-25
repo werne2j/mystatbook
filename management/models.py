@@ -46,7 +46,9 @@ class Position(models.Model):
 		return self.position
 
 class Player(models.Model):
-	season = models.ForeignKey('Season', null=True)
+	team = models.ForeignKey('Team')
+	# season = models.ForeignKey('Season', null=True)
+	season = models.ManyToManyField('Season')
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
 	position = models.ManyToManyField('Position')
@@ -57,37 +59,37 @@ class Player(models.Model):
 	def __unicode__(self):
 		return u'{first} {last}'.format(first=self.first_name, last=self.last_name)
 
-	def hit_totals(self):
-		return HitterStats.objects.filter(player=self).aggregate(Count("game"), Sum("at_bats"),
+	def hit_totals(self, year):
+		return HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Count("game"), Sum("at_bats"),
 			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
 
-	def conf_hit_totals(self):
-		return HitterStats.objects.filter(player=self, game__conference=True).aggregate(Count("game"), Sum("at_bats"),
+	def conf_hit_totals(self, year):
+		return HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Count("game"), Sum("at_bats"),
 			Sum("runs"), Sum("hits"), Sum("doubles"), Sum("triples"), Sum("hr"), Sum("rbi"),
 			Sum("walks"),Sum("hbp"),Sum("sacrafice"),Sum("strikeouts"))
 
-	def pitch_totals(self):
-		return PitcherStats.objects.filter(player=self).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
+	def pitch_totals(self, year):
+		return PitcherStats.objects.filter(player=self, game__season__year=year).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
 			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
 			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
 
-	def conf_pitch_totals(self):
-		return PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
+	def conf_pitch_totals(self, year):
+		return PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Count("game"), Count("starting_pitcher"), Sum("full_innings"),
 			Sum("hits_allowed"), Sum("runs_allowed"), Sum("earned_runs"), Sum("walks_allowed"), Sum("strikeout_amount"), Sum("wild_pitches"),
 			Sum("hit_by_pitch"),Sum("win"),Sum("loss"),Sum("sv"))
 
 
-	def starts(self):
-		return PitcherStats.objects.filter(player=self).filter(starting_pitcher=True).count()
+	def starts(self, year):
+		return PitcherStats.objects.filter(player=self, game__season__year=year).filter(starting_pitcher=True).count()
 
-	def conf_starts(self):
-		return PitcherStats.objects.filter(player=self, game__conference=True).filter(starting_pitcher=True).count()
+	def conf_starts(self, year):
+		return PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).filter(starting_pitcher=True).count()
 
-	def innings(self):
-		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
+	def innings(self, year):
+		i = PitcherStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0])
-		p = PitcherStats.objects.filter(player=self).aggregate(Sum("part_innings"))
+		p = PitcherStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("part_innings"))
 		pi = float(p.values()[0])
 
 		ti = int(((fi*3) + pi) / 3)
@@ -95,10 +97,10 @@ class Player(models.Model):
 
 		return str(ti) + "." + str(ri)
 
-	def conf_innings(self):
-		i = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("full_innings"))
+	def conf_innings(self, year):
+		i = PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0])
-		p = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("part_innings"))
+		p = PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("part_innings"))
 		pi = float(p.values()[0])
 
 		ti = int(((fi*3) + pi) / 3)
@@ -106,38 +108,38 @@ class Player(models.Model):
 
 		return str(ti) + "." + str(ri)
 
-	def plate_apperances(self):
-		a = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+	def plate_apperances(self, year):
+		a = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("at_bats"))
 		ab = a.values()[0] or 0
-		w = HitterStats.objects.filter(player=self).aggregate(Sum("walks"))
+		w = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("walks"))
 		bb = w.values()[0] or 0
-		h = HitterStats.objects.filter(player=self).aggregate(Sum("hbp"))
+		h = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("hbp"))
 		hp = h.values()[0] or 0
-		s = HitterStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		s = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("sacrafice"))
 		sf = s.values()[0] or 0
 
 		pa = ab + bb + hp + sf
 
 		return pa
 
-	def conf_plate_apperances(self):
-		a = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+	def conf_plate_apperances(self, year):
+		a = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("at_bats"))
 		ab = a.values()[0] or 0
-		w = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("walks"))
+		w = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("walks"))
 		bb = w.values()[0] or 0
-		h = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hbp"))
+		h = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("hbp"))
 		hp = h.values()[0] or 0
-		s = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("sacrafice"))
+		s = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("sacrafice"))
 		sf = s.values()[0] or 0
 
 		pa = ab + bb + hp + sf
 
 		return pa
 
-	def average(self):
-		b = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+	def average(self, year):
+		b = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("at_bats"))
 		a =  float(b.values()[0])
-		f = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
+		f = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("hits"))
 		h =  float(f.values()[0])
 		try:
 			avg = h/a 
@@ -146,10 +148,10 @@ class Player(models.Model):
 		average = ("%.3f" % avg)
 		return average
 
-	def conf_average(self):
-		b = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+	def conf_average(self, year):
+		b = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("at_bats"))
 		a =  float(b.values()[0])
-		f = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hits"))
+		f = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("hits"))
 		h =  float(f.values()[0])
 		try:
 			avg = h/a 
@@ -158,16 +160,16 @@ class Player(models.Model):
 		average = ("%.3f" % avg)
 		return average
 
-	def on_base(self):
-		a = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
+	def on_base(self, year):
+		a = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("hits"))
 		h = float(a.values()[0])
-		b = HitterStats.objects.filter(player=self).aggregate(Sum("walks"))
+		b = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("walks"))
 		bb = float(b.values()[0])
-		c = HitterStats.objects.filter(player=self).aggregate(Sum("hbp"))
+		c = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("hbp"))
 		hbp = float(c.values()[0])
-		d = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+		d = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("at_bats"))
 		ab = float(d.values()[0])
-		e = HitterStats.objects.filter(player=self).aggregate(Sum("sacrafice"))
+		e = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("sacrafice"))
 		sf = float(e.values()[0])
 
 		t = h+bb+hbp
@@ -180,16 +182,16 @@ class Player(models.Model):
 
 		return obp
 
-	def conf_on_base(self):
-		a = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hits"))
+	def conf_on_base(self, year):
+		a = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("hits"))
 		h = float(a.values()[0])
-		b = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("walks"))
+		b = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("walks"))
 		bb = float(b.values()[0])
-		c = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hbp"))
+		c = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("hbp"))
 		hbp = float(c.values()[0])
-		d = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+		d = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("at_bats"))
 		ab = float(d.values()[0])
-		e = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("sacrafice"))
+		e = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("sacrafice"))
 		sf = float(e.values()[0])
 
 		t = h+bb+hbp
@@ -202,16 +204,16 @@ class Player(models.Model):
 
 		return obp
 
-	def slug(self):
-		ab = HitterStats.objects.filter(player=self).aggregate(Sum("at_bats"))
+	def slug(self, year):
+		ab = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("at_bats"))
 		a = float(ab.values()[0])
-		hits = HitterStats.objects.filter(player=self).aggregate(Sum("hits"))
+		hits = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("hits"))
 		h = float(hits.values()[0])
-		doub = HitterStats.objects.filter(player=self).aggregate(Sum("doubles"))
+		doub = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("doubles"))
 		d = float(doub.values()[0])
-		trip = HitterStats.objects.filter(player=self).aggregate(Sum("triples"))
+		trip = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("triples"))
 		t = float(trip.values()[0])
-		homerun = HitterStats.objects.filter(player=self).aggregate(Sum("hr"))
+		homerun = HitterStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("hr"))
 		hr = float(homerun.values()[0])
 
 		s = h - (d+t+hr)
@@ -224,16 +226,16 @@ class Player(models.Model):
 
 		return slgp
 
-	def conf_slug(self):
-		ab = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("at_bats"))
+	def conf_slug(self, year):
+		ab = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("at_bats"))
 		a = float(ab.values()[0])
-		hits = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hits"))
+		hits = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("hits"))
 		h = float(hits.values()[0])
-		doub = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("doubles"))
+		doub = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("doubles"))
 		d = float(doub.values()[0])
-		trip = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("triples"))
+		trip = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("triples"))
 		t = float(trip.values()[0])
-		homerun = HitterStats.objects.filter(player=self, game__conference=True).aggregate(Sum("hr"))
+		homerun = HitterStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("hr"))
 		hr = float(homerun.values()[0])
 
 		s = h - (d+t+hr)
@@ -246,15 +248,15 @@ class Player(models.Model):
 
 		return slgp
 
-	def era(self):
-		i = PitcherStats.objects.filter(player=self).aggregate(Sum("full_innings"))
+	def era(self, year):
+		i = PitcherStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0]) or 0
-		p = PitcherStats.objects.filter(player=self).aggregate(Sum("part_innings"))
+		p = PitcherStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("part_innings"))
 		pi = float(p.values()[0]) or 0
 
 		ti = float(((fi*3) + pi) / 3)
 
-		r = PitcherStats.objects.filter(player=self).aggregate(Sum("earned_runs"))
+		r = PitcherStats.objects.filter(player=self, game__season__year=year).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
 		try:
@@ -263,15 +265,15 @@ class Player(models.Model):
 			era = 0
 		return ("%.2f" % era)
 
-	def conf_era(self):
-		i = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("full_innings"))
+	def conf_era(self, year):
+		i = PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("full_innings"))
 		fi = float(i.values()[0]) or 0
-		p = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("part_innings"))
+		p = PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("part_innings"))
 		pi = float(p.values()[0]) or 0
 
 		ti = float(((fi*3) + pi) / 3)
 
-		r = PitcherStats.objects.filter(player=self, game__conference=True).aggregate(Sum("earned_runs"))
+		r = PitcherStats.objects.filter(player=self, game__season__year=year, game__conference=True).aggregate(Sum("earned_runs"))
 		er = float(r.values()[0]) or 0
 
 		try:
