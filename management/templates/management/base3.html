@@ -17,6 +17,8 @@
         <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type='text/css'/>
         <link rel="stylesheet" href="{% static 'sb-admin/css/sb-admin.css' %}" type='text/css'/>
         <link rel="stylesheet" href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}" type='text/css'/>
+
+        <link rel="stylesheet" href="{% static 'css/statbook.css' %}" type='text/css'/>
         <link href='//fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'/>
 
         <style type='text/css' >
@@ -37,9 +39,11 @@
     {% load i18n %}
     <body>
 
-        {% block nav %}{% endblock %}
-        {% block header %}{% endblock %}
-        {% block content %}{% endblock %}
+        <div id="page-wrapper">
+            {% block nav %}{% endblock %}
+            {% block header %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div><!-- /#page-wrapper -->
 
         <!-- JavaScript -->
         <script type='text/javascript' src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>

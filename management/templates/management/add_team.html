@@ -13,19 +13,6 @@
   #wrapper{
   	padding-right: 225px;
   }
-  .panel{
-    border: 1px solid #eee;
-  }
-  .panel-title{
-    font-size: 2.8rem;
-    color: white;
-  }
-  .panel-default > .panel-heading{
-    background-color: #3498db;
-  }
-  .panel-default > .panel-body{
-    background-color: #eee;
-  }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -82,26 +69,26 @@
 {% block content %}
 <div class="container">
   <div class="col-md-6 col-md-offset-3" id="team_form">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h2 class="panel-title">Add Team</h2>
+    <div class="box box-solid box-primary">
+      <div class="box-header">
+          <h3 class="box-title">Add Team</h3>
       </div>
-      <div class="panel-body">
-         <form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.coach}}
-            <div class="form-group">
-              <input id="id_name" class="form-control" maxlength="50" name="name" type="text" placeholder="Team Name">
-            </div>
-            <div class="form-group">
-              <input id="id_year" class="form-control" name="year" type="number" placeholder="Year">
-            </div>
-            <div class="form-group">
-              <input id="id_logo" name="logo" type="file" accept="image/*">
-            </div>
-            <button type="submit" class="btn btn-success">Submit</button>
-          </form>
-      </div>
+      <div class="box-body" style="display: block;">
+       <form id="teamform" class="form-signin" action="{% url 'add_team' username=user.username %}" role="form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form.coach}}
+          <div class="form-group">
+            <input id="id_name" class="form-control" maxlength="50" name="name" type="text" placeholder="Team Name">
+          </div>
+          <div class="form-group">
+            <input id="id_year" class="form-control" name="year" type="number" placeholder="Year">
+          </div>
+          <div class="form-group">
+            <input id="id_logo" name="logo" type="file" accept="image/*">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+      </div><!-- /.box-body -->
     </div>
   </div>
 </div>
