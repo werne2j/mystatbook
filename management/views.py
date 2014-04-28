@@ -310,8 +310,8 @@ class PlayerDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         context['pitch_seasons'] = pitch_seasons
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['player'] = p
-        context['hit_games'] = HitterStats.objects.filter(player__pk=self.kwargs.get('id'))
-        context['pitch_games'] = PitcherStats.objects.filter(player__pk=self.kwargs.get('id'))
+        context['hit_games'] = HitterStats.objects.filter(player__pk=self.kwargs.get('id')).order_by("game__date")
+        context['pitch_games'] = PitcherStats.objects.filter(player__pk=self.kwargs.get('id')).order_by("game__date")
 
         return context
 

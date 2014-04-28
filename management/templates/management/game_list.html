@@ -34,76 +34,78 @@
 {% endblock %}
 {% block content %}
 <div id="schedule">
-	<table class="table table-bordered table-striped" id="game_list">
-		<thead>
-			<tr class="text-center">
-				<th class="text-center">Date</th>
-				<th class="text-center">Opponent</th>
-				<th class="text-center">Location</th>
-				<th class="text-center no-sort">Time</th>
-				<th class="text-center no-sort">Doubleheader</th>
-				<th class="text-center no-sort box-score">Box Score</th>
-				<th class="text-center no-sort">Delete</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for g in games %}
-			<tr {% if g.conference %}class="bold"{% endif %}>
-				<th class="text-center">{{g.date}}</th>
-				<th class="text-center">{{g.opponent}}</th>
-				<th class="text-center">{{g.location}}</th>
-				<th class="text-center">{{g.time}}</th>
-				<th class="text-center">{% if g.doubleheader %}<i class="fa fa-check-circle"></i>{% else %}<i class="fa fa-times-circle"></i>{% endif %}</th>
-				<th class="text-center box-score"><a class="game" href="#" data-form="{% url 'game_stats' username=user name=name year=year pk=g.pk %}"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-plus"></i> Box Score</button></th>
-				<th class="text-center">
-					<form action="" class="delete_form" method=post>
-						{% csrf_token %}
-						<input type="hidden" value="{{g.id}}" name="delete">
-						<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
-					</form>
-				</th>
-			</tr>
-			{% endfor %}
-		</tbody>
-		<tfoot>
-			<form class="form-inline add_game" action="{% url 'game_list' username=user name=name year=year %}" method=post>
-				{% csrf_token %}
+	<div class="table-responsive">
+		<table class="table table-bordered table-striped" id="game_list">
+			<thead>
 				<tr class="text-center">
-					<th id="game_season" style="display:none;">{{form.season}}</th>
-					<th class="text-center">
-						<div class="form-group">
-							<input id="id_date" class="form-control" name="date" type="text" placeholder="Date">
-						</div>
-					</th>
-					<th class="text-center">
-						<div class="form-group">
-							<input id="id_opponent" class="form-control" maxlength="100" name="opponent" type="text" placeholder="Opponent">
-						</div>
-					</th>
-					<th class="text-center">
-						<div class="form-group">
-							<input id="id_location" class="form-control" maxlength="100" name="location" type="text" placeholder="Location">
-						</div>
-					</th>
-					<th class="text-center" id="game_time">
-						<div class="form-group">
-							<input id="id_time" class="form-control" name="time" type="text" placeholder="Time">
-							<input id="id_time2" class="form-control" name="time2" type="hidden" placeholder="Time">
-						</div>
-					</th>
-					<td class="text-center">
-						<label for="id_doubleheader" style="font-size:.9em;">Doubleheader: </label>
-						{{form.doubleheader}}
-					</td>
-					<td class="text-center">
-						<label for="id_doubleheader" style="font-size:.9em;">Conference: </label>
-						{{form.conference}}
-					</td>
-					<th class="text-center no-sort"><button type="submit" class="btn btn-primary"id="save_game">Save</button></th>
+					<th class="text-center">Date</th>
+					<th class="text-center">Opponent</th>
+					<th class="text-center">Location</th>
+					<th class="text-center no-sort">Time</th>
+					<th class="text-center no-sort">Doubleheader</th>
+					<th class="text-center no-sort box-score">Box Score</th>
+					<th class="text-center no-sort">Delete</th>
 				</tr>
-			</form>
-		</tfoot>
-	</table>
+			</thead>
+			<tbody>
+				{% for g in games %}
+				<tr {% if g.conference %}class="bold"{% endif %}>
+					<th class="text-center">{{g.date}}</th>
+					<th class="text-center">{{g.opponent}}</th>
+					<th class="text-center">{{g.location}}</th>
+					<th class="text-center">{{g.time}}</th>
+					<th class="text-center">{% if g.doubleheader %}<i class="fa fa-check-circle"></i>{% else %}<i class="fa fa-times-circle"></i>{% endif %}</th>
+					<th class="text-center box-score"><a class="game" href="#" data-form="{% url 'game_stats' username=user name=name year=year pk=g.pk %}"><button type="button" class="btn btn-primary btn-xs" data-toggle="modal"><i class="fa fa-plus"></i> Box Score</button></th>
+					<th class="text-center">
+						<form action="" class="delete_form" method=post>
+							{% csrf_token %}
+							<input type="hidden" value="{{g.id}}" name="delete">
+							<button type="submit" class="btn btn-danger btn-xs delete_btn"><i class="fa fa-trash-o"></i></button>
+						</form>
+					</th>
+				</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<form class="form-inline add_game" action="{% url 'game_list' username=user name=name year=year %}" method=post>
+					{% csrf_token %}
+					<tr class="text-center">
+						<th id="game_season" style="display:none;">{{form.season}}</th>
+						<th class="text-center">
+							<div class="form-group">
+								<input id="id_date" class="form-control" name="date" type="text" placeholder="Date">
+							</div>
+						</th>
+						<th class="text-center">
+							<div class="form-group">
+								<input id="id_opponent" class="form-control" maxlength="100" name="opponent" type="text" placeholder="Opponent">
+							</div>
+						</th>
+						<th class="text-center">
+							<div class="form-group">
+								<input id="id_location" class="form-control" maxlength="100" name="location" type="text" placeholder="Location">
+							</div>
+						</th>
+						<th class="text-center" id="game_time">
+							<div class="form-group">
+								<input id="id_time" class="form-control" name="time" type="text" placeholder="Time">
+								<input id="id_time2" class="form-control" name="time2" type="hidden" placeholder="Time">
+							</div>
+						</th>
+						<td class="text-center">
+							<label for="id_doubleheader" style="font-size:.9em;">Doubleheader: </label>
+							{{form.doubleheader}}
+						</td>
+						<td class="text-center">
+							<label for="id_doubleheader" style="font-size:.9em;">Conference: </label>
+							{{form.conference}}
+						</td>
+						<th class="text-center no-sort"><button type="submit" class="btn btn-primary"id="save_game">Save</button></th>
+					</tr>
+				</form>
+			</tfoot>
+		</table>
+	</div>
 	<p>*<strong>Bold</strong> indicates conference games</p> 
 	<div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-hidden="true">
 	</div>

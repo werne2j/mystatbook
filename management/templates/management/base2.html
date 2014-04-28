@@ -28,6 +28,12 @@
           font-weight: 400;
           font-style: bold;
         }
+
+        @media only screen and (max-device-width: 480px) {
+            #print-button{
+              display: none;
+            }
+        }
         </style>
         {% block extrastyle %}{% endblock %}
     </head>

@@ -15,12 +15,17 @@
 }
 #select_box, .leaders{
 	padding-left: 0;
+	padding-right: 0;
 }
 .well, .box{
 	padding-bottom: 0;
 }
 h5{
 	text-decoration: underline;
+}
+.leaders{
+	display: inline-block;
+	width: 100%;
 }
 </style>
 {% endblock %}
@@ -86,12 +91,9 @@ h5{
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
 	        <h3 class="box-title">Batting Average Leaders</h3>
-	        <div class="box-tools pull-right">
-	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	        </div>
 	    </div>
 	    {% if avgLeaders %}
-	    <div class="box-body" style="display: block;">
+	    <div class="box-body">
 		  	<table class="table">
 			  <thead>
 			  	<tr>
@@ -117,9 +119,6 @@ h5{
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
 	        <h3 class="box-title">On Base Percentage Leaders</h3>
-	        <div class="box-tools pull-right">
-	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	        </div>
 	    </div>
 	    {% if obpLeaders %}
 	    <div class="box-body" style="display: block;">
@@ -148,9 +147,6 @@ h5{
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
 	        <h3 class="box-title">Slugging Percentage Leaders</h3>
-	        <div class="box-tools pull-right">
-	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	        </div>
 	    </div>
 	    {% if slugLeaders %}
 	    <div class="box-body" style="display: block;">
@@ -179,9 +175,6 @@ h5{
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
 	        <h3 class="box-title">ERA Leaders</h3>
-	        <div class="box-tools pull-right">
-	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	        </div>
 	    </div>
 	    {% if eraLeaders %}
 	    <div class="box-body" style="display: block;">
@@ -210,9 +203,6 @@ h5{
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
 	        <h3 class="box-title">Innings Leaders</h3>
-	        <div class="box-tools pull-right">
-	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	        </div>
 	    </div>
 	    {% if innLeaders %}
 	    <div class="box-body" style="display: block;">
@@ -241,9 +231,6 @@ h5{
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
 	        <h3 class="box-title">Wins Leaders</h3>
-	        <div class="box-tools pull-right">
-	            <button class="btn btn-primary btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	        </div>
 	    </div>
 	    {% if winLeaders %}
 	    <div class="box-body" style="display: block;">
