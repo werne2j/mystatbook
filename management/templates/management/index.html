@@ -131,6 +131,18 @@ min-height: 21.5em;
   padding-bottom: 5px;
   border-bottom: 2px solid white;
 }
+.add_team_list{
+  display: none;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .add_team_card{
+    display: none;
+  }
+  .add_team_list{
+    display: block;
+  }
+}
 </style>
 {% endblock %}
 
@@ -151,6 +163,7 @@ min-height: 21.5em;
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse" id="mainNavigation">
             <ul class="nav navbar-nav navbar-right navbar-user">
+                <li class="add_team_list"><a href="{% url 'add_team' user.username %}"><i class="fa fa-plus"></i> Add Team</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user"></i> {% filter force_escape %}{% firstof user.username %}{% endfilter %} 
@@ -201,7 +214,7 @@ min-height: 21.5em;
   		</div>
   	{% endfor %}
   
-    <div id="f1_container" class="col-md-3">
+    <div id="f1_container" class="col-md-3 add_team_card">
       <div id="f1_card" class="shadow">
         <div class="front face">
           <div class="Aligner">
