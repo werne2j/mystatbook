@@ -280,6 +280,9 @@ ul{
 .droppable:hover{
   z-index: 1;
 }
+.table-responsive{
+  border: 0;
+}
 
 /*
     component: Boxes
