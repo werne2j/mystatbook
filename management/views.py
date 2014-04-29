@@ -1,6 +1,6 @@
 import operator
 from django.shortcuts import render_to_response, render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.views.generic.base import View, TemplateView
@@ -37,9 +37,8 @@ def login_page(request):
         else:
             message =  "Invalid Username and/or Password"
     else:
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': request.user.username }))
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('coach_portal', kwargs={'username': request.user.username }))
     return render_to_response('management/login.html', { 'message': message }, context_instance=RequestContext(request))
 
 
@@ -154,6 +153,13 @@ class Settings(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 class Front(TemplateView):
 
     template_name = 'management/front2.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated():
+            return HttpResponseRedirect(reverse_lazy('coach_portal', kwargs={'username': self.request.user.username }))
+        return super(Front, self).dispatch(request, *args, **kwargs)
+
+
 
 
 class Homepage(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
