@@ -36,6 +36,7 @@
 				<h3>Batting Stats</h3>
 				<fieldset>
 					{{ formset.management_form }}
+					<div class="table-responsive">
 						<table class="table" id="hitter_tab">
 							<thead>
 								<tr>
@@ -75,51 +76,54 @@
 								<hr>
 							</tbody>
 						</table>
+					</div>
 				</fieldset>
 				<p><a href="#" id="add_hit"><i class="fa fa-plus"></i> Add another batter</a></p>
 			    <fieldset>
 				{{ formset2.management_form }}
 					<h3>Pitching Stats</h3>
-					<table class="table" id="pitcher_tab">
-						<thead>
-							<tr>
-								<th class="text-center">Player</th>
-								<th class="text-center">SP</th>
-								<th class="text-center">Inn</th>
-								<th class="text-center">H</th>
-								<th class="text-center">R</th>
-								<th class="text-center">ER</th>
-								<th class="text-center">BB</th>
-								<th class="text-center">K</th>
-								<th class="text-center">WP</th>
-								<th class="text-center">HBP</th>
-								<th class="text-center">W</th>
-								<th class="text-center">L</th>
-								<th class="text-center">SV</th>
-							</tr>
-						</thead>
-						<tbody class="pitcher_body">
-							{% for form2 in formset2 %}
-								<tr class="hit_stats text-center">
-									{{form2.id}}
-									<td id="game2" style="display:none;">{{form2.game}}</td>
-									<td>{{form2.player}}</td>
-									<td id="starting">{{form2.starting_pitcher}}</td>
-									<td>{{form2.full_innings}}.{{form2.part_innings}}</td>
-									<td>{{form2.hits_allowed}}</td>
-									<td>{{form2.runs_allowed}}</td>
-									<td>{{form2.earned_runs}}</td>
-									<td>{{form2.walks_allowed}}</td>
-									<td>{{form2.strikeout_amount}}</td>
-									<td>{{form2.wild_pitches}}</td>
-									<td>{{form2.hit_by_pitch}}</td>
-									<td>{{form2.win}}</td>
-									<td>{{form2.loss}}</td>
-									<td>{{form2.sv}}</td>
+					<div class="table-responsive">
+						<table class="table" id="pitcher_tab">
+							<thead>
+								<tr>
+									<th class="text-center">Player</th>
+									<th class="text-center">SP</th>
+									<th class="text-center">Inn</th>
+									<th class="text-center">H</th>
+									<th class="text-center">R</th>
+									<th class="text-center">ER</th>
+									<th class="text-center">BB</th>
+									<th class="text-center">K</th>
+									<th class="text-center">WP</th>
+									<th class="text-center">HBP</th>
+									<th class="text-center">W</th>
+									<th class="text-center">L</th>
+									<th class="text-center">SV</th>
 								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+							</thead>
+							<tbody class="pitcher_body">
+								{% for form2 in formset2 %}
+									<tr class="hit_stats text-center">
+										{{form2.id}}
+										<td id="game2" style="display:none;">{{form2.game}}</td>
+										<td>{{form2.player}}</td>
+										<td id="starting">{{form2.starting_pitcher}}</td>
+										<td>{{form2.full_innings}}.{{form2.part_innings}}</td>
+										<td>{{form2.hits_allowed}}</td>
+										<td>{{form2.runs_allowed}}</td>
+										<td>{{form2.earned_runs}}</td>
+										<td>{{form2.walks_allowed}}</td>
+										<td>{{form2.strikeout_amount}}</td>
+										<td>{{form2.wild_pitches}}</td>
+										<td>{{form2.hit_by_pitch}}</td>
+										<td>{{form2.win}}</td>
+										<td>{{form2.loss}}</td>
+										<td>{{form2.sv}}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</fieldset>
 				<p><a href="#" id="add_pitch"><i class="fa fa-plus"></i> Add another pitcher</a></p>
 
