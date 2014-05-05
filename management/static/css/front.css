@@ -1,0 +1,247 @@
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  font-style: none;
+}
+
+/* fix bs3 horizontal scrollbar bug */
+.row { margin: 0; padding: 0 }
+
+h1 {
+  font-size:50px;
+  font-weight: 300;
+}
+
+.icon-bar {
+   background-color:#fff;
+}
+
+.scroll-down a, .scroll-top a {
+   color:#ffffff;
+}
+
+.scroll-down {
+   position:fixed;
+   bottom:20%;
+   right:0%;
+   color:#f9f9f9;
+}
+
+.scroll-top {
+  background-color:#dbdbdb;
+}
+
+.vert {
+  vertical-align: middle;
+  width:100%;
+  padding-top:15%;
+  text-align:center;
+}
+
+.header .btn-lg {
+   font-size:28px;
+   border-color:#eeeeee;
+   border: 2px solid white;
+   padding:15px;
+   background-color:transparent;
+   color:#ffffff;
+}
+
+.header .btn-lg:hover {
+   background-color:#eeeeee;
+   color:#777777;
+}
+
+.navbar a {
+  color:#fff;
+}
+
+.navbar-bold.affix {
+  background-color:#d46054;
+}
+
+.navbar-bold {
+  background-color:#f68076;
+  /*font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;*/
+}
+
+.navbar-bold li a:hover, .navbar-bold li.active {
+  background-color:#d46054;
+}
+
+    
+.header h1 {
+  font-size:125px;
+  font-weight: 100;
+/*           -webkit-text-fill-color: white;  Will override color (regardless of order) 
+ -webkit-text-stroke-width: 6px;
+ -webkit-text-stroke-color: black;*/
+  color:#431a6d;
+  color:#fff;
+  margin-left:-5px;
+  margin-bottom:5px;
+  text-transform:uppercase;
+}
+
+.header .lead {
+  color:#fff;
+  font-size:25px;
+}
+
+.header {
+  height: 100%;
+  background: #aaa url('../images/mound.jpg') center center fixed;
+  background-size: 100%;
+}
+
+.alt .lead {
+  color: #fff;
+  font-weight: 400;
+}
+.lead{
+  font-weight: 300;
+}
+
+.alt.affix {
+  background-color:#4C06AB;
+}
+
+.alt li a:hover, .alt li.active {
+  background-color:#5D17BA;
+}
+
+.blurb {
+  padding: 120px 0;
+  background-color:#fefefe;
+}
+
+.blurb .panel {
+  background-color:transparent;
+}
+
+.bright {
+  background: #8AFFFF url('../images/depthchart.png') center center fixed;
+  background-size: 100%;
+  color:#777;
+}
+
+.featurette {
+  background: #222334;
+  padding: 80px 0;
+  color: #ffffff;
+}
+
+.featurette-item {
+  margin-bottom: 15px;
+}
+
+.featurette-item > i {
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 56px;
+  width: 140px;
+  height: 140px;
+  line-height: 136px;
+  vertical-align: middle; 
+  text-align: center;
+}
+
+.featurette-item > i:hover {
+  font-size: 68px;
+}
+
+.callout {
+  color: #ffffff;
+  padding-top:15%;
+  height: 600px;
+  width: 100%;
+  background: #8AFFFF url('../images/book.jpg') center center fixed;
+  background-size: 100%;
+}
+.gallery {
+  padding: 50px 0;
+}
+
+.call-to-action {
+  background: #eeeeee;
+  padding: 50px 0;
+}
+
+.call-to-action .btn {
+  margin: 10px;
+}
+
+footer {
+  padding: 100px 0;
+}
+.box-thumb{
+  height:300px;
+  width: 300px;
+  background-image: url('../images/box_thumb.png');
+  background-size: 100% 100%;
+}
+.chart-thumb{
+  height:300px;
+  width: 300px;
+  background-image: url('../images/chart_thumb.png');
+  background-size: 100% 100%;
+}
+#sec1{
+  background-color: #bfc8d3;
+}
+.list-group{
+  margin-bottom: 0;
+}
+
+@media only screen and (max-device-width: 480px) {
+/* define mobile specific styles come here */
+  .header h1{
+    font-size: 42px;
+    font-weight: 400;
+    padding-top: 15%;
+  }
+  .header {
+    height: 100%;
+    background: #aaa url("{% static 'mound.jpg' %}") fixed;
+    background-size: 225%;
+  }
+  .edges{
+    display: none;
+  }
+  footer, .gallery, .featurette, .blurb{
+    padding: 10px;
+  }
+  .box-thumb, .chart-thumb{
+    display: none;
+  }
+/*            .navbar-toggle{
+    display: none;
+  }*/
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width: 1024px) {
+/* Styles */
+  .header h1{
+    font-size: 100px;
+    font-weight: 300;
+    padding-top: 8%;
+  }
+  .header {
+    height: 100%;
+    background: #aaa url("{% static 'mound.jpg' %}") fixed;
+    background-size: 200%;
+  }
+  .edges{
+    display: none;
+  }
+  .box-thumb, .chart-thumb{
+    display: none;
+  }
+
+}

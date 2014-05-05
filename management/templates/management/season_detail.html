@@ -15,7 +15,7 @@
 }
 #select_box, .leaders{
 	padding-left: 0;
-	padding-right: 0;
+	padding-right: 20px;
 }
 .well, .box{
 	padding-bottom: 0;
@@ -23,10 +23,31 @@
 h5{
 	text-decoration: underline;
 }
-.leaders{
+/*.leaders{
 	display: inline-block;
 	width: 100%;
+}*/
+
+@media only screen and (max-device-width: 480px) {
+	.leaders{
+		display: inline-block;
+		width: 100%;
+	}
+	#select_box, .leaders{
+		padding-left: 0;
+		padding-right: 0;
+	}
 }
+@media only screen and (min-device-width:768px) and (max-device-width:1024px) and (orientation:landscape) {
+	.col-md-4{
+		width: 40%;
+	}
+	.leaders{
+		display: inline-block;
+		width: 100%;
+	}
+}
+
 </style>
 {% endblock %}
 
@@ -104,8 +125,8 @@ h5{
 			  <tbody>
 			  	{% for a in avgLeaders %}
 			  	<tr>
-			  		<th>{{a}}</th>
-			  		<th class="text-center">{{a.average}}</th>
+			  		<th>{{a.player}}</th>
+			  		<th class="text-center">{{a.avg}}</th>
 			  	</tr>
 			  	{% endfor %}
 			  </tbody>
@@ -132,8 +153,8 @@ h5{
 			  <tbody>
 			  	{% for o in obpLeaders %}
 			  	<tr>
-			  		<th>{{o}}</th>
-			  		<th class="text-center">{{o.on_base}}</th>
+			  		<th>{{o.player}}</th>
+			  		<th class="text-center">{{o.obp}}</th>
 			  	</tr>
 			  	{% endfor %}
 			  </tbody>
@@ -160,7 +181,7 @@ h5{
 			  <tbody>
 			  	{% for s in slugLeaders %}
 			  	<tr>
-			  		<th>{{s}}</th>
+			  		<th>{{s.player}}</th>
 			  		<th class="text-center">{{s.slug}}</th>
 			  	</tr>
 			  	{% endfor %}
@@ -188,7 +209,7 @@ h5{
 			  <tbody>
 			  	{% for e in eraLeaders %}
 			  	<tr>
-			  		<th>{{e}}</th>
+			  		<th>{{e.player}}</th>
 			  		<th class="text-center">{{e.era}}</th>
 			  	</tr>
 			  	{% endfor %}
@@ -216,8 +237,8 @@ h5{
 			  <tbody>
 			  	{% for i in innLeaders %}
 			  	<tr>
-			  		<th>{{i}}</th>
-			  		<th class="text-center">{{i.innings}}</th>
+			  		<th>{{i.player}}</th>
+			  		<th class="text-center">{{i.inn}}</th>
 			  	</tr>
 			  	{% endfor %}
 			  </tbody>
@@ -244,8 +265,8 @@ h5{
 			  <tbody>
 			  	{% for w in winLeaders %}
 			  	<tr>
-			  		<th>{{w}}</th>
-			  		<th class="text-center">{{w.pitch_totals.win__sum}}</th>
+			  		<th>{{w.player}}</th>
+			  		<th class="text-center">{{w.stats.win__sum}}</th>
 			  	</tr>
 			  	{% endfor %}
 			  </tbody>

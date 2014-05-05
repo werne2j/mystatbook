@@ -218,21 +218,34 @@ class SeasonDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             team = Team.objects.filter(coach=self.request.user).get(name=self.kwargs.get("name"))
             season = Season.objects.create(team=team ,year=self.kwargs.get("year"))
 
-        players = Player.objects.filter(season__team__coach=self.request.user).filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
+        players = Player.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name"), season__year=self.kwargs.get("year"))
+
         batters = []
         pitchers = []
         for player in players:
-            if player.plate_apperances(year=self.kwargs.get("year")) > 0:
+            if player.hit_totals(year=self.kwargs.get("year")).get('game__count') > 0:
                 batters.append(player)
-            if player.pitch_totals(year=self.kwargs.get("year")).get('full_innings__sum') > 0:
+            if player.pitch_totals(year=self.kwargs.get("year")).get('game__count') > 0:
                 pitchers.append(player)
 
-        context['avgLeaders'] = sorted(batters, key=lambda x: x.average(year=self.kwargs.get("year")), reverse=True)[:5]
-        context['obpLeaders'] = sorted(batters, key=lambda x: x.on_base(year=self.kwargs.get("year")), reverse=True)[:5]
-        context['slugLeaders'] = sorted(batters, key=lambda x: x.slug(year=self.kwargs.get("year")), reverse=True)[:5]
-        context['eraLeaders'] = sorted(pitchers, key=lambda x: float(x.era(year=self.kwargs.get("year"))))[:5]
-        context['innLeaders'] = sorted(pitchers, key=lambda x: float(x.innings(year=self.kwargs.get("year"))), reverse=True)[:5]
-        context['winLeaders'] = sorted(pitchers, key=lambda x: x.pitch_totals(year=self.kwargs.get("year"))['win__sum'], reverse=True)[:5]
+        hitting = []
+        pitching = []
+
+        for b in batters:
+            hitting.append({'player':b, 'stats':b.hit_totals(year=self.kwargs.get("year")), 'plate_app':b.plate_apperances(year=self.kwargs.get("year")),
+                'avg':b.average(year=self.kwargs.get("year")), 'obp':b.on_base(year=self.kwargs.get("year")), 'slug':b.slug(year=self.kwargs.get("year"))})
+
+        for p in pitchers:
+            pitching.append({'player':p, 'stats':p.pitch_totals(year=self.kwargs.get("year")), 'starts':p.starts(year=self.kwargs.get("year")),
+                'inn':p.innings(year=self.kwargs.get("year")), 'era':p.era(year=self.kwargs.get("year")), 'wins': p.pitch_totals(year=self.kwargs.get("year")).get('win__sum')})
+
+
+        context['avgLeaders'] = sorted(hitting, key=operator.itemgetter('avg'), reverse=True)[:5]
+        context['obpLeaders'] = sorted(hitting, key=operator.itemgetter('obp'), reverse=True)[:5]
+        context['slugLeaders'] = sorted(hitting, key=operator.itemgetter('slug'), reverse=True)[:5]
+        context['eraLeaders'] = sorted(pitching, key=operator.itemgetter('era'))[:5]
+        context['innLeaders'] = sorted(pitching, key=operator.itemgetter('inn'))[:5]
+        context['winLeaders'] = sorted(pitching, key=operator.itemgetter('wins'), reverse=True)[:5]
         context['teamlist'] = Season.objects.filter(team__coach=self.request.user)
         context['teams'] = Team.objects.filter(coach=self.request.user)
         context['players'] = Player.objects.filter(season__team__name=self.kwargs.get("name")).filter(season__year=self.kwargs.get("year"))
