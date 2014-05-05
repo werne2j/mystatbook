@@ -14,6 +14,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import *
 from .views import *
 from .forms import *
@@ -50,6 +51,7 @@ def password_change(request,
                     post_change_redirect=None,
                     password_change_form=PasswordChangeForm,
                     current_app=None, extra_context=None):
+    message = None
     if post_change_redirect is None:
         post_change_redirect = reverse('user_settings', kwargs={'username':request.user.username})
     else:
@@ -59,6 +61,8 @@ def password_change(request,
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username':request.user.username}))
+        else:
+            messages.error(request, 'Your old password was entered incorrectly. Please enter it again!') 
     else:
         form = password_change_form(user=request.user)
     context = {

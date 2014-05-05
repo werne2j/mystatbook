@@ -197,6 +197,9 @@ footer {
 .list-group{
   margin-bottom: 0;
 }
+#beta{
+  font-size: 24px;
+}
 
 @media only screen and (max-device-width: 480px) {
 /* define mobile specific styles come here */

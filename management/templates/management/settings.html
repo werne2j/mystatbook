@@ -41,6 +41,11 @@
 <div class="col-md-8 col-md-offset-1" id="block">
     <div id='content' class="tab-content">
       <div class="tab-pane active" id="account">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger">{{message}}</div>
+            {% endfor %}
+        {% endif %}
         <div class="box box-solid box-primary">
             <div class="box-header">
                 <h3 class="box-title">Change Password</h3>
