@@ -360,7 +360,10 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
                 player_form.save()
                 return HttpResponseRedirect(reverse('player_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
             else:
-                print player_form.errors
+                for k,v in player_form.errors.items():
+                    messages.error(request, k+"<br>"+str(v.as_text()))
+                    # messages.error(request, v.as_text())
+
         return HttpResponseRedirect(reverse('player_list', kwargs={'username': request.user.username , 'name': self.kwargs.get("name"), 'year': self.kwargs.get("year")}))
 
 

@@ -1,13 +1,13 @@
 /**
- * BootstrapValidator (https://github.com/nghuuphuoc/bootstrapvalidator)
+ * BootstrapValidator (http://bootstrapvalidator.com)
  *
  * A jQuery plugin to validate form fields. Use with Bootstrap 3
  *
- * @version     v0.3.1
+ * @version     v0.4.4
  * @author      https://twitter.com/nghuuphuoc
  * @copyright   (c) 2013 - 2014 Nguyen Huu Phuoc
  * @license     MIT
  */
 
 
-.bootstrap-validator-form .help-block{margin-bottom:0}
+.bv-form .help-block{margin-bottom:0}.nav-tabs li.bv-tab-success>a{color:#3c763d}.nav-tabs li.bv-tab-error>a{color:#a94442}

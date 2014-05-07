@@ -33,6 +33,12 @@
     .clickableRow{
     	cursor: pointer;
     }
+    .errorList{
+    	border: 0;
+    }
+    .errorList > td{
+    	border:0;
+    }
 
     @media only screen and (max-device-width: 480px) {
 	    #print-button{
@@ -137,12 +143,18 @@
 	</div> -->
 <!-- 	<button type="submit" class="btn btn-primary btn-sm" id="add_select">Add Player</button> -->
 </div>
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger">{{message|safe}}</div>
+    {% endfor %}
+{% endif %}
 <a href="javascript:window.print()"><button id="print-button" class="btn btn-primary"><i class="fa fa-print"></i> Print</button></a>
 {% endblock %}
 
 {% block extrascript %}
 <script type='text/javascript' src="{% static 'chosen_v1.1.0/chosen.jquery.js' %}"></script>
 <script type='text/javascript' src="{% static 'js/tablesort.min.js' %}"></script>
+<script type='text/javascript' src="{% static 'validate/js/bootstrapValidator.min.js' %}"></script>
 <script type='text/javascript'>
 	new Tablesort(document.getElementById('player_list'));
 
@@ -169,10 +181,11 @@
 		console.log(parts);
 	});
 
-	jQuery(document).ready(function($) {
-	      $(".clickableRow").click(function() {
+	$(document).ready(function($) {
+	    $(".clickableRow").click(function() {
 	            window.document.location = $(this).attr("href");
-	     });
+	    });
 	});
+	
 </script>
 {% endblock %}
