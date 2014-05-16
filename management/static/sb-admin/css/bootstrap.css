@@ -3650,7 +3650,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 @media (min-width: 768px) {
   .navbar-header {
     float: left;
-    padding-right: 77px;
+    padding-right: 74px;
   }
 }
 .navbar-collapse {
