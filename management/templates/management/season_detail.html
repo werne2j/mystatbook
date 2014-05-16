@@ -23,10 +23,6 @@
 h5{
 	text-decoration: underline;
 }
-/*.leaders{
-	display: inline-block;
-	width: 100%;
-}*/
 
 @media only screen and (max-device-width: 480px) {
 	.leaders{
@@ -67,47 +63,7 @@ h5{
 {% endblock %}
 
 {% block content %}
-<div class="col-md-12" id="select_box">
-	<div class="well col-md-4">
-		<h5>Select Statistical Leaders to Display</h5>
-		<div class="form-group pull-left">
-			<h6>Batting</h6>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="bat_avg"> Batting Average
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="obp_pct"> On-Base Percentage
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="slg_pct"> Slugging Percentage
-				</label>
-			</div>
-		</div>
-		<div class="form-group pull-right">
-			<h6>Pitching</h6>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="era"> ERA
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="inn"> Innings
-				</label>
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="wins"> Wins
-				</label>
-			</div>
-		</div>
-	</div>
-</div>
+
 <div class="col-md-4 leaders" id="bat_avg_lead">
 	<div class="box box-solid box-primary">
 	    <div class="box-header">
@@ -275,63 +231,4 @@ h5{
 	    {% endif %}
 	</div>
 </div>
-{% endblock %}
-
-
-{% block extrascript %}
-<script type='text/javascript'>
-$(document).ready(function () {
-	$(".leaders").hide();
-
-	$('#bat_avg').on("click", function() {
-	    if (this.checked) {
-	        $('#bat_avg_lead').show();
-	    }
-	    else {
-	        $('#bat_avg_lead').hide();
-	    }
-	});
-	$('#obp_pct').on("click", function() {
-	    if (this.checked) {
-	        $('#obp_pct_lead').show();
-	    }
-	    else {
-	        $('#obp_pct_lead').hide();
-	    }
-	});
-	$('#slg_pct').on("click", function() {
-	    if (this.checked) {
-	        $('#slug_pct_lead').show();
-	    }
-	    else {
-	        $('#slug_pct_lead').hide();
-	    }
-	});
-
-	$('#era').on("click", function() {
-	    if (this.checked) {
-	        $('#era_lead').show();
-	    }
-	    else {
-	        $('#era_lead').hide();
-	    }
-	});
-	$('#inn').on("click", function() {
-	    if (this.checked) {
-	        $('#inn_lead').show();
-	    }
-	    else {
-	        $('#inn_lead').hide();
-	    }
-	});
-	$('#wins').on("click", function() {
-	    if (this.checked) {
-	        $('#win_lead').show();
-	    }
-	    else {
-	        $('#win_lead').hide();
-	    }
-	});
-});
-</script>
 {% endblock %}

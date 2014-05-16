@@ -1,22 +1,22 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en"><head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <title>MyStatBook</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet" type='text/css'> 
-        <link href="{% static 'css/front.css' %}" rel="stylesheet" type='text/css'> 
-        
+        <link href="{% static 'sb-admin/css/bootstrap.css' %}" rel="stylesheet" type='text/css'>
+        <link href="{% static 'css/front.css' %}" rel="stylesheet" type='text/css'>
+
         <!--[if lt IE 9]>
           <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         <link href="{% static 'sb-admin/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
         <link href='//fonts.googleapis.com/css?family=Lato:100,300,400' rel='stylesheet' type='text/css'>
-        
+
     </head>
-    
+
     <body>
-    
+
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
           <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -43,10 +43,10 @@
 
   <div class="header alt vert">
     <div class="container">
-      
+
       <h1>MyStatBook<span id="beta">BETA</span></h1>
-        <div>&nbsp;</div>
-        <a href="{% url 'registration' %}" class="btn btn-primary btn-lg">Sign Up Today!</a>
+        <p class="lead" style="font-weight: 300;">Keep all of your team information in one private place for you and only you!</p>
+        <a href="{% url 'registration' %}" class="btn btn-primary btn-lg signup-button">Sign Up Today!</a>
     </div>
   </div>
 
@@ -55,7 +55,9 @@
       <div class="row">
         <div class="col-md-7">
           <h1>Box Scores</h1>
-          <p class="lead">Use our box score feature to track stats of each game that you play. After a game you can easily transfer statistics from your scorebook into the box score for each game and we will calculate season and career stats for you! </p>
+          <p class="lead">Use our box score feature to track stats of each game that you play.
+              After a game you can easily transfer statistics from your scorebook into the box score for each game and we will calculate season and career stats for you!
+          </p>
         </div>
         <div class="col-md-5 pull-right box-thumb">
         </div>
@@ -71,7 +73,11 @@
         </div>
         <div class="col-md-7">
           <h1>Drag and Drop Depth Chart</h1>
-          <p class="lead">Do you have drawings of where you think each player will be positioned for the season? Does it change throughout the season as injuries occur and players become a better fit at another position? Stop drawing fields and start using our drag and drop depth chart feature! Drag any player to any position you want, see your team laid out right in front of you with no field drawings.</p>
+          <p class="lead">Do you have drawings of where you think each player will be positioned for the season?
+              Does it change throughout the season as injuries occur and players become a better fit at another position?
+              Stop drawing fields and start using our drag and drop depth chart feature! Drag any player to any position you want,
+              see your team laid out right in front of you with no field drawings.
+          </p>
         </div>
       </div>
     </div>
@@ -89,18 +95,18 @@
 
 
   <div class="gallery">
-    
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3 text-center">
           <h2>Other Features</h2>
           <br>
         </div>
     </div>
-    
+
     <div class="container well well-lg">
-      
+
       <div class="row">
-      		
+
         	<div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item text-center">
@@ -123,31 +129,31 @@
             <div class="list-group">
               <a href="#" class="list-group-item text-center">
                 <span class="text-success"></span> Game by Game Stats</a>
-            </div>  
+            </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item text-center">
                 <span class="text-success"></span> Player Pages</a>
-            </div>  
+            </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item text-center">
                 <span class="text-success"></span> Dashboard with Statistical Leaders</a>
-            </div>  
+            </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item text-center">
                 <span class="text-success"></i></span> Conference Statistics</a>
-            </div>  
+            </div>
           </div>
           <div class="col-sm-3">
             <div class="list-group">
               <a href="#" class="list-group-item text-center">
                 <span class="text-success"></span> Easily Print Pages</a>
-            </div>  
+            </div>
           </div>
       </div>
     </div>
@@ -168,11 +174,11 @@
 
   <script type="text/javascript" src="{% static 'sb-admin/js/jquery-1.10.2.js' %}"></script>
   <script type="text/javascript" src="{% static 'sb-admin/js/bootstrap.js' %}"></script>
-  
+
   <script type="text/javascript">
-  
+
   $(document).ready(function() {
-  
+
       $('.scroll-top').click(function(){
         $('body,html').animate({scrollTop:0},800);
       })
@@ -183,11 +189,11 @@
 
       $('body').scrollspy({ target: '#navbar' })
 
-  
+
   });
-  
+
   </script>
-          
-      
+
+
   </body>
 </html>

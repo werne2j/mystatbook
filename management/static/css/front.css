@@ -73,11 +73,11 @@ h1 {
   background-color:#d46054;
 }
 
-    
+
 .header h1 {
   font-size:125px;
   font-weight: 100;
-/*           -webkit-text-fill-color: white;  Will override color (regardless of order) 
+/*           -webkit-text-fill-color: white;  Will override color (regardless of order)
  -webkit-text-stroke-width: 6px;
  -webkit-text-stroke-color: black;*/
   color:#431a6d;
@@ -147,7 +147,7 @@ h1 {
   width: 140px;
   height: 140px;
   line-height: 136px;
-  vertical-align: middle; 
+  vertical-align: middle;
   text-align: center;
 }
 
@@ -206,11 +206,11 @@ footer {
   .header h1{
     font-size: 42px;
     font-weight: 400;
-    padding-top: 15%;
+    padding-top: 5%;
   }
   .header {
     height: 100%;
-    background: #aaa url("{% static 'mound.jpg' %}") fixed;
+    background: #aaa url('../images/mound.jpg') fixed;
     background-size: 225%;
   }
   .edges{
@@ -222,9 +222,12 @@ footer {
   .box-thumb, .chart-thumb{
     display: none;
   }
-/*            .navbar-toggle{
+  #beta{
     display: none;
-  }*/
+  }
+  .signup-button{
+      margin-top: 40%;
+  }
 }
 
 /* iPads (portrait and landscape) ----------- */
@@ -237,7 +240,7 @@ footer {
   }
   .header {
     height: 100%;
-    background: #aaa url("{% static 'mound.jpg' %}") fixed;
+    background: #aaa url('../images/mound.jpg') fixed;
     background-size: 200%;
   }
   .edges{
@@ -246,5 +249,4 @@ footer {
   .box-thumb, .chart-thumb{
     display: none;
   }
-
 }

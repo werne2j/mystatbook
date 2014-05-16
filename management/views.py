@@ -6,7 +6,6 @@ from django.template import RequestContext
 from django.views.generic.base import View, TemplateView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.views import logout
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from registration.backends.simple.views import RegistrationView
 from django.forms.models import modelformset_factory
@@ -62,7 +61,7 @@ def password_change(request,
             form.save()
             return HttpResponseRedirect(reverse('user_settings', kwargs={'username':request.user.username}))
         else:
-            messages.error(request, 'Your old password was entered incorrectly. Please enter it again!') 
+            messages.error(request, 'Your old password was entered incorrectly. Please enter it again!')
     else:
         form = password_change_form(user=request.user)
     context = {
@@ -324,7 +323,7 @@ class PlayerDetail(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             era = float(pitch['earned']) / (pitch['full']+(pitch['part']/3.0)) * 9.0
             pitch['era'] = ("%.2f" % era)
             pitch['starts'] = PitcherStats.objects.filter(player__pk=self.kwargs.get('id'), starting_pitcher=True).count()
-        else: 
+        else:
             pitch = 0
 
         context['totals'] = totals
@@ -532,7 +531,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             pitch['era'] = ("%.2f" % era)
             pitch['games'] = Game.objects.filter(season__team__coach=self.request.user,season__team__name=self.kwargs.get('name'), season__year=self.kwargs.get("year")).count() - Game.objects.filter(season__team__coach=self.request.user,season__team__name=self.kwargs.get('name'), season__year=self.kwargs.get("year"), pitcherstats__isnull=True).count()
             pitch['starts'] = PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), game__season__year=self.kwargs.get('year'), starting_pitcher=True).count()
-        else: 
+        else:
             pitch = 0
 
         if PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"), game__season__year=self.kwargs.get('year'), game__conference=True):
@@ -541,7 +540,7 @@ class PlayerStats(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             conf_pitch['era'] = ("%.2f" % era)
             conf_pitch['games'] = Game.objects.filter(season__team__coach=self.request.user,season__team__name=self.kwargs.get('name'), season__year=self.kwargs.get("year"), conference=True).count() - Game.objects.filter(season__team__coach=self.request.user,season__team__name=self.kwargs.get('name'), season__year=self.kwargs.get("year"), conference=True, pitcherstats__isnull=True).count()
             conf_pitch['starts'] = PitcherStats.objects.filter(player__team__coach=self.request.user, player__team__name=self.kwargs.get("name"),game__season__year=self.kwargs.get('year'), game__conference=True, starting_pitcher=True).count()
-        else: 
+        else:
             conf_pitch = 0
 
         context['totals'] = totals
@@ -629,7 +628,7 @@ class AddTeam(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         form = AddTeamForm(user=self.request.user)
         form2 = SeasonForm()
 
-        context['teamlist'] = Team.objects.filter(coach=self.request.user)
+        context['teams'] = Team.objects.filter(coach=self.request.user)
         context['form'] = form
         context['form2'] = form2
 
