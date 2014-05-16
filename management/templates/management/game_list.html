@@ -49,9 +49,9 @@
 			</thead>
 			<tbody>
 				{% for g in games %}
-				<tr {% if g.conference %}class="bold"{% endif %}>
+				<tr>
 					<th class="text-center">{{g.date}}</th>
-					<th class="text-center">{{g.opponent}}</th>
+					<th class="text-center">{% if g.conference %}*{% endif %}{{g.opponent}}</th>
 					<th class="text-center">{{g.location}}</th>
 					<th class="text-center">{{g.time}}</th>
 					<th class="text-center">{% if g.doubleheader %}<i class="fa fa-check-circle"></i>{% else %}<i class="fa fa-times-circle"></i>{% endif %}</th>
@@ -106,10 +106,15 @@
 			</tfoot>
 		</table>
 	</div>
-	<p>*<strong>Bold</strong> indicates conference games</p> 
+	<p>* indicates conference games</p> 
 	<div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-hidden="true">
 	</div>
 </div>
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger">{{message|safe}}</div>
+    {% endfor %}
+{% endif %}
 <a href="javascript:window.print()"><button id="print-button" class="btn btn-primary"><i class="fa fa-print"></i> Print</button></a>
 {% endblock %}
 
