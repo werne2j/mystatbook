@@ -369,10 +369,16 @@ class PlayerList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PlayerList, self).get_context_data(**kwargs)
 
+        team = Season.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
         player_form = PlayerForm()
 
+    # for form in pitch_formset.forms:
+    #         form.fields['player'].queryset = Player.objects.filter(season=season)
+    #         form.fields['game'].queryset = Game.objects.filter(season__team__coach=self.request.user).filter(season=season)
+    #         form.fields['game'].initial = game
+
         context['form'] = player_form
-        context['team'] = Season.objects.filter(team__coach=self.request.user).filter(team__name=self.kwargs.get("name")).get(year=self.kwargs.get("year"))
+        context['team'] = team
         context['players'] = Player.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name"),season__year=self.kwargs.get("year")).order_by('last_name')
         context['all_players'] = Player.objects.filter(team__coach=self.request.user, team__name=self.kwargs.get("name")).order_by('last_name')
         context['teams'] = Team.objects.filter(coach=self.request.user)

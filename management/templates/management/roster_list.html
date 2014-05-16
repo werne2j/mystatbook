@@ -90,6 +90,7 @@
 				<form id="playerform" class="form-inline add_form" action="{% url 'player_list' username=user name=name year=year %}" method=post>
 					{% csrf_token %}
 					<tr class="text-center">
+						<th id="team_id" style="display:none;">{{form.team}}</th>
 						<th id="season_id" style="display:none;">{{form.season}}</th>
 						<th class="text-center">
 							<div class="form-group">
@@ -161,7 +162,10 @@
 	$("#id_position").chosen({width: "140px", placeholder_text_multiple: "Positions"});
 
 	var season = {{team.id}};
+	var team = {{team.team.id}};
+
 	$('select[name="season"]').val(season);
+	$('select[name="team"]').val(team);
 
 	$('#add_select').click(function(){
 		var sel = $('#sel_play').find(":selected").val();

@@ -57,7 +57,7 @@ class AddGameForm(forms.ModelForm):
 class PlayerForm(forms.ModelForm):
 	class Meta:
 		model = Player
-		fields = ('season', 'first_name', 'last_name', 'position', 'class_standing', 'throws', 'hits')
+		fields = ('team', 'season', 'first_name', 'last_name', 'position', 'class_standing', 'throws', 'hits')
 
 class HitStatsForm(forms.ModelForm):
 	class Meta:
