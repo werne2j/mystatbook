@@ -4,3 +4,4 @@ vagrant-expert
 media/
 /static/
 settings.py
+fabfile.py
